@@ -1,0 +1,142 @@
+# ─────────────────────────────────────────────────────────
+#  AtmoGraph .gitignore
+# ─────────────────────────────────────────────────────────
+
+# ── Environment & Secrets ─────────────────────────────────
+.env
+.env.local
+.env.production
+*.secret
+secrets/
+
+# ── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# mypy, pyright, ruff
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# ── Machine Learning / PyTorch ────────────────────────────
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+models/
+!models/.gitkeep
+checkpoints/
+runs/
+wandb/
+mlruns/
+lightning_logs/
+
+# ── Node.js / React ───────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm
+frontend/.next/
+frontend/dist/
+frontend/build/
+
+# ── Neo4j ────────────────────────────────────────────────
+neo4j/data/
+neo4j/logs/
+neo4j/import/
+neo4j/plugins/
+
+# ── Docker ───────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── IDEs & Editors ───────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+*.pid
+
+# ── Data ─────────────────────────────────────────────────
+data/raw/
+data/processed/
+*.csv
+!data/mock/*.csv
+*.parquet
+*.feather
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
