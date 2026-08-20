@@ -110,7 +110,7 @@ Index  Feature                   Range
 
 ```
 main                  ← protected, PR required
-├── megh/             ← GNN + FastAPI + architecture
+├── Megh              ← GNN + FastAPI + architecture
 ├── shubhangi/        ← Neo4j schema + Cypher scripts + mock data
 ├── fathima/          ← NLP pipeline + NER + entity linking
 └── dimple/           ← React dashboard + visualizations

@@ -173,7 +173,7 @@ npm run dev
 
 ```
 main              ← Production-ready code
-├── megh/         ← Megh: GNN + architecture + integration
+├── Megh          ← Megh: GNN + architecture + integration
 ├── shubhangi/    ← Shubhangi: Neo4j + graph data
 ├── fathima/      ← Fathima: NLP pipeline
 └── dimple/       ← Dimple: React frontend
