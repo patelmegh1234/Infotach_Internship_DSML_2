@@ -98,18 +98,6 @@ atmograph/
 
 ---
 
-## 🗓️ Development Timeline
-
-| Week | Dates | Backend Focus | Frontend Focus |
-|------|-------|---------------|----------------|
-| **Week 1+2** | Aug 13–27 | Graph DB setup + NLP pipeline | React scaffold + interactive graph |
-| **Mid-Review** | Aug 28 | NLP → Neo4j demo | Render performance validation |
-| **Week 3** | Aug 28–Sep 3 | GNN training + inference | Predictive risk overlay |
-| **Week 4** | Sep 4–10 | WebSocket real-time stream | Timeline sliders (30/60/90 days) |
-| **Final** | Sep 13 | Full system integration | Enterprise dashboard demo |
-
----
-
 ## ⚙️ Quick Start
 
 ### Prerequisites
