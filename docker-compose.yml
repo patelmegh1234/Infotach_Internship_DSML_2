@@ -1,0 +1,153 @@
+version: "3.9"
+
+services:
+  # ─────────────────────────────────────────
+  # Neo4j Graph Database
+  # ─────────────────────────────────────────
+  neo4j:
+    image: neo4j:5.18-community
+    container_name: atmograph-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"   # Neo4j Browser (HTTP)
+      - "7687:7687"   # Bolt protocol (driver connections)
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-atmograph2026}
+      NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
+      NEO4J_dbms_memory_pagecache_size: 1G
+      NEO4J_dbms_memory_heap_initial__size: 512m
+      NEO4J_dbms_memory_heap_max__size: 1G
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*,gds.*
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import
+      - ./scripts/cypher:/var/lib/neo4j/import/cypher
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "${NEO4J_USER:-neo4j}", "-p", "${NEO4J_PASSWORD:-atmograph2026}", "RETURN 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - atmograph-network
+
+  # ─────────────────────────────────────────
+  # Redis — Message Queue & Caching
+  # ─────────────────────────────────────────
+  redis:
+    image: redis:7.2-alpine
+    container_name: atmograph-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-atmograph2026}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - atmograph-network
+
+  # ─────────────────────────────────────────
+  # FastAPI Backend + GNN Inference Server
+  # ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: atmograph-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: ${NEO4J_USER:-neo4j}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-atmograph2026}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-atmograph2026}@redis:6379
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      MODEL_PATH: /app/models/gnn_model.pt
+    volumes:
+      - ./backend:/app
+      - model_data:/app/models
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - atmograph-network
+
+  # ─────────────────────────────────────────
+  # NLP Worker (Background Task Processor)
+  # ─────────────────────────────────────────
+  nlp-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: atmograph-nlp-worker
+    restart: unless-stopped
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: ${NEO4J_USER:-neo4j}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-atmograph2026}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-atmograph2026}@redis:6379
+      HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - neo4j
+      - redis
+    command: python -m nlp.worker
+    networks:
+      - atmograph-network
+
+  # ─────────────────────────────────────────
+  # React Frontend (Dev Server)
+  # ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: atmograph-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+      REACT_APP_WS_URL: ws://localhost:8000/ws
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - atmograph-network
+
+# ─────────────────────────────────────────
+# Volumes
+# ─────────────────────────────────────────
+volumes:
+  neo4j_data:
+    driver: local
+  neo4j_logs:
+    driver: local
+  neo4j_import:
+    driver: local
+  redis_data:
+    driver: local
+  model_data:
+    driver: local
+
+# ─────────────────────────────────────────
+# Networks
+# ─────────────────────────────────────────
+networks:
+  atmograph-network:
+    driver: bridge
+    name: atmograph-network
