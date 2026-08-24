@@ -91,9 +91,8 @@ atmograph/
 
 | Member | Role | GitHub |
 |--------|------|--------|
-| **Megh Patel** | Team Leader — GNN, Architecture, Integration | [@patelmegh1234](https://github.com/patelmegh1234) |
-| **Shubhangi** | Neo4j Database & Supply Chain Data Engineering | [@Shubhangimane2005](https://github.com/Shubhangimane2005) |
-| **Fathima** | NLP Disruption Ingestion Engine | [@Fathima2002Y](https://github.com/Fathima2002Y) |
+| **Megh Patel** | Team Leader — GNN, NLP Pipeline, API Integration | [@patelmegh1234](https://github.com/patelmegh1234) |
+| **Shubhangi** | Neo4j Database, Graph Data & Entity Linking | [@Shubhangimane2005](https://github.com/Shubhangimane2005) |
 | **Dimple** | React Dashboard & Interactive Visualization | [@Dimple-S1163](https://github.com/Dimple-S1163) |
 
 ---
@@ -173,9 +172,8 @@ npm run dev
 
 ```
 main              ← Production-ready code
-├── Megh          ← Megh: GNN + architecture + integration
-├── shubhangi/    ← Shubhangi: Neo4j + graph data
-├── fathima/      ← Fathima: NLP pipeline
+├── Megh          ← Megh: GNN + NLP pipeline + architecture + integration
+├── shubhangi/    ← Shubhangi: Neo4j + graph data + entity linking
 └── dimple/       ← Dimple: React frontend
 ```
 
