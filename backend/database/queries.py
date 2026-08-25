@@ -164,3 +164,20 @@ RETURN
 ORDER BY hop_count DESC
 LIMIT 1
 """
+# ── Entity Linking Queries ─────────────────────────────────
+
+GET_ENTITY_LINK_CANDIDATES = """
+MATCH (n)
+WHERE n.node_id IS NOT NULL
+  AND ANY(node_label IN labels(n) WHERE node_label IN $node_types)
+RETURN
+    n.node_id AS node_id,
+    labels(n)[0] AS node_type,
+    coalesce(n.name, "") AS name,
+    coalesce(n.city, "") AS city,
+    coalesce(n.country, "") AS country,
+    coalesce(n.risk_score, 0.0) AS risk_score,
+    coalesce(n.disruption_severity, 0.0) AS severity,
+    coalesce(n.disruption_type, "unknown") AS disruption_type
+ORDER BY n.name
+"""
