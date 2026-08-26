@@ -21,7 +21,7 @@ ripples across a global interconnected network using a Graph Neural Network (GNN
 │  - Named Entity Recognition (location, org, event type)                  │
 │  - Severity scoring                                                      │
 │  - Entity → supply chain node linking                                    │
-│  Owner: Fathima                                                          │
+│  Owner: Megh & Shubhangi                                                 │
 └─────────────────────────────┬────────────────────────────────────────────┘
                               │  POST /api/disrupt
                               ▼
@@ -82,7 +82,7 @@ ripples across a global interconnected network using a Graph Neural Network (GNN
 | Component | Technology | Owner | Port |
 |-----------|-----------|-------|------|
 | Graph Database | Neo4j 5.x + APOC + GDS | Shubhangi | 7474 (UI), 7687 (Bolt) |
-| NLP Engine | spaCy + HuggingFace BERT-NER | Fathima | Background worker |
+| NLP Engine | spaCy + HuggingFace BERT-NER | Megh & Shubhangi | Background worker |
 | GNN Model | PyTorch Geometric (GraphSAGE + GATv2) | Megh | In-process |
 | API Layer | FastAPI + WebSocket | Megh | 8000 |
 | Frontend | React + React Flow/D3.js | Dimple | 3000 |
@@ -110,15 +110,14 @@ Index  Feature                   Range
 
 ```
 main                  ← protected, PR required
-├── megh/             ← GNN + FastAPI + architecture
-├── shubhangi/        ← Neo4j schema + Cypher scripts + mock data
-├── fathima/          ← NLP pipeline + NER + entity linking
+├── Megh              ← GNN + NLP engine + FastAPI + architecture
+├── shubhangi/        ← Neo4j schema + Cypher scripts + entity linking
 └── dimple/           ← React dashboard + visualizations
 ```
 
 ## API Contract (for team coordination)
 
-### POST /api/disrupt/ — called by Fathima's NLP engine
+### POST /api/disrupt/ — called by NLP ingestion engine
 ```json
 {
   "disruption_id": "evt_20260820_001",

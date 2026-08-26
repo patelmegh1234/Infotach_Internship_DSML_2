@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![AtmoGraph Banner](docs/architecture/banner.png)
-
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch%20Geometric-2.x-red?logo=pytorch)](https://pytorch-geometric.readthedocs.io/)
 [![Neo4j](https://img.shields.io/badge/Neo4j-5.x-green?logo=neo4j)](https://neo4j.com)
@@ -93,22 +91,9 @@ atmograph/
 
 | Member | Role | GitHub |
 |--------|------|--------|
-| **Megh Patel** | Team Leader — GNN, Architecture, Integration | [@patelmegh1234](https://github.com/patelmegh1234) |
-| **Shubhangi** | Neo4j Database & Supply Chain Data Engineering | [@Shubhangimane2005](https://github.com/Shubhangimane2005) |
-| **Fathima** | NLP Disruption Ingestion Engine | [@Fathima2002Y](https://github.com/Fathima2002Y) |
+| **Megh Patel** | Team Leader — GNN, NLP Pipeline, API Integration | [@patelmegh1234](https://github.com/patelmegh1234) |
+| **Shubhangi** | Neo4j Database, Graph Data & Entity Linking | [@Shubhangimane2005](https://github.com/Shubhangimane2005) |
 | **Dimple** | React Dashboard & Interactive Visualization | [@Dimple-S1163](https://github.com/Dimple-S1163) |
-
----
-
-## 🗓️ Development Timeline
-
-| Week | Dates | Backend Focus | Frontend Focus |
-|------|-------|---------------|----------------|
-| **Week 1+2** | Aug 13–27 | Graph DB setup + NLP pipeline | React scaffold + interactive graph |
-| **Mid-Review** | Aug 28 | NLP → Neo4j demo | Render performance validation |
-| **Week 3** | Aug 28–Sep 3 | GNN training + inference | Predictive risk overlay |
-| **Week 4** | Sep 4–10 | WebSocket real-time stream | Timeline sliders (30/60/90 days) |
-| **Final** | Sep 13 | Full system integration | Enterprise dashboard demo |
 
 ---
 
@@ -187,9 +172,8 @@ npm run dev
 
 ```
 main              ← Production-ready code
-├── megh/         ← Megh: GNN + architecture + integration
-├── shubhangi/    ← Shubhangi: Neo4j + graph data
-├── fathima/      ← Fathima: NLP pipeline
+├── Megh          ← Megh: GNN + NLP pipeline + architecture + integration
+├── shubhangi/    ← Shubhangi: Neo4j + graph data + entity linking
 └── dimple/       ← Dimple: React frontend
 ```
 
