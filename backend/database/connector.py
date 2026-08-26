@@ -10,7 +10,7 @@ from __future__ import annotations
 from functools import lru_cache
 from neo4j import GraphDatabase, Driver
 from loguru import logger
-from config.settings import get_settings
+from ..config.settings import get_settings
 
 
 @lru_cache()

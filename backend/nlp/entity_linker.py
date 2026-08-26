@@ -12,8 +12,8 @@ from typing import Any
 
 from loguru import logger
 
-from database.connector import get_neo4j_driver
-from database.queries import GET_ENTITY_LINK_CANDIDATES
+from ..database.connector import get_neo4j_driver
+from ..database.queries import GET_ENTITY_LINK_CANDIDATES
 
 
 ALL_NODE_TYPES = [
@@ -93,38 +93,45 @@ def _match_score(entity_text: str, candidate: dict[str, Any]) -> float:
     return max(scores, default=0.0)
 
 
-def link_entity(
-    entity_text: str,
-    entity_type: str,
-    min_score: float = 0.72,
-) -> dict[str, Any] | None:
+def fetch_entity_link_candidates() -> list[dict[str, Any]]:
     """
-    Link one extracted entity to the best matching Neo4j node.
+    Fetch all entity-linking candidates once from Neo4j.
 
-    Args:
-        entity_text: Text extracted by the NLP engine, e.g. "Rotterdam".
-        entity_type: NLP label, e.g. "LOCATION" or "ORG".
-        min_score: Minimum fuzzy-match score required.
-
-    Returns:
-        A structured node dictionary, or None when no confident match exists.
+    This prevents a new Neo4j session from being opened for every entity.
     """
-    allowed_node_types = _get_allowed_node_types(entity_type)
     driver = get_neo4j_driver()
 
     with driver.session() as session:
-        candidates = [
+        return [
             record.data()
             for record in session.run(
                 GET_ENTITY_LINK_CANDIDATES,
-                node_types=allowed_node_types,
+                node_types=ALL_NODE_TYPES,
             )
         ]
+
+
+def link_entity(
+    entity_text: str,
+    entity_type: str,
+    candidates: list[dict[str, Any]],
+    min_score: float = 0.72,
+) -> dict[str, Any] | None:
+    """
+    Link one extracted entity using candidates already fetched from Neo4j.
+    """
+    allowed_node_types = _get_allowed_node_types(entity_type)
+
+    relevant_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate["node_type"] in allowed_node_types
+    ]
 
     best_candidate = None
     best_score = 0.0
 
-    for candidate in candidates:
+    for candidate in relevant_candidates:
         score = _match_score(entity_text, candidate)
 
         if score > best_score:
@@ -163,11 +170,12 @@ def link_entities(
     min_score: float = 0.72,
 ) -> list[dict[str, Any]]:
     """
-    Link multiple NLP entities.
+    Link multiple NLP entities using one Neo4j candidate lookup.
 
     Each input entity needs:
         {"text": "...", "label": "..."}
     """
+    candidates = fetch_entity_link_candidates()
     linked_nodes = []
 
     for entity in entities:
@@ -180,6 +188,7 @@ def link_entities(
         linked_node = link_entity(
             entity_text,
             entity_type,
+            candidates,
             min_score=min_score,
         )
 
@@ -190,6 +199,8 @@ def link_entities(
 
 
 if __name__ == "__main__":
-    print("Rotterdam:", link_entity("Rotterdam", "LOCATION"))
-    print("TSMC:", link_entity("TSMC", "ORG"))
-    print("Roterdam:", link_entity("Roterdam", "LOCATION"))
+    candidates = fetch_entity_link_candidates()
+
+    print("Rotterdam:", link_entity("Rotterdam", "LOCATION", candidates))
+    print("TSMC:", link_entity("TSMC", "ORG", candidates))
+    print("Roterdam:", link_entity("Roterdam", "LOCATION", candidates))
