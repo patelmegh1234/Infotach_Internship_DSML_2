@@ -73,7 +73,7 @@ NODE_SCHEMAS = {
 RELATIONSHIP_SCHEMAS = {
     "SUPPLIES": "(:Supplier)-[:SUPPLIES]->(:Manufacturer)",
     "MANUFACTURES": "(:Manufacturer)-[:MANUFACTURES]->(:Product)",
-    "SHIPS_THROUGH": "(:Product)-[:SHIPS_THROUGH]->(:Port)",
+    "SHIPS_THROUGH": "(:Manufacturer)-[:SHIPS_THROUGH]->(:Port)",
     "ROUTES_TO": "(:Port)-[:ROUTES_TO]->(:DistributionCenter)",
     "DISTRIBUTES": "(:DistributionCenter)-[:DISTRIBUTES]->(:Retailer)",
     "SELLS": "(:Retailer)-[:SELLS]->(:Product)",
