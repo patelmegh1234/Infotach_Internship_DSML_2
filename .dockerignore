@@ -1,0 +1,68 @@
+# ──────────────────────────────────────────────────────────────
+# AtmoGraph — Root .dockerignore
+# Prevents build context bloat for the backend image.
+# (Build context = repo root)
+# ──────────────────────────────────────────────────────────────
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+*.whl
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/dist/
+frontend/build/
+frontend/.cache/
+
+# Environment files (never bake into image)
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Docs and data (not needed inside container)
+docs/
+data/
+*.md
+!README.md
+
+# Test artefacts
+.coverage
+coverage.xml
+htmlcov/
+*.log
+
+# Model checkpoints (mounted as a volume instead)
+*.pt
+*.pth
+*.ckpt
+models/
