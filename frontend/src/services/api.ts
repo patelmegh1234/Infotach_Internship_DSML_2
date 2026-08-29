@@ -134,12 +134,22 @@ export const api = {
     return tryFetch('/api/scenarios', mockScenarios);
   },
   async createScenario(s: Omit<Scenario, 'id' | 'createdAt'>): Promise<Scenario> {
-    const created: Scenario = {
-      ...s,
-      id: `SCN-${Math.floor(Math.random() * 9000 + 1000)}`,
-      createdAt: new Date().toISOString(),
-    };
-    return tryFetch('/api/scenarios', created, 400);
+    if (!USE_BACKEND) {
+      await sleep(400);
+      return {
+        ...s,
+        id: `SCN-${Math.floor(Math.random() * 9000 + 1000)}`,
+        createdAt: new Date().toISOString(),
+      };
+    }
+
+    const res = await fetch(`${API_BASE}/api/scenarios`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(s),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as Scenario;
   },
   async getAlerts(): Promise<Alert[]> {
     return tryFetch('/api/alerts', mockAlerts);
@@ -177,7 +187,13 @@ export const api = {
       };
       return { event, affectedNodes: affected, propagationLevels: levels, insights: insight };
     }
-    return tryFetch('/api/simulate', {} as SimulationResult, 900);
+    const res = await fetch(`${API_BASE}/api/simulate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as SimulationResult;
   },
   async generateReport(): Promise<{ ok: boolean; message: string }> {
     await sleep(700);

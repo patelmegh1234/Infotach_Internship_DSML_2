@@ -55,12 +55,13 @@ export function GraphView({
     const filtered = filterTypes && filterTypes.length > 0 ? nodes.filter((n) => filterTypes.includes(n.type)) : nodes;
     const q = searchQuery.trim().toLowerCase();
     const searched = q ? filtered.filter((n) => n.name.toLowerCase().includes(q) || n.id.toLowerCase().includes(q) || n.location.toLowerCase().includes(q)) : filtered;
-    const visibleIds = new Set(searched.map((n) => n.id));
+    const visibleNodes = hideUnaffected && hasAffected ? searched.filter((n) => affectedSet.has(n.id)) : searched;
+    const visibleIds = new Set(visibleNodes.map((n) => n.id));
 
-    const rf: Node<GraphNodeData>[] = searched.map((n) => {
+    const rf: Node<GraphNodeData>[] = visibleNodes.map((n) => {
       const isOrigin = n.id === originId;
       const isAffected = affectedSet.has(n.id);
-      const dimmed = (hasAffected && !isAffected) || (hideUnaffected && hasAffected && !isAffected);
+      const dimmed = hasAffected && !isAffected;
       return {
         id: n.id,
         type: 'custom',
@@ -152,7 +153,7 @@ export function GraphView({
       )}
 
       {selectedNode && (
-        <div className="absolute top-0 right-0 h-full w-[300px] glass-strong border-l border-white/5 shadow-panel z-10 animate-fadeIn">
+        <div className="absolute top-0 right-0 h-full w-full sm:w-[300px] glass-strong border-l border-white/5 shadow-panel z-10 animate-fadeIn">
           <NodeDetailsPanel
             node={selectedNode}
             onClose={() => onSelectNode?.(null)}
