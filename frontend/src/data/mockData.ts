@@ -14,11 +14,11 @@ import type {
 
 export const nodeTypes: SupplyChainNode['type'][] = [
   'Supplier',
-  'Factory',
-  'Warehouse',
+  'Manufacturer',
   'Port',
-  'Distributor',
-  'Market',
+  'DistributionCenter',
+  'Retailer',
+  'Product',
 ];
 
 const makeNode = (

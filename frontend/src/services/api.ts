@@ -12,6 +12,7 @@ import type {
   NodeTypeRisk,
   DisruptionType,
   Region,
+  NodeType,
 } from '@/types';
 import {
   nodes as mockNodes,
@@ -64,6 +65,133 @@ export interface SimulationResult {
   insights: AIInsight;
 }
 
+/**
+ * Layout helper: arranges nodes into multi-tiered columns by node type.
+ */
+function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChainNode[]; edges: SupplyChainEdge[] } {
+  const tierMap: Record<string, { tier: number; baseX: number }> = {
+    Supplier: { tier: 0, baseX: 80 },
+    Manufacturer: { tier: 1, baseX: 380 },
+    Factory: { tier: 1, baseX: 380 },
+    Product: { tier: 2, baseX: 680 },
+    Port: { tier: 3, baseX: 980 },
+    DistributionCenter: { tier: 4, baseX: 1280 },
+    Warehouse: { tier: 4, baseX: 1280 },
+    Retailer: { tier: 5, baseX: 1580 },
+    Distributor: { tier: 5, baseX: 1580 },
+    Market: { tier: 5, baseX: 1580 },
+  };
+
+  // Group nodes by tier
+  const tierBuckets: Record<number, any[]> = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] };
+
+  rawNodes.forEach((n) => {
+    const type = n.node_type || n.type || 'Supplier';
+    const tier = tierMap[type]?.tier ?? 0;
+    tierBuckets[tier].push(n);
+  });
+
+  const parsedNodes: SupplyChainNode[] = [];
+  const idToNode = new Map<string, SupplyChainNode>();
+
+  Object.entries(tierBuckets).forEach(([tierStr, bucket]) => {
+    const tier = Number(tierStr);
+    const baseX = [80, 380, 680, 980, 1280, 1580][tier] ?? 100;
+    const maxRows = Math.max(8, Math.ceil(bucket.length / 2));
+
+    bucket.forEach((n, idx) => {
+      const col = Math.floor(idx / maxRows);
+      const row = idx % maxRows;
+      const x = baseX + col * 140;
+      const y = 80 + row * 95;
+
+      const rawRisk = typeof n.risk_score === 'number' ? n.risk_score : typeof n.riskScore === 'number' ? n.riskScore : 0.25;
+      const riskScore = rawRisk <= 1.0 ? Math.round(rawRisk * 100) : Math.round(rawRisk);
+      const type: NodeType = (n.node_type || n.type || 'Supplier') as NodeType;
+      const nodeId = String(n.node_id || n.id);
+
+      const locationStr = n.location || [n.city, n.country].filter(Boolean).join(', ') || 'Global';
+      const regionStr: Region = (n.region || (n.country === 'China' || n.country === 'Japan' || n.country === 'Taiwan' || n.country === 'Singapore' || n.country === 'South Korea' ? 'Asia' : n.country === 'Germany' || n.country === 'Netherlands' ? 'Europe' : n.country === 'United States' ? 'North America' : 'Global')) as Region;
+
+      const nodeObj: SupplyChainNode = {
+        id: nodeId,
+        name: n.name || nodeId,
+        type,
+        region: regionStr,
+        location: locationStr,
+        riskScore,
+        probability: n.probability ?? Number((riskScore / 100 * 0.85).toFixed(2)),
+        impact: n.impact ?? Math.round((n.geo_importance_score ?? 0.5) * 100),
+        status: n.disruption_flag ? 'Disrupted' : riskScore >= 70 ? 'At Risk' : 'Operational',
+        estimatedImpact: n.estimatedImpact ?? Math.round(riskScore * 18000),
+        tier,
+        dependencies: [],
+        dependents: [],
+        connectedSuppliers: [],
+        connectedCustomers: [],
+        x,
+        y,
+        node_id: nodeId,
+        node_type: type,
+        city: n.city,
+        country: n.country,
+        capacity_utilization: n.capacity_utilization,
+        historical_delay_avg: n.historical_delay_avg,
+        geo_importance_score: n.geo_importance_score,
+        throughput_teu: n.throughput_teu,
+        disruption_flag: n.disruption_flag,
+        disruption_severity: n.disruption_severity,
+        disruption_type: n.disruption_type,
+        predicted_delay_days: n.predicted_delay_days,
+        lead_time_days: n.lead_time_days,
+        storage_capacity: n.storage_capacity,
+        annual_revenue: n.annual_revenue,
+      };
+
+      parsedNodes.push(nodeObj);
+      idToNode.set(nodeId, nodeObj);
+      if (n.id) idToNode.set(String(n.id), nodeObj);
+    });
+  });
+
+  // Map and link edges
+  const parsedEdges: SupplyChainEdge[] = rawEdges
+    .map((e, idx) => {
+      const sourceNode = idToNode.get(String(e.source));
+      const targetNode = idToNode.get(String(e.target));
+      const srcId = sourceNode ? sourceNode.id : String(e.source);
+      const tgtId = targetNode ? targetNode.id : String(e.target);
+
+      if (sourceNode && targetNode) {
+        if (!sourceNode.dependents.includes(tgtId)) sourceNode.dependents.push(tgtId);
+        if (!targetNode.dependencies.includes(srcId)) targetNode.dependencies.push(srcId);
+        if (sourceNode.type === 'Supplier' && !targetNode.connectedSuppliers.includes(srcId)) {
+          targetNode.connectedSuppliers.push(srcId);
+        }
+        if (targetNode.type === 'Retailer' || targetNode.type === 'Market') {
+          if (!sourceNode.connectedCustomers.includes(tgtId)) sourceNode.connectedCustomers.push(tgtId);
+        }
+      }
+
+      return {
+        id: String(e.id || `edge-${srcId}-${tgtId}-${idx}`),
+        source: srcId,
+        target: tgtId,
+        kind: (e.kind || 'material') as 'material' | 'logistics' | 'dependency',
+        volume: e.volume ?? e.quantity ?? 100,
+        leadTime: e.leadTime ?? e.transit_days ?? e.lead_time_days ?? 3,
+        relationship: e.relationship,
+        distance_km: e.distance_km,
+        transit_days: e.transit_days,
+        transport_mode: e.transport_mode,
+        quantity: e.quantity,
+      };
+    })
+    .filter((e) => idToNode.has(e.source) && idToNode.has(e.target));
+
+  return { nodes: parsedNodes, edges: parsedEdges };
+}
+
 // Compute propagation from a node using BFS over edges, with risk decay per layer.
 function computePropagation(originId: string, severity: number, durationDays: number): {
   affected: string[];
@@ -106,14 +234,45 @@ function lossFor(severity: number, durationDays: number, affectedCount: number):
 
 export const api = {
   async getNetwork(): Promise<{ nodes: SupplyChainNode[]; edges: SupplyChainEdge[] }> {
-    return tryFetch('/api/network', { nodes: mockNodes, edges: mockEdges });
+    if (!USE_BACKEND) {
+      await sleep(200);
+      return { nodes: mockNodes, edges: mockEdges };
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/graph/?limit=1000`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (Array.isArray(data.nodes) && data.nodes.length > 0) {
+        return layoutGraphNodes(data.nodes, data.edges || []);
+      }
+      return { nodes: mockNodes, edges: mockEdges };
+    } catch (err) {
+      console.warn('[api] /api/graph/ failed, using mock fallback', err);
+      return { nodes: mockNodes, edges: mockEdges };
+    }
   },
   async getNodes(): Promise<SupplyChainNode[]> {
-    return tryFetch('/api/nodes', mockNodes);
+    const net = await this.getNetwork();
+    return net.nodes;
   },
   async getNode(id: string): Promise<SupplyChainNode | undefined> {
     const all = await this.getNodes();
     return all.find((n) => n.id === id);
+  },
+  async getGraphStats(): Promise<{ node_counts: { type: string; count: number }[]; total_edges: number }> {
+    return tryFetch('/api/graph/stats', {
+      node_counts: [
+        { type: 'Supplier', count: 10 },
+        { type: 'Manufacturer', count: 8 },
+        { type: 'Port', count: 6 },
+        { type: 'DistributionCenter', count: 7 },
+        { type: 'Retailer', count: 9 },
+        { type: 'Product', count: 5 },
+      ],
+      total_edges: 45,
+    });
   },
   async getKpi(): Promise<KpiSnapshot> {
     return tryFetch('/api/kpi', mockKpi);
