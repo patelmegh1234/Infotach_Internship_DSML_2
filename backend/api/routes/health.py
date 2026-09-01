@@ -12,20 +12,23 @@ async def health_check(request: Request):
     # Check Neo4j
     neo4j_ok = False
     try:
-        driver = request.app.state.neo4j
-        with driver.session() as session:
-            session.run("RETURN 1")
-        neo4j_ok = True
+        driver = getattr(request.app.state, "neo4j", None)
+        if driver:
+            with driver.session() as session:
+                session.run("RETURN 1")
+            neo4j_ok = True
     except Exception:
         pass
 
     # Check GNN engine
-    gnn_ok = hasattr(request.app.state, "gnn_engine")
+    gnn_ok = getattr(request.app.state, "gnn_engine", None) is not None
 
     # WebSocket connections
-    ws_count = 0
-    if hasattr(request.app.state, "ws_manager"):
-        ws_count = request.app.state.ws_manager.connection_count
+    ws_mgr = getattr(request.app.state, "ws_manager", None)
+    if ws_mgr:
+        ws_count = ws_mgr.connection_count() if callable(getattr(ws_mgr, "connection_count", None)) else getattr(ws_mgr, "connection_count", 0)
+    else:
+        ws_count = 0
 
     overall = "healthy" if (neo4j_ok and gnn_ok) else "degraded"
 
@@ -34,7 +37,7 @@ async def health_check(request: Request):
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "components": {
             "neo4j": "connected" if neo4j_ok else "disconnected",
-            "gnn_engine": "loaded" if gnn_ok else "not_loaded",
+            "gnn_engine": "loaded" if gnn_ok else "fallback",
             "websocket_clients": ws_count,
         },
     }

@@ -25,7 +25,7 @@ def get_neo4j_driver() -> Driver:
         auth=(settings.neo4j_user, settings.neo4j_password),
         max_connection_lifetime=3600,
         max_connection_pool_size=50,
-        connection_acquisition_timeout=30,
+        connection_acquisition_timeout=5,
     )
     # Verify connectivity
     driver.verify_connectivity()
@@ -35,7 +35,10 @@ def get_neo4j_driver() -> Driver:
 
 def close_driver() -> None:
     """Close the Neo4j driver. Call at application shutdown."""
-    driver = get_neo4j_driver()
-    driver.close()
-    get_neo4j_driver.cache_clear()
-    logger.info("Neo4j driver closed.")
+    try:
+        driver = get_neo4j_driver()
+        driver.close()
+        get_neo4j_driver.cache_clear()
+        logger.info("Neo4j driver closed.")
+    except Exception:
+        pass

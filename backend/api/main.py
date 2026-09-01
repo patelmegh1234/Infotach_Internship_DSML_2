@@ -34,19 +34,34 @@ async def lifespan(app: FastAPI):
     logger.info(f"   Neo4j URI   : {settings.neo4j_uri}")
 
     # Startup: initialise DB connection, load GNN model
-    from database.connector import get_neo4j_driver
-    from gnn.inference import GNNInferenceEngine
+    try:
+        from database.connector import get_neo4j_driver
+        app.state.neo4j = get_neo4j_driver()
+        logger.info("✅ Neo4j connection pool initialized")
+    except Exception as exc:
+        logger.warning(f"⚠️ Neo4j connection not available ({exc}). Running with mock graph fallback.")
+        app.state.neo4j = None
 
-    app.state.neo4j = get_neo4j_driver()
-    app.state.gnn_engine = GNNInferenceEngine(model_path=settings.model_path)
+    try:
+        from gnn.inference import GNNInferenceEngine
+        app.state.gnn_engine = GNNInferenceEngine(model_path=settings.model_path)
+        logger.info("✅ GNN Inference Engine initialized")
+    except Exception as exc:
+        logger.warning(f"⚠️ GNN engine initialized with baseline fallback ({exc})")
+        app.state.gnn_engine = None
+
     app.state.ws_manager = ws_manager
 
-    logger.info("✅ AtmoGraph API ready")
+    logger.info("✅ AtmoGraph API ready on http://localhost:8000")
     yield
 
     # Shutdown: close DB connections
     logger.info("🛑 Shutting down AtmoGraph API...")
-    app.state.neo4j.close()
+    if getattr(app.state, "neo4j", None):
+        try:
+            app.state.neo4j.close()
+        except Exception:
+            pass
 
 
 # ── App instance ──────────────────────────────────────────
