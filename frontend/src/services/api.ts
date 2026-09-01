@@ -15,40 +15,20 @@ import type {
   NodeType,
 } from '@/types';
 import {
-  nodes as mockNodes,
-  edges as mockEdges,
-  disruptions as mockDisruptions,
-  predictions as mockPredictions,
-  scenarios as mockScenarios,
-  alerts as mockAlerts,
-  aiInsight as mockInsight,
-  kpi as mockKpi,
-  riskDistribution as mockRiskDist,
-  regionRisk as mockRegionRisk,
-  nodeTypeRisk as mockNodeTypeRisk,
+  nodes as emptyNodes,
+  edges as emptyEdges,
+  disruptions as emptyDisruptions,
+  predictions as emptyPredictions,
+  scenarios as emptyScenarios,
+  alerts as emptyAlerts,
+  aiInsight as emptyInsight,
+  kpi as emptyKpi,
+  riskDistribution as emptyRiskDist,
+  regionRisk as emptyRegionRisk,
+  nodeTypeRisk as emptyNodeTypeRisk,
 } from '@/data/mockData';
-import { sleep } from '@/utils/helpers';
 
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
-const USE_BACKEND = Boolean(API_BASE);
-
-async function tryFetch<T>(path: string, fallback: T, delay = 250): Promise<T> {
-  if (!USE_BACKEND) {
-    await sleep(delay);
-    return fallback;
-  }
-  try {
-    const res = await fetch(`${API_BASE}${path}`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as T;
-  } catch (err) {
-    console.warn(`[api] ${path} failed, using mock fallback`, err);
-    await sleep(delay);
-    return fallback;
-  }
-}
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || 'http://127.0.0.1:8000';
 
 export interface SimulationRequest {
   type: DisruptionType;
@@ -82,7 +62,6 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
     Market: { tier: 5, baseX: 1580 },
   };
 
-  // Group nodes by tier
   const tierBuckets: Record<number, any[]> = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] };
 
   rawNodes.forEach((n) => {
@@ -97,7 +76,7 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
   Object.entries(tierBuckets).forEach(([tierStr, bucket]) => {
     const tier = Number(tierStr);
     const baseX = [80, 380, 680, 980, 1280, 1580][tier] ?? 100;
-    const maxRows = Math.max(8, Math.ceil(bucket.length / 2));
+    const maxRows = Math.max(6, Math.ceil(bucket.length / 2));
 
     bucket.forEach((n, idx) => {
       const col = Math.floor(idx / maxRows);
@@ -105,13 +84,13 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
       const x = baseX + col * 140;
       const y = 80 + row * 95;
 
-      const rawRisk = typeof n.risk_score === 'number' ? n.risk_score : typeof n.riskScore === 'number' ? n.riskScore : 0.25;
+      const rawRisk = typeof n.risk_score === 'number' ? n.risk_score : typeof n.riskScore === 'number' ? n.riskScore : 0.20;
       const riskScore = rawRisk <= 1.0 ? Math.round(rawRisk * 100) : Math.round(rawRisk);
       const type: NodeType = (n.node_type || n.type || 'Supplier') as NodeType;
       const nodeId = String(n.node_id || n.id);
 
-      const locationStr = n.location || [n.city, n.country].filter(Boolean).join(', ') || 'Global';
-      const regionStr: Region = (n.region || (n.country === 'China' || n.country === 'Japan' || n.country === 'Taiwan' || n.country === 'Singapore' || n.country === 'South Korea' ? 'Asia' : n.country === 'Germany' || n.country === 'Netherlands' ? 'Europe' : n.country === 'United States' ? 'North America' : 'Global')) as Region;
+      const locationStr = n.location || [n.city, n.country].filter(Boolean).join(', ') || n.country || 'Global';
+      const regionStr: Region = (n.region || (n.country === 'China' || n.country === 'Japan' || n.country === 'Taiwan' || n.country === 'Singapore' || n.country === 'South Korea' || n.country === 'India' || n.country === 'Malaysia' ? 'Asia' : n.country === 'Germany' || n.country === 'Netherlands' || n.country === 'Luxembourg' ? 'Europe' : n.country === 'United States' ? 'North America' : 'Global')) as Region;
 
       const nodeObj: SupplyChainNode = {
         id: nodeId,
@@ -154,7 +133,6 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
     });
   });
 
-  // Map and link edges
   const parsedEdges: SupplyChainEdge[] = rawEdges
     .map((e, idx) => {
       const sourceNode = idToNode.get(String(e.source));
@@ -192,170 +170,336 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
   return { nodes: parsedNodes, edges: parsedEdges };
 }
 
-// Compute propagation from a node using BFS over edges, with risk decay per layer.
-function computePropagation(originId: string, severity: number, durationDays: number): {
-  affected: string[];
-  levels: Record<string, string[]>;
-} {
-  const byId = new Map(mockNodes.map((n) => [n.id, n]));
-  const adjacency = new Map<string, string[]>();
-  for (const e of mockEdges) {
-    if (!adjacency.has(e.source)) adjacency.set(e.source, []);
-    adjacency.get(e.source)!.push(e.target);
-  }
-  const visited = new Set<string>([originId]);
-  const levels: Record<string, string[]> = { '0': [originId] };
-  let frontier = [originId];
-  for (let lvl = 1; lvl <= 4; lvl++) {
-    const next: string[] = [];
-    for (const id of frontier) {
-      const neighbors = adjacency.get(id) ?? [];
-      for (const nb of neighbors) {
-        if (visited.has(nb)) continue;
-        const node = byId.get(nb);
-        // probability gate influenced by severity
-        if (node && Math.random() < 0.55 + (severity / 100) * 0.4) {
-          visited.add(nb);
-          next.push(nb);
-        }
-      }
-    }
-    levels[String(lvl)] = next;
-    frontier = next;
-    if (next.length === 0) break;
-  }
-  return { affected: Array.from(visited), levels };
-}
-
-function lossFor(severity: number, durationDays: number, affectedCount: number): number {
-  const base = 1_200_000;
-  return Math.round(base * (severity / 50) * (durationDays / 14) * Math.max(1, affectedCount / 6));
-}
+// In-memory prediction cache
+let _cachedPredictions: RiskPrediction[] = [];
+let _cachedScenarios: Scenario[] = [];
 
 export const api = {
   async getNetwork(): Promise<{ nodes: SupplyChainNode[]; edges: SupplyChainEdge[] }> {
-    if (!USE_BACKEND) {
-      await sleep(200);
-      return { nodes: mockNodes, edges: mockEdges };
-    }
     try {
-      const res = await fetch(`${API_BASE}/api/graph/?limit=1000`, {
+      const res = await fetch(`${API_BASE}/api/graph/?limit=2000`, {
         headers: { 'Content-Type': 'application/json' },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      if (Array.isArray(data.nodes) && data.nodes.length > 0) {
+      if (Array.isArray(data.nodes)) {
         return layoutGraphNodes(data.nodes, data.edges || []);
       }
-      return { nodes: mockNodes, edges: mockEdges };
+      return { nodes: emptyNodes, edges: emptyEdges };
     } catch (err) {
-      console.warn('[api] /api/graph/ failed, using mock fallback', err);
-      return { nodes: mockNodes, edges: mockEdges };
+      console.warn('[api] /api/graph/ request failed', err);
+      return { nodes: emptyNodes, edges: emptyEdges };
     }
   },
+
   async getNodes(): Promise<SupplyChainNode[]> {
     const net = await this.getNetwork();
     return net.nodes;
   },
+
   async getNode(id: string): Promise<SupplyChainNode | undefined> {
     const all = await this.getNodes();
-    return all.find((n) => n.id === id);
+    return all.find((n) => n.id === id || n.node_id === id);
   },
+
   async getGraphStats(): Promise<{ node_counts: { type: string; count: number }[]; total_edges: number }> {
-    return tryFetch('/api/graph/stats', {
-      node_counts: [
-        { type: 'Supplier', count: 10 },
-        { type: 'Manufacturer', count: 8 },
-        { type: 'Port', count: 6 },
-        { type: 'DistributionCenter', count: 7 },
-        { type: 'Retailer', count: 9 },
-        { type: 'Product', count: 5 },
-      ],
-      total_edges: 45,
-    });
+    try {
+      const res = await fetch(`${API_BASE}/api/graph/stats`);
+      if (res.ok) return await res.json();
+    } catch {
+      // ignore
+    }
+    const net = await this.getNetwork();
+    const counts: Record<string, number> = {};
+    net.nodes.forEach((n) => { counts[n.type] = (counts[n.type] || 0) + 1; });
+    return {
+      node_counts: Object.entries(counts).map(([type, count]) => ({ type, count })),
+      total_edges: net.edges.length,
+    };
   },
+
   async getKpi(): Promise<KpiSnapshot> {
-    return tryFetch('/api/kpi', mockKpi);
+    const net = await this.getNetwork();
+    const total = net.nodes.length;
+    if (total === 0) return emptyKpi;
+
+    const atRisk = net.nodes.filter((n) => n.riskScore >= 60).length;
+    const activeDisruptions = net.nodes.filter((n) => n.status === 'Disrupted').length;
+    const avgRisk = Number((net.nodes.reduce((acc, n) => acc + n.riskScore, 0) / total).toFixed(1));
+    const exposure = net.nodes.reduce((acc, n) => acc + n.estimatedImpact, 0);
+
+    return {
+      networkNodes: total,
+      activeDisruptions,
+      atRiskNodes: atRisk,
+      networkRiskScore: avgRisk,
+      estimatedExposure: exposure,
+    };
   },
+
   async getRiskDistribution(): Promise<RiskDistribution> {
-    return tryFetch('/api/risks/distribution', mockRiskDist);
+    const net = await this.getNetwork();
+    if (net.nodes.length === 0) return emptyRiskDist;
+
+    const dist: RiskDistribution = { Low: 0, Moderate: 0, High: 0, Critical: 0 };
+    net.nodes.forEach((n) => {
+      if (n.riskScore >= 80) dist.Critical++;
+      else if (n.riskScore >= 60) dist.High++;
+      else if (n.riskScore >= 40) dist.Moderate++;
+      else dist.Low++;
+    });
+    return dist;
   },
+
   async getRegionRisk(): Promise<RegionRisk[]> {
-    return tryFetch('/api/risks/regions', mockRegionRisk);
+    const net = await this.getNetwork();
+    if (net.nodes.length === 0) return emptyRegionRisk;
+
+    const regionMap: Record<string, { totalRisk: number; count: number }> = {};
+    net.nodes.forEach((n) => {
+      const reg = n.region || 'Global';
+      if (!regionMap[reg]) regionMap[reg] = { totalRisk: 0, count: 0 };
+      regionMap[reg].totalRisk += n.riskScore;
+      regionMap[reg].count += 1;
+    });
+
+    return Object.entries(regionMap).map(([region, data]) => ({
+      region: region as Region,
+      risk: Math.round(data.totalRisk / data.count),
+      nodes: data.count,
+    }));
   },
+
   async getNodeTypeRisk(): Promise<NodeTypeRisk[]> {
-    return tryFetch('/api/risks/node-types', mockNodeTypeRisk);
+    const net = await this.getNetwork();
+    if (net.nodes.length === 0) return emptyNodeTypeRisk;
+
+    const typeMap: Record<string, { totalRisk: number; count: number }> = {};
+    net.nodes.forEach((n) => {
+      if (!typeMap[n.type]) typeMap[n.type] = { totalRisk: 0, count: 0 };
+      typeMap[n.type].totalRisk += n.riskScore;
+      typeMap[n.type].count += 1;
+    });
+
+    return Object.entries(typeMap).map(([type, data]) => ({
+      type: type as NodeType,
+      risk: Math.round(data.totalRisk / data.count),
+      nodes: data.count,
+    }));
   },
+
   async getPredictions(): Promise<RiskPrediction[]> {
-    return tryFetch('/api/predictions', mockPredictions);
+    if (_cachedPredictions.length > 0) return _cachedPredictions;
+
+    const net = await this.getNetwork();
+    const highRiskNodes = net.nodes.filter((n) => n.riskScore >= 65).slice(0, 5);
+
+    if (highRiskNodes.length === 0) return [];
+
+    return highRiskNodes.map((n, idx) => ({
+      id: `PRED-${idx + 1}`,
+      title: `${n.name} Cascade Risk`,
+      description: `High disruption risk detected at ${n.name} (${n.type}) with potential delay impact across ${n.dependents.length} downstream nodes.`,
+      probability: Math.round(n.probability * 100),
+      confidence: Math.round(85 + (n.riskScore % 10)),
+      impact: n.riskScore >= 80 ? 'Critical' : 'High',
+      nodeId: n.id,
+      horizon: '7 days',
+      category: 'cascading',
+      timeline: [
+        { t: '0h', affected: 1 },
+        { t: '24h', affected: Math.max(1, Math.round(n.dependents.length * 0.4)) },
+        { t: '48h', affected: Math.max(2, Math.round(n.dependents.length * 0.7)) },
+        { t: '7d', affected: Math.max(3, n.dependents.length) },
+      ],
+    }));
   },
+
   async getScenarios(): Promise<Scenario[]> {
-    return tryFetch('/api/scenarios', mockScenarios);
+    return _cachedScenarios;
   },
+
   async createScenario(s: Omit<Scenario, 'id' | 'createdAt'>): Promise<Scenario> {
-    if (!USE_BACKEND) {
-      await sleep(400);
-      return {
-        ...s,
-        id: `SCN-${Math.floor(Math.random() * 9000 + 1000)}`,
-        createdAt: new Date().toISOString(),
-      };
+    const scn: Scenario = {
+      ...s,
+      id: `SCN-${Math.floor(Math.random() * 9000 + 1000)}`,
+      createdAt: new Date().toISOString(),
+    };
+    _cachedScenarios.unshift(scn);
+    return scn;
+  },
+
+  async getAlerts(): Promise<Alert[]> {
+    const net = await this.getNetwork();
+    const alertsList: Alert[] = [];
+
+    net.nodes.forEach((n, idx) => {
+      if (n.status === 'Disrupted' || n.riskScore >= 65) {
+        alertsList.push({
+          id: `ALT-${idx + 1}`,
+          severity: n.riskScore >= 80 ? 'Critical' : n.riskScore >= 65 ? 'High' : 'Moderate',
+          title: `${n.name} (${n.id}) risk elevated`,
+          description: `Disruption probability is ${Math.round(n.probability * 100)}% with estimated delay exposure of ${Math.round(n.riskScore * 0.3)} days.`,
+          nodeId: n.id,
+          timestamp: new Date().toISOString(),
+          status: 'active',
+          category: n.type,
+        });
+      }
+    });
+
+    return alertsList.slice(0, 10);
+  },
+
+  async getDisruptions(): Promise<DisruptionEvent[]> {
+    try {
+      const res = await fetch(`${API_BASE}/api/disrupt/active`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.active_disruptions)) {
+          return data.active_disruptions.map((d: any) => ({
+            id: d.disruption_id || d.id || 'DIS-01',
+            type: d.disruption_type || 'strike',
+            severity: Math.round((d.risk_score || d.severity || 0.75) * 100),
+            durationDays: d.estimated_duration_days || 14,
+            originNodeId: d.node_id || d.name || 'Origin',
+            region: (d.region || 'Global') as Region,
+            createdAt: d.detected_at || d.last_disruption_at || new Date().toISOString(),
+            affectedNodes: [d.node_id || d.name],
+            propagationLevels: { '0': 1 },
+            estimatedLoss: Math.round((d.risk_score || 0.75) * 1200000),
+            riskScore: Math.round((d.risk_score || 0.75) * 100),
+            recoveryTimeDays: 14,
+          }));
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  },
+
+  async getInsight(): Promise<AIInsight> {
+    const net = await this.getNetwork();
+    if (net.nodes.length === 0) return emptyInsight;
+
+    const highRisk = net.nodes.filter((n) => n.riskScore >= 65);
+    const origin = highRisk[0] || net.nodes[0];
+
+    return {
+      id: 'INS-LIVE',
+      title: 'Real-Time Network Risk Insight',
+      body: `Analysis of ${net.nodes.length} connected nodes shows ${highRisk.length} nodes with elevated disruption risk. Critical node ${origin.name} (${origin.id}) connects to ${origin.dependents.length} downstream routes.`,
+      recommendations: [
+        `Monitor ${origin.name} (${origin.type}) closely for operational delay signals.`,
+        'Establish buffer inventory and alternate shipping routes across high-capacity ports.',
+        'Trigger GNN ripple-effect simulation to evaluate 30-day supply chain exposure.',
+      ],
+      confidence: 92,
+      originNode: origin.id,
+      affectedNodes: highRisk.length,
+      highestRiskRegion: origin.region,
+      propagationLayers: 3,
+    };
+  },
+
+  async simulate(req: SimulationRequest): Promise<SimulationResult> {
+    try {
+      const predRes = await fetch(`${API_BASE}/api/predict/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          node_id: req.originNodeId,
+          severity: req.severity / 100,
+          disruption_type: req.type,
+          risk_score: req.severity / 100,
+          disruption_flag: true,
+          description: `${req.type} simulation at ${req.originNodeId}`,
+        }),
+      });
+
+      if (predRes.ok) {
+        const predData = await predRes.json();
+        const predictionsList = predData.predictions || [];
+        const affected = predictionsList.map((p: any) => p.node_id);
+
+        const levels: Record<string, string[]> = { '0': [req.originNodeId] };
+        predictionsList.forEach((p: any) => {
+          const hop = String(p.hop_distance >= 0 ? p.hop_distance : 1);
+          if (!levels[hop]) levels[hop] = [];
+          if (!levels[hop].includes(p.node_id)) levels[hop].push(p.node_id);
+        });
+
+        const event: DisruptionEvent = {
+          id: `SIM-${Math.floor(Math.random() * 9000 + 1000)}`,
+          type: req.type,
+          severity: req.severity,
+          durationDays: req.durationDays,
+          originNodeId: req.originNodeId,
+          region: req.region,
+          createdAt: new Date().toISOString(),
+          affectedNodes: affected,
+          propagationLevels: Object.fromEntries(Object.entries(levels).map(([k, v]) => [k, v.length])),
+          estimatedLoss: Math.round(1500000 * (req.severity / 50) * Math.max(1, affected.length / 5)),
+          riskScore: req.severity,
+          recoveryTimeDays: Math.round(req.durationDays * 1.3),
+        };
+
+        const insight: AIInsight = {
+          id: `INS-SIM-${req.originNodeId}`,
+          title: `GNN Simulation: ${req.type} at ${req.originNodeId}`,
+          body: `GNN model predicts disruption at ${req.originNodeId} will propagate through ${Object.keys(levels).length - 1} dependency layers affecting ${affected.length} nodes across the supply chain.`,
+          recommendations: [
+            `Reroute critical shipments away from ${req.originNodeId}.`,
+            'Activate secondary tier suppliers to mitigate manufacturing delays.',
+          ],
+          confidence: 94,
+          originNode: req.originNodeId,
+          affectedNodes: affected.length,
+          highestRiskRegion: req.region,
+          propagationLayers: Object.keys(levels).length - 1,
+        };
+
+        return { event, affectedNodes: affected, propagationLevels: levels, insights: insight };
+      }
+    } catch (err) {
+      console.warn('[api] simulate API failed, falling back', err);
     }
 
-    const res = await fetch(`${API_BASE}/api/scenarios`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(s),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as Scenario;
-  },
-  async getAlerts(): Promise<Alert[]> {
-    return tryFetch('/api/alerts', mockAlerts);
-  },
-  async getDisruptions(): Promise<DisruptionEvent[]> {
-    return tryFetch('/api/disruptions', mockDisruptions);
-  },
-  async getInsight(): Promise<AIInsight> {
-    return tryFetch('/api/insight', mockInsight);
-  },
-  async simulate(req: SimulationRequest): Promise<SimulationResult> {
-    if (!USE_BACKEND) {
-      await sleep(900);
-      const { affected, levels } = computePropagation(req.originNodeId, req.severity, req.durationDays);
-      const event: DisruptionEvent = {
-        id: `DIS-${Math.floor(Math.random() * 9000 + 1000)}`,
-        type: req.type,
-        severity: req.severity,
-        durationDays: req.durationDays,
-        originNodeId: req.originNodeId,
-        region: req.region,
-        createdAt: new Date().toISOString(),
-        affectedNodes: affected,
-        propagationLevels: Object.fromEntries(Object.entries(levels).map(([k, v]) => [k, v.length])),
-        estimatedLoss: lossFor(req.severity, req.durationDays, affected.length),
-        riskScore: Math.min(100, Math.round(req.severity * 0.7 + affected.length * 1.4)),
-        recoveryTimeDays: Math.round(req.durationDays * 1.4),
-      };
-      const insight: AIInsight = {
-        ...mockInsight,
+    const net = await this.getNetwork();
+    const event: DisruptionEvent = {
+      id: `SIM-LOCAL`,
+      type: req.type,
+      severity: req.severity,
+      durationDays: req.durationDays,
+      originNodeId: req.originNodeId,
+      region: req.region,
+      createdAt: new Date().toISOString(),
+      affectedNodes: [req.originNodeId],
+      propagationLevels: { '0': 1 },
+      estimatedLoss: 500000,
+      riskScore: req.severity,
+      recoveryTimeDays: req.durationDays,
+    };
+    return {
+      event,
+      affectedNodes: [req.originNodeId],
+      propagationLevels: { '0': [req.originNodeId] },
+      insights: {
+        id: 'INS-LOCAL',
+        title: `Simulation at ${req.originNodeId}`,
+        body: `Disruption simulated with severity ${req.severity}%.`,
+        recommendations: ['Monitor connected nodes.'],
+        confidence: 85,
         originNode: req.originNodeId,
-        affectedNodes: affected.length,
-        propagationLayers: Object.keys(levels).length - 1,
-        body: `Based on the current network structure, the ${req.type} originating at ${req.originNodeId} is expected to propagate through ${Object.keys(levels).length - 1} dependency layers and potentially affect ${affected.length} downstream nodes. Severity ${req.severity}/100 over ${req.durationDays} days.`,
-      };
-      return { event, affectedNodes: affected, propagationLevels: levels, insights: insight };
-    }
-    const res = await fetch(`${API_BASE}/api/simulate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as SimulationResult;
+        affectedNodes: 1,
+        highestRiskRegion: req.region,
+        propagationLayers: 1,
+      },
+    };
   },
+
   async generateReport(): Promise<{ ok: boolean; message: string }> {
-    await sleep(700);
     return { ok: true, message: 'Report generated successfully.' };
   },
 };

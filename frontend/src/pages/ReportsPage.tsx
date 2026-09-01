@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FileText, Download, FileDown, Sparkles, CheckCircle2, Loader2, Network, AlertTriangle, DollarSign, MapPin, TrendingUp } from 'lucide-react';
 import { ChartCard } from '@/components/ChartCard';
 import { AIInsightPanel } from '@/components/AIInsightPanel';
 import { api } from '@/services/api';
 import { useToast } from '@/hooks/useToast';
 import { classNames, formatCurrency, formatNumber, formatTimestamp } from '@/utils/helpers';
-import { aiInsight, disruptions, nodes, kpi } from '@/data/mockData';
+import type { AIInsight, KpiSnapshot, SupplyChainNode } from '@/types';
 
 export function ReportsPage() {
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [liveKpi, setLiveKpi] = useState<KpiSnapshot | null>(null);
+  const [liveInsight, setLiveInsight] = useState<AIInsight | null>(null);
+  const [liveNodes, setLiveNodes] = useState<SupplyChainNode[]>([]);
   const [report, setReport] = useState<{
     id: string;
     createdAt: string;
@@ -17,21 +20,48 @@ export function ReportsPage() {
   } | null>(null);
   const toast = useToast();
 
+  useEffect(() => {
+    (async () => {
+      const [k, ins, net] = await Promise.all([api.getKpi(), api.getInsight(), api.getNetwork()]);
+      setLiveKpi(k);
+      setLiveInsight(ins);
+      setLiveNodes(net.nodes);
+    })();
+  }, []);
+
   const generate = async () => {
     setGenerating(true);
     setGenerated(false);
-    await api.generateReport();
+    const [k, ins, net, dis] = await Promise.all([api.getKpi(), api.getInsight(), api.getNetwork(), api.getDisruptions()]);
+    setLiveKpi(k);
+    setLiveInsight(ins);
+    setLiveNodes(net.nodes);
+
+    const totalNodes = net.nodes.length;
+    const highRisk = net.nodes.filter((n) => n.riskScore >= 65);
+
     const r = {
       id: `RPT-${Math.floor(Math.random() * 9000 + 1000)}`,
       createdAt: new Date().toISOString(),
       sections: [
-        { title: 'Executive Summary', body: `Network risk score is ${kpi.networkRiskScore.toFixed(1)}/100 with ${kpi.activeDisruptions} active disruptions across ${formatNumber(kpi.networkNodes)} nodes. Estimated exposure stands at ${formatCurrency(kpi.estimatedExposure)}. Southeast Asia remains the highest-risk corridor driven by supplier concentration and port congestion.` },
-        { title: 'Disruption Details', body: `${disruptions.length} tracked disruption events. Primary event: Supplier SUP-204 failure (severity 85, 21-day duration) propagating through 3 dependency layers. Secondary event: Port P-102 closure impacting transshipment across APAC.` },
-        { title: 'Affected Nodes', body: `${disruptions[0].affectedNodes.length} directly affected nodes identified in the primary disruption, spanning suppliers, factories, warehouses, ports, distributors and markets. ${kpi.atRiskNodes} additional nodes flagged at-risk network-wide.` },
-        { title: 'Risk Analysis', body: `Risk distribution: 842 Low, 256 Moderate, 143 High, 43 Critical. Asia region leads with 74 avg risk score. Ports (64) and Suppliers (58) are the most vulnerable node categories.` },
-        { title: 'Ripple Propagation', body: `Propagation modeling indicates 3-layer cascade from SUP-204 through FACT-201/202 → WH-301/302 → PORT-401/402/102 → DIST-501/502 → MKT-601/602. Peak affected count reaches 42 nodes within 7 days.` },
-        { title: 'Geographic Impact', body: `Primary impact concentrated in Asia (18 nodes, risk 74). Secondary exposure in North America (6 nodes, risk 62) via Detroit battery corridor. Europe (6 nodes, risk 41) offers rerouting capacity via Rotterdam.` },
-        { title: 'Estimated Financial Impact', body: `Direct estimated loss from primary disruption: ${formatCurrency(disruptions[0].estimatedLoss)}. Total network exposure: ${formatCurrency(kpi.estimatedExposure)}. Recovery time estimate: ${disruptions[0].recoveryTimeDays} days for primary event.` },
+        {
+          title: 'Executive Summary',
+          body: `Live network risk score is ${k.networkRiskScore.toFixed(1)}/100 across ${formatNumber(totalNodes)} active nodes with ${k.activeDisruptions} active disruptions. Total estimated exposure is ${formatCurrency(k.estimatedExposure)}.`,
+        },
+        {
+          title: 'Network Composition',
+          body: `The graph contains ${totalNodes} nodes and ${net.edges.length} transportation & supply routes. Critical nodes with elevated risk: ${highRisk.length}.`,
+        },
+        {
+          title: 'Disruption Overview',
+          body: dis.length > 0
+            ? `${dis.length} active disruptions currently tracked. Most severe at ${dis[0].originNodeId} (${dis[0].type}) with estimated duration of ${dis[0].durationDays} days.`
+            : 'No active critical disruptions currently flagged in the supply chain graph.',
+        },
+        {
+          title: 'AI Insight & Action Plan',
+          body: ins.body,
+        },
       ],
     };
     setReport(r);
@@ -40,139 +70,88 @@ export function ReportsPage() {
     toast.push({ kind: 'success', title: 'Report generated', message: `Report ${r.id} is ready to view and export.` });
   };
 
+  const download = (filename: string, content: string, type: string) => {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const exportCsv = () => {
+    if (!report) return;
     const rows = [
       ['Section', 'Content'],
-      ...report!.sections.map((s) => [s.title, s.body]),
+      ...report.sections.map((s) => [s.title, s.body]),
     ];
     const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(',')).join('\n');
-    download(`${report!.id}.csv`, csv, 'text/csv');
-    toast.push({ kind: 'success', title: 'CSV exported', message: `${report!.id}.csv downloaded.` });
+    download(`${report.id}.csv`, csv, 'text/csv');
+    toast.push({ kind: 'success', title: 'CSV exported', message: `${report.id}.csv downloaded.` });
   };
 
   const exportPdf = () => {
-    const content = `AtmoGraph Supply Chain Risk Report\n${report!.id}\nGenerated ${formatTimestamp(report!.createdAt)}\n\n${report!.sections.map((s) => `## ${s.title}\n${s.body}`).join('\n\n')}`;
-    download(`${report!.id}.txt`, content, 'text/plain');
-    toast.push({ kind: 'success', title: 'Report exported', message: `${report!.id} report downloaded as text.` });
+    if (!report) return;
+    const content = `AtmoGraph Supply Chain Risk Report\n${report.id}\nGenerated ${formatTimestamp(report.createdAt)}\n\n${report.sections.map((s) => `## ${s.title}\n${s.body}`).join('\n\n')}`;
+    download(`${report.id}.txt`, content, 'text/plain');
+    toast.push({ kind: 'success', title: 'Report exported', message: `${report.id} report downloaded as text.` });
   };
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-3">
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-white tracking-tight">Reports</h1>
-          <p className="mt-1 text-sm text-slate-400">Generate comprehensive supply chain risk reports with AI recommendations.</p>
+          <h1 className="text-2xl font-semibold text-white tracking-tight">Executive Intelligence Reports</h1>
+          <p className="mt-1 text-sm text-slate-400">Generate executive risk summaries and network audits from live data.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button onClick={generate} disabled={generating} className="btn-primary">
-            {generating ? <><Loader2 className="h-4 w-4 animate-spin" /> Generating…</> : <><Sparkles className="h-4 w-4" /> Generate Report</>}
-          </button>
-          <button onClick={exportPdf} disabled={!report} className="btn-outline">
-            <FileDown className="h-4 w-4" /> Export PDF
-          </button>
-          <button onClick={exportCsv} disabled={!report} className="btn-outline">
-            <Download className="h-4 w-4" /> Export CSV
-          </button>
-        </div>
+        <button
+          onClick={generate}
+          disabled={generating}
+          className="btn-primary flex items-center gap-2 text-sm px-4 py-2"
+        >
+          {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+          {generating ? 'Generating live report…' : 'Generate Full Report'}
+        </button>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-        <SummaryCard icon={Network} label="Network Nodes" value={formatNumber(kpi.networkNodes)} accent="cyan" />
-        <SummaryCard icon={AlertTriangle} label="Active Disruptions" value={String(kpi.activeDisruptions)} accent="rose" />
-        <SummaryCard icon={DollarSign} label="Total Exposure" value={formatCurrency(kpi.estimatedExposure)} accent="amber" />
-        <SummaryCard icon={TrendingUp} label="Risk Score" value={`${kpi.networkRiskScore.toFixed(1)}/100`} accent="violet" />
-      </div>
-
-      {!report && !generating && (
-        <div className="card p-12">
-          <div className="flex flex-col items-center text-center">
-            <div className="h-14 w-14 rounded-2xl bg-accent-500/10 border border-accent-500/20 flex items-center justify-center mb-4">
-              <FileText className="h-7 w-7 text-accent-400" />
-            </div>
-            <h3 className="text-base font-medium text-white">No report generated yet</h3>
-            <p className="text-sm text-slate-500 mt-1.5 max-w-md">Click "Generate Report" to compile a full supply chain risk report including executive summary, disruption details, affected nodes, risk analysis, ripple propagation, geographic impact, financial estimates and AI recommendations.</p>
-            <button onClick={generate} className="btn-primary mt-5"><Sparkles className="h-4 w-4" /> Generate Report</button>
-          </div>
-        </div>
-      )}
-
-      {generating && (
-        <div className="card p-12">
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative h-12 w-12">
-              <div className="absolute inset-0 rounded-full border-2 border-white/10" />
-              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-accent-400 animate-spin" />
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-white font-medium">Compiling report…</p>
-              <p className="text-xs text-slate-500 mt-1">Aggregating network data, risk analysis and AI insights</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {report && !generating && (
-        <div className="space-y-5">
-          <div className="card p-5 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+      {generated && report && (
+        <div className="card p-6 border-accent-500/30 shadow-glow space-y-6 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-white/5">
+            <div className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+              <div>
+                <h2 className="text-base font-semibold text-white font-mono">{report.id}</h2>
+                <p className="text-xs text-slate-400">Generated {formatTimestamp(report.createdAt)}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-white">Report {report.id} ready</p>
-              <p className="text-xs text-slate-500">Generated {formatTimestamp(report.createdAt)}</p>
+            <div className="flex items-center gap-2">
+              <button onClick={exportCsv} className="btn-outline text-xs flex items-center gap-1.5">
+                <FileDown className="h-3.5 w-3.5" /> Export CSV
+              </button>
+              <button onClick={exportPdf} className="btn-outline text-xs flex items-center gap-1.5">
+                <Download className="h-3.5 w-3.5" /> Export Text
+              </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {report.sections.map((s, i) => (
-              <ChartCard key={i} title={s.title} subtitle={`Section ${i + 1} of ${report.sections.length}`}>
-                <p className="text-sm text-slate-300 leading-relaxed">{s.body}</p>
-              </ChartCard>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {report.sections.map((s, idx) => (
+              <div key={idx} className="rounded-xl bg-ink-900/60 border border-white/5 p-4 space-y-2">
+                <h3 className="text-sm font-semibold text-accent-300 flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-accent-400" />
+                  {s.title}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">{s.body}</p>
+              </div>
             ))}
           </div>
-
-          <AIInsightPanel insight={aiInsight} />
-
-          <ChartCard title="Affected Nodes Summary" subtitle="Nodes in the primary disruption path">
-            <div className="flex flex-wrap gap-2">
-              {disruptions[0].affectedNodes.map((id) => {
-                const n = nodes.find((x) => x.id === id);
-                return (
-                  <span key={id} className="chip bg-white/5 text-slate-300 border border-white/10">
-                    <span className="font-mono text-accent-400">{id}</span>
-                    {n && <span className="text-slate-500">· {n.type}</span>}
-                  </span>
-                );
-              })}
-            </div>
-          </ChartCard>
         </div>
+      )}
+
+      {liveInsight && (
+        <AIInsightPanel insight={liveInsight} />
       )}
     </div>
   );
-}
-
-function SummaryCard({ icon: Icon, label, value, accent }: { icon: typeof Network; label: string; value: string; accent: 'cyan' | 'amber' | 'rose' | 'violet' }) {
-  const map = { cyan: 'text-accent-400 bg-accent-500/10', amber: 'text-amber-400 bg-amber-500/10', rose: 'text-rose-400 bg-rose-500/10', violet: 'text-violet-400 bg-violet-500/10' };
-  return (
-    <div className="card p-4 flex items-center gap-3">
-      <div className={classNames('h-10 w-10 rounded-lg flex items-center justify-center', map[accent])}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-[10px] uppercase tracking-wider text-slate-500">{label}</p>
-        <p className="text-lg font-semibold text-white">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function download(filename: string, content: string, type: string) {
-  const blob = new Blob([content], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
 }
