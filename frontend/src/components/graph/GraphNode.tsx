@@ -1,42 +1,53 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from 'reactflow';
-import { Factory, Warehouse, Anchor, Store, Building2, Truck } from 'lucide-react';
+import { Factory, Warehouse, Anchor, Store, Building2, Truck, Package } from 'lucide-react';
 import type { NodeType } from '@/types';
 import { classNames, scoreHex } from '@/utils/helpers';
 
 export interface GraphNodeData {
   label: string;
+  name?: string;
   type: NodeType;
   riskScore: number;
   status: string;
   affected?: boolean;
   origin?: boolean;
   dimmed?: boolean;
+  country?: string;
+  capacity?: number;
   [key: string]: unknown;
 }
 
 const typeIcon: Record<NodeType, typeof Factory> = {
   Supplier: Building2,
+  Manufacturer: Factory,
   Factory: Factory,
-  Warehouse: Warehouse,
   Port: Anchor,
-  Distributor: Truck,
+  DistributionCenter: Warehouse,
+  Warehouse: Warehouse,
+  Retailer: Store,
   Market: Store,
+  Product: Package,
+  Distributor: Truck,
 };
 
 const typeColor: Record<NodeType, string> = {
   Supplier: '#38bdf8',
+  Manufacturer: '#a78bfa',
   Factory: '#a78bfa',
-  Warehouse: '#34d399',
   Port: '#f59e0b',
-  Distributor: '#22d3ee',
+  DistributionCenter: '#34d399',
+  Warehouse: '#34d399',
+  Retailer: '#fb7185',
   Market: '#fb7185',
+  Product: '#06b6d4',
+  Distributor: '#22d3ee',
 };
 
 function GraphNodeInner({ data, selected }: NodeProps<GraphNodeData>) {
-  const Icon = typeIcon[data.type];
-  const color = typeColor[data.type];
-  const risk = data.riskScore;
+  const Icon = typeIcon[data.type] || Building2;
+  const color = typeColor[data.type] || '#38bdf8';
+  const risk = Math.round(data.riskScore);
   const ring = data.origin ? '#ef4444' : data.affected ? scoreHex(risk) : color;
 
   return (
@@ -49,8 +60,8 @@ function GraphNodeInner({ data, selected }: NodeProps<GraphNodeData>) {
       <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
       <div
         className={classNames(
-          'flex flex-col items-center gap-1 px-2 py-2 rounded-xl border bg-ink-850/90 backdrop-blur-sm transition-all duration-300 min-w-[88px]',
-          selected ? 'border-accent-400 shadow-glow scale-105' : 'border-white/10',
+          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl border bg-ink-850/95 backdrop-blur-md transition-all duration-200 min-w-[96px] max-w-[140px]',
+          selected ? 'border-accent-400 shadow-glow scale-105 ring-2 ring-accent-400/40' : 'border-white/10 hover:border-white/30',
           data.origin && 'border-red-500/60 shadow-[0_0_0_1px_rgba(239,68,68,0.4),0_0_24px_rgba(239,68,68,0.25)]',
           data.affected && !data.origin && 'border-white/20',
         )}
@@ -65,10 +76,17 @@ function GraphNodeInner({ data, selected }: NodeProps<GraphNodeData>) {
         >
           <Icon className="h-4.5 w-4.5" />
         </div>
-        <span className="text-[10px] font-mono text-slate-300">{data.label}</span>
-        <div className="flex items-center gap-1">
-          <span className="h-1 w-1 rounded-full" style={{ backgroundColor: scoreHex(risk) }} />
-          <span className="text-[9px] text-slate-500">{risk}</span>
+        <span className="text-[10px] font-mono font-medium text-slate-300 truncate max-w-[120px]" title={data.name || data.label}>
+          {data.label}
+        </span>
+        {data.name && data.name !== data.label && (
+          <span className="text-[9px] text-slate-400 truncate max-w-[120px]" title={data.name}>
+            {data.name}
+          </span>
+        )}
+        <div className="flex items-center gap-1 mt-0.5">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: scoreHex(risk) }} />
+          <span className="text-[9px] font-mono text-slate-400">{risk}</span>
         </div>
       </div>
       <Handle type="source" position={Position.Right} style={{ opacity: 0 }} />
