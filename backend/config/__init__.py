@@ -1,1 +1,1 @@
-﻿# AtmoGraph package
+# AtmoGraph package

@@ -1,0 +1,6759 @@
+{
+  "description": "AtmoGraph mock supply-chain dataset",
+  "nodes": {
+    "suppliers": [
+      {
+        "country": "India",
+        "capacity_utilization": 0.82,
+        "historical_delay_avg": 2.4,
+        "risk_score": 0.31,
+        "name": "Tata Steel",
+        "node_id": "SUP-001"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.78,
+        "historical_delay_avg": 1.8,
+        "risk_score": 0.22,
+        "name": "Nippon Steel",
+        "node_id": "SUP-002"
+      },
+      {
+        "country": "South Korea",
+        "capacity_utilization": 0.86,
+        "historical_delay_avg": 2.1,
+        "risk_score": 0.27,
+        "name": "POSCO",
+        "node_id": "SUP-003"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.74,
+        "historical_delay_avg": 1.5,
+        "risk_score": 0.19,
+        "name": "BASF",
+        "node_id": "SUP-004"
+      },
+      {
+        "country": "India",
+        "capacity_utilization": 0.88,
+        "historical_delay_avg": 3.0,
+        "risk_score": 0.35,
+        "name": "Reliance Industries",
+        "node_id": "SUP-005"
+      },
+      {
+        "country": "Luxembourg",
+        "capacity_utilization": 0.81,
+        "historical_delay_avg": 2.2,
+        "risk_score": 0.28,
+        "name": "ArcelorMittal",
+        "node_id": "SUP-006"
+      },
+      {
+        "country": "Australia",
+        "capacity_utilization": 0.84,
+        "historical_delay_avg": 1.9,
+        "risk_score": 0.24,
+        "name": "Rio Tinto",
+        "node_id": "SUP-007"
+      },
+      {
+        "country": "Australia",
+        "capacity_utilization": 0.79,
+        "historical_delay_avg": 2.0,
+        "risk_score": 0.26,
+        "name": "BHP",
+        "node_id": "SUP-008"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.76,
+        "historical_delay_avg": 2.6,
+        "risk_score": 0.29,
+        "name": "Cargill",
+        "node_id": "SUP-009"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.73,
+        "historical_delay_avg": 2.1,
+        "risk_score": 0.25,
+        "name": "ADM",
+        "node_id": "SUP-010"
+      },
+      {
+        "country": "Netherlands",
+        "capacity_utilization": 0.77,
+        "historical_delay_avg": 1.7,
+        "risk_score": 0.23,
+        "name": "LyondellBasell",
+        "node_id": "SUP-011"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.8,
+        "historical_delay_avg": 2.5,
+        "risk_score": 0.3,
+        "name": "Dow",
+        "node_id": "SUP-012"
+      },
+      {
+        "country": "Saudi Arabia",
+        "capacity_utilization": 0.85,
+        "historical_delay_avg": 2.8,
+        "risk_score": 0.33,
+        "name": "SABIC",
+        "node_id": "SUP-013"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.72,
+        "historical_delay_avg": 1.6,
+        "risk_score": 0.2,
+        "name": "Mitsubishi Chemical",
+        "node_id": "SUP-014"
+      },
+      {
+        "country": "South Korea",
+        "capacity_utilization": 0.83,
+        "historical_delay_avg": 2.3,
+        "risk_score": 0.27,
+        "name": "LG Chem",
+        "node_id": "SUP-015"
+      },
+      {
+        "country": "Belgium",
+        "capacity_utilization": 0.75,
+        "historical_delay_avg": 1.8,
+        "risk_score": 0.21,
+        "name": "Umicore",
+        "node_id": "SUP-016"
+      },
+      {
+        "country": "Switzerland",
+        "capacity_utilization": 0.78,
+        "historical_delay_avg": 3.1,
+        "risk_score": 0.36,
+        "name": "Glencore",
+        "node_id": "SUP-017"
+      },
+      {
+        "country": "Brazil",
+        "capacity_utilization": 0.82,
+        "historical_delay_avg": 2.9,
+        "risk_score": 0.34,
+        "name": "Vale",
+        "node_id": "SUP-018"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.74,
+        "historical_delay_avg": 2.7,
+        "risk_score": 0.32,
+        "name": "Freeport-McMoRan",
+        "node_id": "SUP-019"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.7,
+        "historical_delay_avg": 2.0,
+        "risk_score": 0.24,
+        "name": "Alcoa",
+        "node_id": "SUP-020"
+      },
+      {
+        "country": "India",
+        "capacity_utilization": 0.86,
+        "historical_delay_avg": 2.6,
+        "risk_score": 0.3,
+        "name": "Hindalco Industries",
+        "node_id": "SUP-021"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.77,
+        "historical_delay_avg": 1.9,
+        "risk_score": 0.22,
+        "name": "Sumitomo Metal Mining",
+        "node_id": "SUP-022"
+      },
+      {
+        "country": "Singapore",
+        "capacity_utilization": 0.79,
+        "historical_delay_avg": 2.4,
+        "risk_score": 0.28,
+        "name": "Olam Agri",
+        "node_id": "SUP-023"
+      },
+      {
+        "country": "Singapore",
+        "capacity_utilization": 0.81,
+        "historical_delay_avg": 2.1,
+        "risk_score": 0.25,
+        "name": "Wilmar International",
+        "node_id": "SUP-024"
+      },
+      {
+        "country": "Canada",
+        "capacity_utilization": 0.76,
+        "historical_delay_avg": 1.7,
+        "risk_score": 0.2,
+        "name": "Nutrien",
+        "node_id": "SUP-025"
+      },
+      {
+        "country": "Norway",
+        "capacity_utilization": 0.8,
+        "historical_delay_avg": 1.8,
+        "risk_score": 0.23,
+        "name": "Yara International",
+        "node_id": "SUP-026"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.73,
+        "historical_delay_avg": 1.6,
+        "risk_score": 0.21,
+        "name": "Toyota Tsusho",
+        "node_id": "SUP-027"
+      },
+      {
+        "country": "Taiwan",
+        "capacity_utilization": 0.87,
+        "historical_delay_avg": 2.5,
+        "risk_score": 0.29,
+        "name": "Foxconn Components",
+        "node_id": "SUP-028"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.84,
+        "historical_delay_avg": 1.4,
+        "risk_score": 0.18,
+        "name": "Murata Manufacturing",
+        "node_id": "SUP-029"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.79,
+        "historical_delay_avg": 1.7,
+        "risk_score": 0.2,
+        "name": "TDK",
+        "node_id": "SUP-030"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.88,
+        "historical_delay_avg": 3.2,
+        "risk_score": 0.37,
+        "name": "Infineon Technologies",
+        "node_id": "SUP-031"
+      },
+      {
+        "country": "Netherlands",
+        "capacity_utilization": 0.85,
+        "historical_delay_avg": 2.9,
+        "risk_score": 0.34,
+        "name": "NXP Semiconductors",
+        "node_id": "SUP-032"
+      },
+      {
+        "country": "South Korea",
+        "capacity_utilization": 0.9,
+        "historical_delay_avg": 3.4,
+        "risk_score": 0.39,
+        "name": "SK Hynix",
+        "node_id": "SUP-033"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.83,
+        "historical_delay_avg": 2.7,
+        "risk_score": 0.31,
+        "name": "Micron Technology",
+        "node_id": "SUP-034"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.71,
+        "historical_delay_avg": 1.9,
+        "risk_score": 0.22,
+        "name": "Corning",
+        "node_id": "SUP-035"
+      },
+      {
+        "country": "France",
+        "capacity_utilization": 0.75,
+        "historical_delay_avg": 1.8,
+        "risk_score": 0.21,
+        "name": "Saint-Gobain",
+        "node_id": "SUP-036"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.78,
+        "historical_delay_avg": 2.2,
+        "risk_score": 0.26,
+        "name": "DuPont",
+        "node_id": "SUP-037"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.74,
+        "historical_delay_avg": 2.0,
+        "risk_score": 0.24,
+        "name": "3M",
+        "node_id": "SUP-038"
+      },
+      {
+        "country": "Japan",
+        "capacity_utilization": 0.86,
+        "historical_delay_avg": 2.3,
+        "risk_score": 0.27,
+        "name": "Denso",
+        "node_id": "SUP-039"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.82,
+        "historical_delay_avg": 1.9,
+        "risk_score": 0.23,
+        "name": "Bosch",
+        "node_id": "SUP-040"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.77,
+        "historical_delay_avg": 2.1,
+        "risk_score": 0.25,
+        "name": "Continental",
+        "node_id": "SUP-041"
+      },
+      {
+        "country": "Canada",
+        "capacity_utilization": 0.76,
+        "historical_delay_avg": 1.8,
+        "risk_score": 0.22,
+        "name": "Magna International",
+        "node_id": "SUP-042"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.8,
+        "historical_delay_avg": 2.2,
+        "risk_score": 0.26,
+        "name": "ZF Friedrichshafen",
+        "node_id": "SUP-043"
+      },
+      {
+        "country": "Singapore",
+        "capacity_utilization": 0.81,
+        "historical_delay_avg": 2.4,
+        "risk_score": 0.28,
+        "name": "Flex",
+        "node_id": "SUP-044"
+      },
+      {
+        "country": "United States",
+        "capacity_utilization": 0.79,
+        "historical_delay_avg": 2.3,
+        "risk_score": 0.27,
+        "name": "Jabil",
+        "node_id": "SUP-045"
+      },
+      {
+        "country": "Denmark",
+        "capacity_utilization": 0.84,
+        "historical_delay_avg": 3.0,
+        "risk_score": 0.33,
+        "name": "Maersk Logistics",
+        "node_id": "SUP-046"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.82,
+        "historical_delay_avg": 2.0,
+        "risk_score": 0.24,
+        "name": "DHL Supply Chain",
+        "node_id": "SUP-047"
+      },
+      {
+        "country": "Switzerland",
+        "capacity_utilization": 0.78,
+        "historical_delay_avg": 1.9,
+        "risk_score": 0.23,
+        "name": "Kuehne and Nagel",
+        "node_id": "SUP-048"
+      },
+      {
+        "country": "Germany",
+        "capacity_utilization": 0.75,
+        "historical_delay_avg": 2.1,
+        "risk_score": 0.25,
+        "name": "DB Schenker",
+        "node_id": "SUP-049"
+      },
+      {
+        "country": "France",
+        "capacity_utilization": 0.73,
+        "historical_delay_avg": 2.3,
+        "risk_score": 0.27,
+        "name": "CEVA Logistics",
+        "node_id": "SUP-050"
+      }
+    ],
+    "manufacturers": [
+      {
+        "country": "United States",
+        "name": "Apple",
+        "industry": "Consumer Electronics",
+        "production_capacity": 950000,
+        "node_id": "MAN-001"
+      },
+      {
+        "country": "South Korea",
+        "name": "Samsung Electronics",
+        "industry": "Consumer Electronics",
+        "production_capacity": 1200000,
+        "node_id": "MAN-002"
+      },
+      {
+        "country": "Japan",
+        "name": "Toyota Motor Corporation",
+        "industry": "Automotive",
+        "production_capacity": 1050000,
+        "node_id": "MAN-003"
+      },
+      {
+        "country": "Germany",
+        "name": "Volkswagen Group",
+        "industry": "Automotive",
+        "production_capacity": 980000,
+        "node_id": "MAN-004"
+      },
+      {
+        "country": "United States",
+        "name": "Tesla",
+        "industry": "Electric Vehicles",
+        "production_capacity": 700000,
+        "node_id": "MAN-005"
+      },
+      {
+        "country": "India",
+        "name": "Tata Motors",
+        "industry": "Automotive",
+        "production_capacity": 520000,
+        "node_id": "MAN-006"
+      },
+      {
+        "country": "Germany",
+        "name": "BMW Group",
+        "industry": "Automotive",
+        "production_capacity": 610000,
+        "node_id": "MAN-007"
+      },
+      {
+        "country": "South Korea",
+        "name": "Hyundai Motor Company",
+        "industry": "Automotive",
+        "production_capacity": 780000,
+        "node_id": "MAN-008"
+      },
+      {
+        "country": "Japan",
+        "name": "Honda Motor Company",
+        "industry": "Automotive",
+        "production_capacity": 720000,
+        "node_id": "MAN-009"
+      },
+      {
+        "country": "United States",
+        "name": "Ford Motor Company",
+        "industry": "Automotive",
+        "production_capacity": 680000,
+        "node_id": "MAN-010"
+      },
+      {
+        "country": "Germany",
+        "name": "Siemens",
+        "industry": "Industrial Equipment",
+        "production_capacity": 430000,
+        "node_id": "MAN-011"
+      },
+      {
+        "country": "United States",
+        "name": "General Electric",
+        "industry": "Industrial Equipment",
+        "production_capacity": 390000,
+        "node_id": "MAN-012"
+      },
+      {
+        "country": "Switzerland",
+        "name": "ABB",
+        "industry": "Industrial Automation",
+        "production_capacity": 350000,
+        "node_id": "MAN-013"
+      },
+      {
+        "country": "France",
+        "name": "Schneider Electric",
+        "industry": "Electrical Equipment",
+        "production_capacity": 370000,
+        "node_id": "MAN-014"
+      },
+      {
+        "country": "United States",
+        "name": "Caterpillar",
+        "industry": "Heavy Machinery",
+        "production_capacity": 320000,
+        "node_id": "MAN-015"
+      },
+      {
+        "country": "Japan",
+        "name": "Komatsu",
+        "industry": "Heavy Machinery",
+        "production_capacity": 280000,
+        "node_id": "MAN-016"
+      },
+      {
+        "country": "United States",
+        "name": "Boeing",
+        "industry": "Aerospace",
+        "production_capacity": 120000,
+        "node_id": "MAN-017"
+      },
+      {
+        "country": "France",
+        "name": "Airbus",
+        "industry": "Aerospace",
+        "production_capacity": 115000,
+        "node_id": "MAN-018"
+      },
+      {
+        "country": "United States",
+        "name": "Honeywell",
+        "industry": "Aerospace",
+        "production_capacity": 290000,
+        "node_id": "MAN-019"
+      },
+      {
+        "country": "United States",
+        "name": "Raytheon Technologies",
+        "industry": "Aerospace",
+        "production_capacity": 240000,
+        "node_id": "MAN-020"
+      },
+      {
+        "country": "United States",
+        "name": "Intel",
+        "industry": "Semiconductors",
+        "production_capacity": 450000,
+        "node_id": "MAN-021"
+      },
+      {
+        "country": "Taiwan",
+        "name": "TSMC",
+        "industry": "Semiconductors",
+        "production_capacity": 880000,
+        "node_id": "MAN-022"
+      },
+      {
+        "country": "United States",
+        "name": "NVIDIA",
+        "industry": "Semiconductors",
+        "production_capacity": 420000,
+        "node_id": "MAN-023"
+      },
+      {
+        "country": "United States",
+        "name": "Qualcomm",
+        "industry": "Semiconductors",
+        "production_capacity": 380000,
+        "node_id": "MAN-024"
+      },
+      {
+        "country": "Japan",
+        "name": "Sony",
+        "industry": "Consumer Electronics",
+        "production_capacity": 460000,
+        "node_id": "MAN-025"
+      },
+      {
+        "country": "South Korea",
+        "name": "LG Electronics",
+        "industry": "Consumer Electronics",
+        "production_capacity": 510000,
+        "node_id": "MAN-026"
+      },
+      {
+        "country": "Japan",
+        "name": "Panasonic",
+        "industry": "Electronics",
+        "production_capacity": 490000,
+        "node_id": "MAN-027"
+      },
+      {
+        "country": "United States",
+        "name": "Dell Technologies",
+        "industry": "Computing",
+        "production_capacity": 410000,
+        "node_id": "MAN-028"
+      },
+      {
+        "country": "United States",
+        "name": "HP",
+        "industry": "Computing",
+        "production_capacity": 400000,
+        "node_id": "MAN-029"
+      },
+      {
+        "country": "China",
+        "name": "Lenovo",
+        "industry": "Computing",
+        "production_capacity": 530000,
+        "node_id": "MAN-030"
+      },
+      {
+        "country": "United States",
+        "name": "Pfizer",
+        "industry": "Pharmaceuticals",
+        "production_capacity": 260000,
+        "node_id": "MAN-031"
+      },
+      {
+        "country": "Switzerland",
+        "name": "Roche",
+        "industry": "Pharmaceuticals",
+        "production_capacity": 230000,
+        "node_id": "MAN-032"
+      },
+      {
+        "country": "Switzerland",
+        "name": "Novartis",
+        "industry": "Pharmaceuticals",
+        "production_capacity": 250000,
+        "node_id": "MAN-033"
+      },
+      {
+        "country": "United States",
+        "name": "Johnson and Johnson",
+        "industry": "Healthcare",
+        "production_capacity": 270000,
+        "node_id": "MAN-034"
+      },
+      {
+        "country": "United Kingdom",
+        "name": "Unilever",
+        "industry": "Consumer Goods",
+        "production_capacity": 600000,
+        "node_id": "MAN-035"
+      },
+      {
+        "country": "United States",
+        "name": "Procter and Gamble",
+        "industry": "Consumer Goods",
+        "production_capacity": 590000,
+        "node_id": "MAN-036"
+      },
+      {
+        "country": "Switzerland",
+        "name": "Nestle",
+        "industry": "Food and Beverage",
+        "production_capacity": 650000,
+        "node_id": "MAN-037"
+      },
+      {
+        "country": "United States",
+        "name": "PepsiCo",
+        "industry": "Food and Beverage",
+        "production_capacity": 540000,
+        "node_id": "MAN-038"
+      },
+      {
+        "country": "United States",
+        "name": "Coca-Cola",
+        "industry": "Food and Beverage",
+        "production_capacity": 560000,
+        "node_id": "MAN-039"
+      },
+      {
+        "country": "Germany",
+        "name": "Adidas",
+        "industry": "Apparel",
+        "production_capacity": 330000,
+        "node_id": "MAN-040"
+      }
+    ],
+    "ports": [
+      {
+        "country": "China",
+        "city": "Shanghai",
+        "name": "Port of Shanghai",
+        "throughput_teu": 49158000,
+        "node_id": "PORT-001",
+        "geo_importance_score": 0.98
+      },
+      {
+        "country": "Singapore",
+        "city": "Singapore",
+        "name": "Port of Singapore",
+        "throughput_teu": 37200000,
+        "node_id": "PORT-002",
+        "geo_importance_score": 0.97
+      },
+      {
+        "country": "Netherlands",
+        "city": "Rotterdam",
+        "name": "Port of Rotterdam",
+        "throughput_teu": 13500000,
+        "node_id": "PORT-003",
+        "geo_importance_score": 0.91
+      },
+      {
+        "country": "United States",
+        "city": "Los Angeles",
+        "name": "Port of Los Angeles",
+        "throughput_teu": 9200000,
+        "node_id": "PORT-004",
+        "geo_importance_score": 0.89
+      },
+      {
+        "country": "Germany",
+        "city": "Hamburg",
+        "name": "Port of Hamburg",
+        "throughput_teu": 7500000,
+        "node_id": "PORT-005",
+        "geo_importance_score": 0.85
+      },
+      {
+        "country": "China",
+        "city": "Ningbo",
+        "name": "Port of Ningbo-Zhoushan",
+        "throughput_teu": 35000000,
+        "node_id": "PORT-006",
+        "geo_importance_score": 0.95
+      },
+      {
+        "country": "China",
+        "city": "Shenzhen",
+        "name": "Port of Shenzhen",
+        "throughput_teu": 29800000,
+        "node_id": "PORT-007",
+        "geo_importance_score": 0.94
+      },
+      {
+        "country": "China",
+        "city": "Guangzhou",
+        "name": "Port of Guangzhou",
+        "throughput_teu": 25000000,
+        "node_id": "PORT-008",
+        "geo_importance_score": 0.92
+      },
+      {
+        "country": "South Korea",
+        "city": "Busan",
+        "name": "Port of Busan",
+        "throughput_teu": 22700000,
+        "node_id": "PORT-009",
+        "geo_importance_score": 0.91
+      },
+      {
+        "country": "China",
+        "city": "Hong Kong",
+        "name": "Port of Hong Kong",
+        "throughput_teu": 16600000,
+        "node_id": "PORT-010",
+        "geo_importance_score": 0.88
+      },
+      {
+        "country": "China",
+        "city": "Qingdao",
+        "name": "Port of Qingdao",
+        "throughput_teu": 30000000,
+        "node_id": "PORT-011",
+        "geo_importance_score": 0.9
+      },
+      {
+        "country": "China",
+        "city": "Tianjin",
+        "name": "Port of Tianjin",
+        "throughput_teu": 22000000,
+        "node_id": "PORT-012",
+        "geo_importance_score": 0.87
+      },
+      {
+        "country": "Malaysia",
+        "city": "Klang",
+        "name": "Port Klang",
+        "throughput_teu": 14000000,
+        "node_id": "PORT-013",
+        "geo_importance_score": 0.84
+      },
+      {
+        "country": "Malaysia",
+        "city": "Johor",
+        "name": "Port of Tanjung Pelepas",
+        "throughput_teu": 11000000,
+        "node_id": "PORT-014",
+        "geo_importance_score": 0.82
+      },
+      {
+        "country": "United Arab Emirates",
+        "city": "Dubai",
+        "name": "Port of Dubai",
+        "throughput_teu": 14000000,
+        "node_id": "PORT-015",
+        "geo_importance_score": 0.86
+      },
+      {
+        "country": "Saudi Arabia",
+        "city": "Jeddah",
+        "name": "Port of Jeddah",
+        "throughput_teu": 5000000,
+        "node_id": "PORT-016",
+        "geo_importance_score": 0.76
+      },
+      {
+        "country": "India",
+        "city": "Mumbai",
+        "name": "Port of Mumbai",
+        "throughput_teu": 5500000,
+        "node_id": "PORT-017",
+        "geo_importance_score": 0.79
+      },
+      {
+        "country": "India",
+        "city": "Mundra",
+        "name": "Mundra Port",
+        "throughput_teu": 7500000,
+        "node_id": "PORT-018",
+        "geo_importance_score": 0.81
+      },
+      {
+        "country": "Sri Lanka",
+        "city": "Colombo",
+        "name": "Port of Colombo",
+        "throughput_teu": 6900000,
+        "node_id": "PORT-019",
+        "geo_importance_score": 0.78
+      },
+      {
+        "country": "Belgium",
+        "city": "Antwerp",
+        "name": "Port of Antwerp-Bruges",
+        "throughput_teu": 12700000,
+        "node_id": "PORT-020",
+        "geo_importance_score": 0.89
+      },
+      {
+        "country": "Germany",
+        "city": "Bremerhaven",
+        "name": "Port of Bremerhaven",
+        "throughput_teu": 4700000,
+        "node_id": "PORT-021",
+        "geo_importance_score": 0.74
+      },
+      {
+        "country": "United Kingdom",
+        "city": "Felixstowe",
+        "name": "Port of Felixstowe",
+        "throughput_teu": 3600000,
+        "node_id": "PORT-022",
+        "geo_importance_score": 0.72
+      },
+      {
+        "country": "France",
+        "city": "Le Havre",
+        "name": "Port of Le Havre",
+        "throughput_teu": 3200000,
+        "node_id": "PORT-023",
+        "geo_importance_score": 0.7
+      },
+      {
+        "country": "United States",
+        "city": "Newark",
+        "name": "Port of New York and New Jersey",
+        "throughput_teu": 9000000,
+        "node_id": "PORT-024",
+        "geo_importance_score": 0.87
+      },
+      {
+        "country": "United States",
+        "city": "Long Beach",
+        "name": "Port of Long Beach",
+        "throughput_teu": 8200000,
+        "node_id": "PORT-025",
+        "geo_importance_score": 0.85
+      },
+      {
+        "country": "United States",
+        "city": "Savannah",
+        "name": "Port of Savannah",
+        "throughput_teu": 5300000,
+        "node_id": "PORT-026",
+        "geo_importance_score": 0.78
+      },
+      {
+        "country": "Canada",
+        "city": "Vancouver",
+        "name": "Port of Vancouver",
+        "throughput_teu": 3400000,
+        "node_id": "PORT-027",
+        "geo_importance_score": 0.73
+      },
+      {
+        "country": "Brazil",
+        "city": "Santos",
+        "name": "Port of Santos",
+        "throughput_teu": 4500000,
+        "node_id": "PORT-028",
+        "geo_importance_score": 0.75
+      },
+      {
+        "country": "South Africa",
+        "city": "Durban",
+        "name": "Port of Durban",
+        "throughput_teu": 2700000,
+        "node_id": "PORT-029",
+        "geo_importance_score": 0.69
+      },
+      {
+        "country": "Australia",
+        "city": "Melbourne",
+        "name": "Port of Melbourne",
+        "throughput_teu": 3400000,
+        "node_id": "PORT-030",
+        "geo_importance_score": 0.71
+      }
+    ],
+    "distribution_centers": [
+      {
+        "storage_capacity": 52500,
+        "name": "Distribution Center 1",
+        "region": "Asia Pacific",
+        "node_id": "DC-1"
+      },
+      {
+        "storage_capacity": 75000,
+        "name": "Distribution Center 10",
+        "region": "Europe",
+        "node_id": "DC-10"
+      },
+      {
+        "storage_capacity": 77500,
+        "name": "Distribution Center 11",
+        "region": "Europe",
+        "node_id": "DC-11"
+      },
+      {
+        "storage_capacity": 80000,
+        "name": "Distribution Center 12",
+        "region": "Europe",
+        "node_id": "DC-12"
+      },
+      {
+        "storage_capacity": 82500,
+        "name": "Distribution Center 13",
+        "region": "Europe",
+        "node_id": "DC-13"
+      },
+      {
+        "storage_capacity": 85000,
+        "name": "Distribution Center 14",
+        "region": "Europe",
+        "node_id": "DC-14"
+      },
+      {
+        "storage_capacity": 87500,
+        "name": "Distribution Center 15",
+        "region": "North America",
+        "node_id": "DC-15"
+      },
+      {
+        "storage_capacity": 90000,
+        "name": "Distribution Center 16",
+        "region": "North America",
+        "node_id": "DC-16"
+      },
+      {
+        "storage_capacity": 92500,
+        "name": "Distribution Center 17",
+        "region": "North America",
+        "node_id": "DC-17"
+      },
+      {
+        "storage_capacity": 95000,
+        "name": "Distribution Center 18",
+        "region": "North America",
+        "node_id": "DC-18"
+      },
+      {
+        "storage_capacity": 97500,
+        "name": "Distribution Center 19",
+        "region": "North America",
+        "node_id": "DC-19"
+      },
+      {
+        "storage_capacity": 55000,
+        "name": "Distribution Center 2",
+        "region": "Asia Pacific",
+        "node_id": "DC-2"
+      },
+      {
+        "storage_capacity": 100000,
+        "name": "Distribution Center 20",
+        "region": "North America",
+        "node_id": "DC-20"
+      },
+      {
+        "storage_capacity": 102500,
+        "name": "Distribution Center 21",
+        "region": "North America",
+        "node_id": "DC-21"
+      },
+      {
+        "storage_capacity": 105000,
+        "name": "Distribution Center 22",
+        "region": "South America",
+        "node_id": "DC-22"
+      },
+      {
+        "storage_capacity": 107500,
+        "name": "Distribution Center 23",
+        "region": "South America",
+        "node_id": "DC-23"
+      },
+      {
+        "storage_capacity": 110000,
+        "name": "Distribution Center 24",
+        "region": "South America",
+        "node_id": "DC-24"
+      },
+      {
+        "storage_capacity": 112500,
+        "name": "Distribution Center 25",
+        "region": "South America",
+        "node_id": "DC-25"
+      },
+      {
+        "storage_capacity": 115000,
+        "name": "Distribution Center 26",
+        "region": "South America",
+        "node_id": "DC-26"
+      },
+      {
+        "storage_capacity": 117500,
+        "name": "Distribution Center 27",
+        "region": "South America",
+        "node_id": "DC-27"
+      },
+      {
+        "storage_capacity": 120000,
+        "name": "Distribution Center 28",
+        "region": "South America",
+        "node_id": "DC-28"
+      },
+      {
+        "storage_capacity": 122500,
+        "name": "Distribution Center 29",
+        "region": "Middle East and Africa",
+        "node_id": "DC-29"
+      },
+      {
+        "storage_capacity": 57500,
+        "name": "Distribution Center 3",
+        "region": "Asia Pacific",
+        "node_id": "DC-3"
+      },
+      {
+        "storage_capacity": 125000,
+        "name": "Distribution Center 30",
+        "region": "Middle East and Africa",
+        "node_id": "DC-30"
+      },
+      {
+        "storage_capacity": 127500,
+        "name": "Distribution Center 31",
+        "region": "Middle East and Africa",
+        "node_id": "DC-31"
+      },
+      {
+        "storage_capacity": 130000,
+        "name": "Distribution Center 32",
+        "region": "Middle East and Africa",
+        "node_id": "DC-32"
+      },
+      {
+        "storage_capacity": 132500,
+        "name": "Distribution Center 33",
+        "region": "Middle East and Africa",
+        "node_id": "DC-33"
+      },
+      {
+        "storage_capacity": 135000,
+        "name": "Distribution Center 34",
+        "region": "Middle East and Africa",
+        "node_id": "DC-34"
+      },
+      {
+        "storage_capacity": 137500,
+        "name": "Distribution Center 35",
+        "region": "Middle East and Africa",
+        "node_id": "DC-35"
+      },
+      {
+        "storage_capacity": 60000,
+        "name": "Distribution Center 4",
+        "region": "Asia Pacific",
+        "node_id": "DC-4"
+      },
+      {
+        "storage_capacity": 62500,
+        "name": "Distribution Center 5",
+        "region": "Asia Pacific",
+        "node_id": "DC-5"
+      },
+      {
+        "storage_capacity": 65000,
+        "name": "Distribution Center 6",
+        "region": "Asia Pacific",
+        "node_id": "DC-6"
+      },
+      {
+        "storage_capacity": 67500,
+        "name": "Distribution Center 7",
+        "region": "Asia Pacific",
+        "node_id": "DC-7"
+      },
+      {
+        "storage_capacity": 70000,
+        "name": "Distribution Center 8",
+        "region": "Europe",
+        "node_id": "DC-8"
+      },
+      {
+        "storage_capacity": 72500,
+        "name": "Distribution Center 9",
+        "region": "Europe",
+        "node_id": "DC-9"
+      }
+    ],
+    "retailers": [
+      {
+        "market": "India",
+        "name": "Global Retailer 1",
+        "annual_revenue": 12500000,
+        "node_id": "RET-1"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 10",
+        "annual_revenue": 35000000,
+        "node_id": "RET-10"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 11",
+        "annual_revenue": 37500000,
+        "node_id": "RET-11"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 12",
+        "annual_revenue": 40000000,
+        "node_id": "RET-12"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 13",
+        "annual_revenue": 42500000,
+        "node_id": "RET-13"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 14",
+        "annual_revenue": 45000000,
+        "node_id": "RET-14"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 15",
+        "annual_revenue": 47500000,
+        "node_id": "RET-15"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 16",
+        "annual_revenue": 50000000,
+        "node_id": "RET-16"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 17",
+        "annual_revenue": 52500000,
+        "node_id": "RET-17"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 18",
+        "annual_revenue": 55000000,
+        "node_id": "RET-18"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 19",
+        "annual_revenue": 57500000,
+        "node_id": "RET-19"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 2",
+        "annual_revenue": 15000000,
+        "node_id": "RET-2"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 20",
+        "annual_revenue": 60000000,
+        "node_id": "RET-20"
+      },
+      {
+        "market": "United States",
+        "name": "Global Retailer 21",
+        "annual_revenue": 62500000,
+        "node_id": "RET-21"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 22",
+        "annual_revenue": 65000000,
+        "node_id": "RET-22"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 23",
+        "annual_revenue": 67500000,
+        "node_id": "RET-23"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 24",
+        "annual_revenue": 70000000,
+        "node_id": "RET-24"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 25",
+        "annual_revenue": 72500000,
+        "node_id": "RET-25"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 26",
+        "annual_revenue": 75000000,
+        "node_id": "RET-26"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 27",
+        "annual_revenue": 77500000,
+        "node_id": "RET-27"
+      },
+      {
+        "market": "Latin America",
+        "name": "Global Retailer 28",
+        "annual_revenue": 80000000,
+        "node_id": "RET-28"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 29",
+        "annual_revenue": 82500000,
+        "node_id": "RET-29"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 3",
+        "annual_revenue": 17500000,
+        "node_id": "RET-3"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 30",
+        "annual_revenue": 85000000,
+        "node_id": "RET-30"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 31",
+        "annual_revenue": 87500000,
+        "node_id": "RET-31"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 32",
+        "annual_revenue": 90000000,
+        "node_id": "RET-32"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 33",
+        "annual_revenue": 92500000,
+        "node_id": "RET-33"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 34",
+        "annual_revenue": 95000000,
+        "node_id": "RET-34"
+      },
+      {
+        "market": "Middle East and Africa",
+        "name": "Global Retailer 35",
+        "annual_revenue": 97500000,
+        "node_id": "RET-35"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 4",
+        "annual_revenue": 20000000,
+        "node_id": "RET-4"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 5",
+        "annual_revenue": 22500000,
+        "node_id": "RET-5"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 6",
+        "annual_revenue": 25000000,
+        "node_id": "RET-6"
+      },
+      {
+        "market": "India",
+        "name": "Global Retailer 7",
+        "annual_revenue": 27500000,
+        "node_id": "RET-7"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 8",
+        "annual_revenue": 30000000,
+        "node_id": "RET-8"
+      },
+      {
+        "market": "Europe",
+        "name": "Global Retailer 9",
+        "annual_revenue": 32500000,
+        "node_id": "RET-9"
+      }
+    ],
+    "products": [
+      {
+        "lead_time_days": 28,
+        "name": "Smartphone",
+        "category": "Consumer Electronics",
+        "node_id": "PROD-001"
+      },
+      {
+        "lead_time_days": 35,
+        "name": "Laptop Computer",
+        "category": "Computing",
+        "node_id": "PROD-002"
+      },
+      {
+        "lead_time_days": 30,
+        "name": "Tablet Device",
+        "category": "Consumer Electronics",
+        "node_id": "PROD-003"
+      },
+      {
+        "lead_time_days": 60,
+        "name": "Semiconductor Chip",
+        "category": "Semiconductors",
+        "node_id": "PROD-004"
+      },
+      {
+        "lead_time_days": 45,
+        "name": "Lithium-Ion Battery",
+        "category": "Energy Storage",
+        "node_id": "PROD-005"
+      },
+      {
+        "lead_time_days": 50,
+        "name": "Electric Vehicle",
+        "category": "Automotive",
+        "node_id": "PROD-006"
+      },
+      {
+        "lead_time_days": 42,
+        "name": "Passenger Car",
+        "category": "Automotive",
+        "node_id": "PROD-007"
+      },
+      {
+        "lead_time_days": 38,
+        "name": "Truck Engine",
+        "category": "Automotive Parts",
+        "node_id": "PROD-008"
+      },
+      {
+        "lead_time_days": 55,
+        "name": "Industrial Robot",
+        "category": "Industrial Automation",
+        "node_id": "PROD-009"
+      },
+      {
+        "lead_time_days": 75,
+        "name": "Wind Turbine",
+        "category": "Renewable Energy",
+        "node_id": "PROD-010"
+      },
+      {
+        "lead_time_days": 40,
+        "name": "Solar Panel",
+        "category": "Renewable Energy",
+        "node_id": "PROD-011"
+      },
+      {
+        "lead_time_days": 65,
+        "name": "Medical Vaccine",
+        "category": "Pharmaceuticals",
+        "node_id": "PROD-012"
+      },
+      {
+        "lead_time_days": 50,
+        "name": "Diagnostic Equipment",
+        "category": "Healthcare",
+        "node_id": "PROD-013"
+      },
+      {
+        "lead_time_days": 90,
+        "name": "Commercial Aircraft Component",
+        "category": "Aerospace",
+        "node_id": "PROD-014"
+      },
+      {
+        "lead_time_days": 70,
+        "name": "Construction Excavator",
+        "category": "Heavy Machinery",
+        "node_id": "PROD-015"
+      },
+      {
+        "lead_time_days": 22,
+        "name": "Steel Coil",
+        "category": "Raw Materials",
+        "node_id": "PROD-016"
+      },
+      {
+        "lead_time_days": 24,
+        "name": "Aluminium Sheet",
+        "category": "Raw Materials",
+        "node_id": "PROD-017"
+      },
+      {
+        "lead_time_days": 20,
+        "name": "Plastic Polymer",
+        "category": "Chemicals",
+        "node_id": "PROD-018"
+      },
+      {
+        "lead_time_days": 25,
+        "name": "Fertilizer",
+        "category": "Agriculture",
+        "node_id": "PROD-019"
+      },
+      {
+        "lead_time_days": 32,
+        "name": "Cotton Textile",
+        "category": "Apparel",
+        "node_id": "PROD-020"
+      },
+      {
+        "lead_time_days": 36,
+        "name": "Sports Footwear",
+        "category": "Apparel",
+        "node_id": "PROD-021"
+      },
+      {
+        "lead_time_days": 18,
+        "name": "Packaged Food",
+        "category": "Food and Beverage",
+        "node_id": "PROD-022"
+      },
+      {
+        "lead_time_days": 16,
+        "name": "Beverage Concentrate",
+        "category": "Food and Beverage",
+        "node_id": "PROD-023"
+      },
+      {
+        "lead_time_days": 21,
+        "name": "Home Cleaning Product",
+        "category": "Consumer Goods",
+        "node_id": "PROD-024"
+      },
+      {
+        "lead_time_days": 34,
+        "name": "Industrial Sensor",
+        "category": "Electrical Equipment",
+        "node_id": "PROD-025"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "source_node_id": "SUP-001",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-001",
+      "properties": {
+        "quantity": 500,
+        "lead_time_days": 7
+      }
+    },
+    {
+      "source_node_id": "SUP-001",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-011",
+      "properties": {
+        "quantity": 1000,
+        "lead_time_days": 15
+      }
+    },
+    {
+      "source_node_id": "SUP-002",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-002",
+      "properties": {
+        "quantity": 510,
+        "lead_time_days": 8
+      }
+    },
+    {
+      "source_node_id": "SUP-002",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-012",
+      "properties": {
+        "quantity": 1010,
+        "lead_time_days": 16
+      }
+    },
+    {
+      "source_node_id": "SUP-003",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-003",
+      "properties": {
+        "quantity": 520,
+        "lead_time_days": 9
+      }
+    },
+    {
+      "source_node_id": "SUP-003",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-013",
+      "properties": {
+        "quantity": 1020,
+        "lead_time_days": 17
+      }
+    },
+    {
+      "source_node_id": "SUP-004",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-004",
+      "properties": {
+        "quantity": 530,
+        "lead_time_days": 10
+      }
+    },
+    {
+      "source_node_id": "SUP-004",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-014",
+      "properties": {
+        "quantity": 1030,
+        "lead_time_days": 18
+      }
+    },
+    {
+      "source_node_id": "SUP-005",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-005",
+      "properties": {
+        "quantity": 540,
+        "lead_time_days": 11
+      }
+    },
+    {
+      "source_node_id": "SUP-005",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-015",
+      "properties": {
+        "quantity": 1040,
+        "lead_time_days": 19
+      }
+    },
+    {
+      "source_node_id": "SUP-006",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-006",
+      "properties": {
+        "quantity": 550,
+        "lead_time_days": 12
+      }
+    },
+    {
+      "source_node_id": "SUP-006",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-016",
+      "properties": {
+        "quantity": 1050,
+        "lead_time_days": 20
+      }
+    },
+    {
+      "source_node_id": "SUP-007",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-007",
+      "properties": {
+        "quantity": 560,
+        "lead_time_days": 13
+      }
+    },
+    {
+      "source_node_id": "SUP-007",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-017",
+      "properties": {
+        "quantity": 1060,
+        "lead_time_days": 21
+      }
+    },
+    {
+      "source_node_id": "SUP-008",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-008",
+      "properties": {
+        "quantity": 570,
+        "lead_time_days": 14
+      }
+    },
+    {
+      "source_node_id": "SUP-008",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-018",
+      "properties": {
+        "quantity": 1070,
+        "lead_time_days": 22
+      }
+    },
+    {
+      "source_node_id": "SUP-009",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-009",
+      "properties": {
+        "quantity": 580,
+        "lead_time_days": 15
+      }
+    },
+    {
+      "source_node_id": "SUP-009",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-019",
+      "properties": {
+        "quantity": 1080,
+        "lead_time_days": 23
+      }
+    },
+    {
+      "source_node_id": "SUP-010",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-010",
+      "properties": {
+        "quantity": 590,
+        "lead_time_days": 16
+      }
+    },
+    {
+      "source_node_id": "SUP-010",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-020",
+      "properties": {
+        "quantity": 1090,
+        "lead_time_days": 24
+      }
+    },
+    {
+      "source_node_id": "SUP-011",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-011",
+      "properties": {
+        "quantity": 600,
+        "lead_time_days": 17
+      }
+    },
+    {
+      "source_node_id": "SUP-011",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-021",
+      "properties": {
+        "quantity": 1100,
+        "lead_time_days": 25
+      }
+    },
+    {
+      "source_node_id": "SUP-012",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-012",
+      "properties": {
+        "quantity": 610,
+        "lead_time_days": 18
+      }
+    },
+    {
+      "source_node_id": "SUP-012",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-022",
+      "properties": {
+        "quantity": 1110,
+        "lead_time_days": 26
+      }
+    },
+    {
+      "source_node_id": "SUP-013",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-013",
+      "properties": {
+        "quantity": 620,
+        "lead_time_days": 19
+      }
+    },
+    {
+      "source_node_id": "SUP-013",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-023",
+      "properties": {
+        "quantity": 1120,
+        "lead_time_days": 27
+      }
+    },
+    {
+      "source_node_id": "SUP-014",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-014",
+      "properties": {
+        "quantity": 630,
+        "lead_time_days": 20
+      }
+    },
+    {
+      "source_node_id": "SUP-014",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-024",
+      "properties": {
+        "quantity": 1130,
+        "lead_time_days": 7
+      }
+    },
+    {
+      "source_node_id": "SUP-015",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-015",
+      "properties": {
+        "quantity": 640,
+        "lead_time_days": 21
+      }
+    },
+    {
+      "source_node_id": "SUP-015",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-025",
+      "properties": {
+        "quantity": 1140,
+        "lead_time_days": 8
+      }
+    },
+    {
+      "source_node_id": "SUP-016",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-016",
+      "properties": {
+        "quantity": 650,
+        "lead_time_days": 22
+      }
+    },
+    {
+      "source_node_id": "SUP-016",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-026",
+      "properties": {
+        "quantity": 1150,
+        "lead_time_days": 9
+      }
+    },
+    {
+      "source_node_id": "SUP-017",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-017",
+      "properties": {
+        "quantity": 660,
+        "lead_time_days": 23
+      }
+    },
+    {
+      "source_node_id": "SUP-017",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-027",
+      "properties": {
+        "quantity": 1160,
+        "lead_time_days": 10
+      }
+    },
+    {
+      "source_node_id": "SUP-018",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-018",
+      "properties": {
+        "quantity": 670,
+        "lead_time_days": 24
+      }
+    },
+    {
+      "source_node_id": "SUP-018",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-028",
+      "properties": {
+        "quantity": 1170,
+        "lead_time_days": 11
+      }
+    },
+    {
+      "source_node_id": "SUP-019",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-019",
+      "properties": {
+        "quantity": 680,
+        "lead_time_days": 25
+      }
+    },
+    {
+      "source_node_id": "SUP-019",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-029",
+      "properties": {
+        "quantity": 1180,
+        "lead_time_days": 12
+      }
+    },
+    {
+      "source_node_id": "SUP-020",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-020",
+      "properties": {
+        "quantity": 690,
+        "lead_time_days": 26
+      }
+    },
+    {
+      "source_node_id": "SUP-020",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-030",
+      "properties": {
+        "quantity": 1190,
+        "lead_time_days": 13
+      }
+    },
+    {
+      "source_node_id": "SUP-021",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-021",
+      "properties": {
+        "quantity": 700,
+        "lead_time_days": 27
+      }
+    },
+    {
+      "source_node_id": "SUP-021",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-031",
+      "properties": {
+        "quantity": 1200,
+        "lead_time_days": 14
+      }
+    },
+    {
+      "source_node_id": "SUP-022",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-022",
+      "properties": {
+        "quantity": 710,
+        "lead_time_days": 7
+      }
+    },
+    {
+      "source_node_id": "SUP-022",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-032",
+      "properties": {
+        "quantity": 1210,
+        "lead_time_days": 15
+      }
+    },
+    {
+      "source_node_id": "SUP-023",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-023",
+      "properties": {
+        "quantity": 720,
+        "lead_time_days": 8
+      }
+    },
+    {
+      "source_node_id": "SUP-023",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-033",
+      "properties": {
+        "quantity": 1220,
+        "lead_time_days": 16
+      }
+    },
+    {
+      "source_node_id": "SUP-024",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-024",
+      "properties": {
+        "quantity": 730,
+        "lead_time_days": 9
+      }
+    },
+    {
+      "source_node_id": "SUP-024",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-034",
+      "properties": {
+        "quantity": 1230,
+        "lead_time_days": 17
+      }
+    },
+    {
+      "source_node_id": "SUP-025",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-025",
+      "properties": {
+        "quantity": 740,
+        "lead_time_days": 10
+      }
+    },
+    {
+      "source_node_id": "SUP-025",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-035",
+      "properties": {
+        "quantity": 1240,
+        "lead_time_days": 18
+      }
+    },
+    {
+      "source_node_id": "SUP-026",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-026",
+      "properties": {
+        "quantity": 750,
+        "lead_time_days": 11
+      }
+    },
+    {
+      "source_node_id": "SUP-026",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-036",
+      "properties": {
+        "quantity": 1250,
+        "lead_time_days": 19
+      }
+    },
+    {
+      "source_node_id": "SUP-027",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-027",
+      "properties": {
+        "quantity": 760,
+        "lead_time_days": 12
+      }
+    },
+    {
+      "source_node_id": "SUP-027",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-037",
+      "properties": {
+        "quantity": 1260,
+        "lead_time_days": 20
+      }
+    },
+    {
+      "source_node_id": "SUP-028",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-028",
+      "properties": {
+        "quantity": 770,
+        "lead_time_days": 13
+      }
+    },
+    {
+      "source_node_id": "SUP-028",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-038",
+      "properties": {
+        "quantity": 1270,
+        "lead_time_days": 21
+      }
+    },
+    {
+      "source_node_id": "SUP-029",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-029",
+      "properties": {
+        "quantity": 780,
+        "lead_time_days": 14
+      }
+    },
+    {
+      "source_node_id": "SUP-029",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-039",
+      "properties": {
+        "quantity": 1280,
+        "lead_time_days": 22
+      }
+    },
+    {
+      "source_node_id": "SUP-030",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-030",
+      "properties": {
+        "quantity": 790,
+        "lead_time_days": 15
+      }
+    },
+    {
+      "source_node_id": "SUP-030",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-040",
+      "properties": {
+        "quantity": 1290,
+        "lead_time_days": 23
+      }
+    },
+    {
+      "source_node_id": "SUP-031",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-001",
+      "properties": {
+        "quantity": 1300,
+        "lead_time_days": 24
+      }
+    },
+    {
+      "source_node_id": "SUP-031",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-031",
+      "properties": {
+        "quantity": 800,
+        "lead_time_days": 16
+      }
+    },
+    {
+      "source_node_id": "SUP-032",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-002",
+      "properties": {
+        "quantity": 1310,
+        "lead_time_days": 25
+      }
+    },
+    {
+      "source_node_id": "SUP-032",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-032",
+      "properties": {
+        "quantity": 810,
+        "lead_time_days": 17
+      }
+    },
+    {
+      "source_node_id": "SUP-033",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-003",
+      "properties": {
+        "quantity": 1320,
+        "lead_time_days": 26
+      }
+    },
+    {
+      "source_node_id": "SUP-033",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-033",
+      "properties": {
+        "quantity": 820,
+        "lead_time_days": 18
+      }
+    },
+    {
+      "source_node_id": "SUP-034",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-004",
+      "properties": {
+        "quantity": 1330,
+        "lead_time_days": 27
+      }
+    },
+    {
+      "source_node_id": "SUP-034",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-034",
+      "properties": {
+        "quantity": 830,
+        "lead_time_days": 19
+      }
+    },
+    {
+      "source_node_id": "SUP-035",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-005",
+      "properties": {
+        "quantity": 1340,
+        "lead_time_days": 7
+      }
+    },
+    {
+      "source_node_id": "SUP-035",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-035",
+      "properties": {
+        "quantity": 840,
+        "lead_time_days": 20
+      }
+    },
+    {
+      "source_node_id": "SUP-036",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-006",
+      "properties": {
+        "quantity": 1350,
+        "lead_time_days": 8
+      }
+    },
+    {
+      "source_node_id": "SUP-036",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-036",
+      "properties": {
+        "quantity": 850,
+        "lead_time_days": 21
+      }
+    },
+    {
+      "source_node_id": "SUP-037",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-007",
+      "properties": {
+        "quantity": 1360,
+        "lead_time_days": 9
+      }
+    },
+    {
+      "source_node_id": "SUP-037",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-037",
+      "properties": {
+        "quantity": 860,
+        "lead_time_days": 22
+      }
+    },
+    {
+      "source_node_id": "SUP-038",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-008",
+      "properties": {
+        "quantity": 1370,
+        "lead_time_days": 10
+      }
+    },
+    {
+      "source_node_id": "SUP-038",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-038",
+      "properties": {
+        "quantity": 870,
+        "lead_time_days": 23
+      }
+    },
+    {
+      "source_node_id": "SUP-039",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-009",
+      "properties": {
+        "quantity": 1380,
+        "lead_time_days": 11
+      }
+    },
+    {
+      "source_node_id": "SUP-039",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-039",
+      "properties": {
+        "quantity": 880,
+        "lead_time_days": 24
+      }
+    },
+    {
+      "source_node_id": "SUP-040",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-010",
+      "properties": {
+        "quantity": 1390,
+        "lead_time_days": 12
+      }
+    },
+    {
+      "source_node_id": "SUP-040",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-040",
+      "properties": {
+        "quantity": 890,
+        "lead_time_days": 25
+      }
+    },
+    {
+      "source_node_id": "SUP-041",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-001",
+      "properties": {
+        "quantity": 900,
+        "lead_time_days": 26
+      }
+    },
+    {
+      "source_node_id": "SUP-041",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-011",
+      "properties": {
+        "quantity": 1400,
+        "lead_time_days": 13
+      }
+    },
+    {
+      "source_node_id": "SUP-042",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-002",
+      "properties": {
+        "quantity": 910,
+        "lead_time_days": 27
+      }
+    },
+    {
+      "source_node_id": "SUP-042",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-012",
+      "properties": {
+        "quantity": 1410,
+        "lead_time_days": 14
+      }
+    },
+    {
+      "source_node_id": "SUP-043",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-003",
+      "properties": {
+        "quantity": 920,
+        "lead_time_days": 7
+      }
+    },
+    {
+      "source_node_id": "SUP-043",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-013",
+      "properties": {
+        "quantity": 1420,
+        "lead_time_days": 15
+      }
+    },
+    {
+      "source_node_id": "SUP-044",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-004",
+      "properties": {
+        "quantity": 930,
+        "lead_time_days": 8
+      }
+    },
+    {
+      "source_node_id": "SUP-044",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-014",
+      "properties": {
+        "quantity": 1430,
+        "lead_time_days": 16
+      }
+    },
+    {
+      "source_node_id": "SUP-045",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-005",
+      "properties": {
+        "quantity": 940,
+        "lead_time_days": 9
+      }
+    },
+    {
+      "source_node_id": "SUP-045",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-015",
+      "properties": {
+        "quantity": 1440,
+        "lead_time_days": 17
+      }
+    },
+    {
+      "source_node_id": "SUP-046",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-006",
+      "properties": {
+        "quantity": 950,
+        "lead_time_days": 10
+      }
+    },
+    {
+      "source_node_id": "SUP-046",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-016",
+      "properties": {
+        "quantity": 1450,
+        "lead_time_days": 18
+      }
+    },
+    {
+      "source_node_id": "SUP-047",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-007",
+      "properties": {
+        "quantity": 960,
+        "lead_time_days": 11
+      }
+    },
+    {
+      "source_node_id": "SUP-047",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-017",
+      "properties": {
+        "quantity": 1460,
+        "lead_time_days": 19
+      }
+    },
+    {
+      "source_node_id": "SUP-048",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-008",
+      "properties": {
+        "quantity": 970,
+        "lead_time_days": 12
+      }
+    },
+    {
+      "source_node_id": "SUP-048",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-018",
+      "properties": {
+        "quantity": 1470,
+        "lead_time_days": 20
+      }
+    },
+    {
+      "source_node_id": "SUP-049",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-009",
+      "properties": {
+        "quantity": 980,
+        "lead_time_days": 13
+      }
+    },
+    {
+      "source_node_id": "SUP-049",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-019",
+      "properties": {
+        "quantity": 1480,
+        "lead_time_days": 21
+      }
+    },
+    {
+      "source_node_id": "SUP-050",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-010",
+      "properties": {
+        "quantity": 990,
+        "lead_time_days": 14
+      }
+    },
+    {
+      "source_node_id": "SUP-050",
+      "relationship_type": "SUPPLIES",
+      "target_node_id": "MAN-020",
+      "properties": {
+        "quantity": 1490,
+        "lead_time_days": 22
+      }
+    },
+    {
+      "source_node_id": "PORT-001",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 300,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-001",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 900,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-001",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 1500,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-001",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 2100,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-002",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 320,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-002",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 920,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-002",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 1520,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-002",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 2120,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-003",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 340,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-003",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 940,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-003",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 1540,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-003",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 2140,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-004",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 360,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-004",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 960,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-004",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 1560,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-004",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 2160,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-005",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 380,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-005",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 980,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-005",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 1580,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-005",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 2180,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-006",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 400,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-006",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1000,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-006",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 1600,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-006",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 2200,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-007",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 420,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-007",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 1020,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-007",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 1620,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-007",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 2220,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-008",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 440,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-008",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 1040,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-008",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 1640,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-008",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 2240,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-009",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 460,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-009",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 1060,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-009",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 1660,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-009",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 2260,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-010",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 480,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-010",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 1080,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-010",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 1680,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-010",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-4",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 2280,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-011",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 500,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-011",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 1100,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-011",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 1700,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-012",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 520,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-012",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 1120,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-012",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1720,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-013",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 540,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-013",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 1140,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-013",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 1740,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-014",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 560,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-014",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 1160,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-014",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 1760,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-015",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 580,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-015",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 1180,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-015",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 1780,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-016",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 600,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-016",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 1200,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-016",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 1800,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-017",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 620,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-017",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 1220,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-017",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 1820,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-018",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 640,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-018",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1240,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-018",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 1840,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-019",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 660,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-019",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 1260,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-019",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 1860,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-020",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 680,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-020",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 1280,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-020",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 1880,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-021",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 700,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-021",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 1300,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-021",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 1900,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-022",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 720,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-022",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 1320,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-022",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 1920,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-023",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 740,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-023",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 1340,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-023",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 1940,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-024",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 760,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-024",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 1360,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-024",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1960,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-025",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 780,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-025",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 1380,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-025",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 1,
+        "distance_km": 1980,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-026",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 800,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-026",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 1400,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-026",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 2000,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-027",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 820,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-027",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 1420,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-027",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 2020,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-028",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 840,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-028",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 1440,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-028",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 2040,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-029",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 860,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-029",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 1460,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-029",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 2060,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-030",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-1",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 880,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-030",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-2",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1480,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "PORT-030",
+      "relationship_type": "ROUTES_TO",
+      "target_node_id": "DC-3",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 2080,
+        "transport_mode": "Road"
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "batch_size": 100,
+        "production_days": 5
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-016",
+      "properties": {
+        "batch_size": 300,
+        "production_days": 15
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 500,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 1900,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 3300,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 4700,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-001",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 6100,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "batch_size": 105,
+        "production_days": 6
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-017",
+      "properties": {
+        "batch_size": 305,
+        "production_days": 16
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 535,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 1935,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 3335,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 4735,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-002",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 6135,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-003",
+      "properties": {
+        "batch_size": 110,
+        "production_days": 7
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-018",
+      "properties": {
+        "batch_size": 310,
+        "production_days": 17
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 570,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 1970,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 3370,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 4770,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-003",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 6170,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-004",
+      "properties": {
+        "batch_size": 115,
+        "production_days": 8
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-019",
+      "properties": {
+        "batch_size": 315,
+        "production_days": 18
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 605,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 2005,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 3405,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 4805,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-004",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 6205,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-005",
+      "properties": {
+        "batch_size": 120,
+        "production_days": 9
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-020",
+      "properties": {
+        "batch_size": 320,
+        "production_days": 19
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 640,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 2040,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 3440,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 4840,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-005",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 6240,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-006",
+      "properties": {
+        "batch_size": 125,
+        "production_days": 10
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-021",
+      "properties": {
+        "batch_size": 325,
+        "production_days": 5
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 675,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 2075,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 3475,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 4875,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-006",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 6275,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-007",
+      "properties": {
+        "batch_size": 130,
+        "production_days": 11
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-022",
+      "properties": {
+        "batch_size": 330,
+        "production_days": 6
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 710,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 2110,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 3510,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 4910,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-007",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 6310,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-008",
+      "properties": {
+        "batch_size": 135,
+        "production_days": 12
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-023",
+      "properties": {
+        "batch_size": 335,
+        "production_days": 7
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 745,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 2145,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 3545,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 4945,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-008",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 6345,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-009",
+      "properties": {
+        "batch_size": 140,
+        "production_days": 13
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-024",
+      "properties": {
+        "batch_size": 340,
+        "production_days": 8
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 780,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 2180,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 3580,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 4980,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-009",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 6380,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-010",
+      "properties": {
+        "batch_size": 145,
+        "production_days": 14
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-025",
+      "properties": {
+        "batch_size": 345,
+        "production_days": 9
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 815,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 2215,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 3615,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 5015,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-010",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 6415,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-011",
+      "properties": {
+        "batch_size": 150,
+        "production_days": 15
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 850,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 2250,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 3650,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 5050,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-011",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 6450,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-012",
+      "properties": {
+        "batch_size": 155,
+        "production_days": 16
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 885,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 2285,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 3685,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 5085,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-012",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 6485,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-013",
+      "properties": {
+        "batch_size": 160,
+        "production_days": 17
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 920,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 2320,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 3720,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 5120,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-013",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 6520,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-014",
+      "properties": {
+        "batch_size": 165,
+        "production_days": 18
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 955,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 2355,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 3755,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 5155,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-014",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 6555,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-015",
+      "properties": {
+        "batch_size": 170,
+        "production_days": 19
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 990,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 2390,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 3790,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 5190,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-015",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 6590,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-016",
+      "properties": {
+        "batch_size": 175,
+        "production_days": 5
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 1025,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 2425,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 3825,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 5225,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-016",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 6625,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-017",
+      "properties": {
+        "batch_size": 180,
+        "production_days": 6
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 1060,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 2460,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 3860,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 5260,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-017",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 6660,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-018",
+      "properties": {
+        "batch_size": 185,
+        "production_days": 7
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 1095,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 2495,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 3895,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 5295,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-018",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 6695,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-019",
+      "properties": {
+        "batch_size": 190,
+        "production_days": 8
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 1130,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 2530,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 3930,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 5330,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-019",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 6730,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-020",
+      "properties": {
+        "batch_size": 195,
+        "production_days": 9
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 1165,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 2565,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 3965,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 5365,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-020",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 6765,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-021",
+      "properties": {
+        "batch_size": 200,
+        "production_days": 10
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 1200,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 2600,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 4000,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 5400,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-021",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 6800,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-022",
+      "properties": {
+        "batch_size": 205,
+        "production_days": 11
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 1235,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 2635,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 4035,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 5435,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-022",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 6835,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-023",
+      "properties": {
+        "batch_size": 210,
+        "production_days": 12
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 1270,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 2670,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 4070,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 5470,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-023",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 6870,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-024",
+      "properties": {
+        "batch_size": 215,
+        "production_days": 13
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 1305,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 2705,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 4105,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 5505,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-024",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 6905,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-025",
+      "properties": {
+        "batch_size": 220,
+        "production_days": 14
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 1340,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 2740,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 4140,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 5540,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-025",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 6940,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "batch_size": 225,
+        "production_days": 15
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 1375,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 2775,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 4175,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 5575,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-026",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 6975,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "batch_size": 230,
+        "production_days": 16
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 1410,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 2810,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 4210,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 5610,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-027",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 7010,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-003",
+      "properties": {
+        "batch_size": 235,
+        "production_days": 17
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 1445,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 2845,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 4245,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 5645,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-028",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 7045,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-004",
+      "properties": {
+        "batch_size": 240,
+        "production_days": 18
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 1480,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 2880,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 4280,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 5680,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-029",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 7080,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-005",
+      "properties": {
+        "batch_size": 245,
+        "production_days": 19
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 1515,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 2915,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 4315,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 5715,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-030",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 7115,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-006",
+      "properties": {
+        "batch_size": 250,
+        "production_days": 5
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 1550,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 2950,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 4350,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 5750,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-031",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 7150,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-007",
+      "properties": {
+        "batch_size": 255,
+        "production_days": 6
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 1585,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 2985,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 4385,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 5785,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-032",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 7185,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-008",
+      "properties": {
+        "batch_size": 260,
+        "production_days": 7
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 1620,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 3020,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 4420,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 5820,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-033",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 7220,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-009",
+      "properties": {
+        "batch_size": 265,
+        "production_days": 8
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 1655,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 3055,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 4455,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 5855,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-034",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 7255,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-010",
+      "properties": {
+        "batch_size": 270,
+        "production_days": 9
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 1690,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 3090,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 4490,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 5890,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-035",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 7290,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-011",
+      "properties": {
+        "batch_size": 275,
+        "production_days": 10
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 12,
+        "distance_km": 1725,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 2,
+        "distance_km": 3125,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 17,
+        "distance_km": 4525,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 7,
+        "distance_km": 5925,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-036",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 22,
+        "distance_km": 7325,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-012",
+      "properties": {
+        "batch_size": 280,
+        "production_days": 11
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 13,
+        "distance_km": 1760,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 3,
+        "distance_km": 3160,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 18,
+        "distance_km": 4560,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 8,
+        "distance_km": 5960,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-037",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 23,
+        "distance_km": 7360,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-013",
+      "properties": {
+        "batch_size": 285,
+        "production_days": 12
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 14,
+        "distance_km": 1795,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 4,
+        "distance_km": 3195,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 19,
+        "distance_km": 4595,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 9,
+        "distance_km": 5995,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-038",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 24,
+        "distance_km": 7395,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-014",
+      "properties": {
+        "batch_size": 290,
+        "production_days": 13
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 15,
+        "distance_km": 1830,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 5,
+        "distance_km": 3230,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 20,
+        "distance_km": 4630,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 10,
+        "distance_km": 6030,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-039",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 25,
+        "distance_km": 7430,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "MANUFACTURES",
+      "target_node_id": "PROD-015",
+      "properties": {
+        "batch_size": 295,
+        "production_days": 14
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-001",
+      "properties": {
+        "transit_days": 16,
+        "distance_km": 1865,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-002",
+      "properties": {
+        "transit_days": 6,
+        "distance_km": 3265,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-003",
+      "properties": {
+        "transit_days": 21,
+        "distance_km": 4665,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-004",
+      "properties": {
+        "transit_days": 11,
+        "distance_km": 6065,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "MAN-040",
+      "relationship_type": "SHIPS_THROUGH",
+      "target_node_id": "PORT-005",
+      "properties": {
+        "transit_days": 26,
+        "distance_km": 7465,
+        "transport_mode": "Sea"
+      }
+    },
+    {
+      "source_node_id": "DC-1",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 200
+      }
+    },
+    {
+      "source_node_id": "DC-1",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 725
+      }
+    },
+    {
+      "source_node_id": "DC-2",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 215
+      }
+    },
+    {
+      "source_node_id": "DC-2",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 740
+      }
+    },
+    {
+      "source_node_id": "DC-3",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 230
+      }
+    },
+    {
+      "source_node_id": "DC-3",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 755
+      }
+    },
+    {
+      "source_node_id": "DC-4",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 245
+      }
+    },
+    {
+      "source_node_id": "DC-4",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 770
+      }
+    },
+    {
+      "source_node_id": "DC-5",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 260
+      }
+    },
+    {
+      "source_node_id": "DC-5",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 785
+      }
+    },
+    {
+      "source_node_id": "DC-6",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 275
+      }
+    },
+    {
+      "source_node_id": "DC-6",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 800
+      }
+    },
+    {
+      "source_node_id": "DC-7",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 290
+      }
+    },
+    {
+      "source_node_id": "DC-7",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 815
+      }
+    },
+    {
+      "source_node_id": "DC-8",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 305
+      }
+    },
+    {
+      "source_node_id": "DC-8",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 830
+      }
+    },
+    {
+      "source_node_id": "DC-9",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 320
+      }
+    },
+    {
+      "source_node_id": "DC-9",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 845
+      }
+    },
+    {
+      "source_node_id": "DC-10",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 335
+      }
+    },
+    {
+      "source_node_id": "DC-10",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 860
+      }
+    },
+    {
+      "source_node_id": "DC-11",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 350
+      }
+    },
+    {
+      "source_node_id": "DC-11",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 875
+      }
+    },
+    {
+      "source_node_id": "DC-12",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 365
+      }
+    },
+    {
+      "source_node_id": "DC-12",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 890
+      }
+    },
+    {
+      "source_node_id": "DC-13",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 380
+      }
+    },
+    {
+      "source_node_id": "DC-13",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 905
+      }
+    },
+    {
+      "source_node_id": "DC-14",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 395
+      }
+    },
+    {
+      "source_node_id": "DC-14",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 920
+      }
+    },
+    {
+      "source_node_id": "DC-15",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 410
+      }
+    },
+    {
+      "source_node_id": "DC-15",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-2",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 935
+      }
+    },
+    {
+      "source_node_id": "DC-16",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 425
+      }
+    },
+    {
+      "source_node_id": "DC-17",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 440
+      }
+    },
+    {
+      "source_node_id": "DC-18",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 455
+      }
+    },
+    {
+      "source_node_id": "DC-19",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 470
+      }
+    },
+    {
+      "source_node_id": "DC-20",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 485
+      }
+    },
+    {
+      "source_node_id": "DC-21",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 500
+      }
+    },
+    {
+      "source_node_id": "DC-22",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 515
+      }
+    },
+    {
+      "source_node_id": "DC-23",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 530
+      }
+    },
+    {
+      "source_node_id": "DC-24",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 545
+      }
+    },
+    {
+      "source_node_id": "DC-25",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 560
+      }
+    },
+    {
+      "source_node_id": "DC-26",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 575
+      }
+    },
+    {
+      "source_node_id": "DC-27",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 590
+      }
+    },
+    {
+      "source_node_id": "DC-28",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 605
+      }
+    },
+    {
+      "source_node_id": "DC-29",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 1,
+        "volume_units": 620
+      }
+    },
+    {
+      "source_node_id": "DC-30",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 2,
+        "volume_units": 635
+      }
+    },
+    {
+      "source_node_id": "DC-31",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 3,
+        "volume_units": 650
+      }
+    },
+    {
+      "source_node_id": "DC-32",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 4,
+        "volume_units": 665
+      }
+    },
+    {
+      "source_node_id": "DC-33",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 5,
+        "volume_units": 680
+      }
+    },
+    {
+      "source_node_id": "DC-34",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 6,
+        "volume_units": 695
+      }
+    },
+    {
+      "source_node_id": "DC-35",
+      "relationship_type": "DISTRIBUTES",
+      "target_node_id": "RET-1",
+      "properties": {
+        "delivery_days": 7,
+        "volume_units": 710
+      }
+    },
+    {
+      "source_node_id": "RET-1",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 25,
+        "monthly_sales": 1000
+      }
+    },
+    {
+      "source_node_id": "RET-1",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 200,
+        "monthly_sales": 4500
+      }
+    },
+    {
+      "source_node_id": "RET-2",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 30,
+        "monthly_sales": 1100
+      }
+    },
+    {
+      "source_node_id": "RET-2",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 205,
+        "monthly_sales": 4600
+      }
+    },
+    {
+      "source_node_id": "RET-3",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 35,
+        "monthly_sales": 1200
+      }
+    },
+    {
+      "source_node_id": "RET-3",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 210,
+        "monthly_sales": 4700
+      }
+    },
+    {
+      "source_node_id": "RET-4",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 40,
+        "monthly_sales": 1300
+      }
+    },
+    {
+      "source_node_id": "RET-4",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 215,
+        "monthly_sales": 4800
+      }
+    },
+    {
+      "source_node_id": "RET-5",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 45,
+        "monthly_sales": 1400
+      }
+    },
+    {
+      "source_node_id": "RET-5",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 220,
+        "monthly_sales": 4900
+      }
+    },
+    {
+      "source_node_id": "RET-6",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 50,
+        "monthly_sales": 1500
+      }
+    },
+    {
+      "source_node_id": "RET-6",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 225,
+        "monthly_sales": 5000
+      }
+    },
+    {
+      "source_node_id": "RET-7",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 55,
+        "monthly_sales": 1600
+      }
+    },
+    {
+      "source_node_id": "RET-7",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 230,
+        "monthly_sales": 5100
+      }
+    },
+    {
+      "source_node_id": "RET-8",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 60,
+        "monthly_sales": 1700
+      }
+    },
+    {
+      "source_node_id": "RET-8",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 235,
+        "monthly_sales": 5200
+      }
+    },
+    {
+      "source_node_id": "RET-9",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 65,
+        "monthly_sales": 1800
+      }
+    },
+    {
+      "source_node_id": "RET-9",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 240,
+        "monthly_sales": 5300
+      }
+    },
+    {
+      "source_node_id": "RET-10",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 70,
+        "monthly_sales": 1900
+      }
+    },
+    {
+      "source_node_id": "RET-10",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 245,
+        "monthly_sales": 5400
+      }
+    },
+    {
+      "source_node_id": "RET-11",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 75,
+        "monthly_sales": 2000
+      }
+    },
+    {
+      "source_node_id": "RET-11",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 250,
+        "monthly_sales": 5500
+      }
+    },
+    {
+      "source_node_id": "RET-12",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 80,
+        "monthly_sales": 2100
+      }
+    },
+    {
+      "source_node_id": "RET-12",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 255,
+        "monthly_sales": 5600
+      }
+    },
+    {
+      "source_node_id": "RET-13",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 85,
+        "monthly_sales": 2200
+      }
+    },
+    {
+      "source_node_id": "RET-13",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 260,
+        "monthly_sales": 5700
+      }
+    },
+    {
+      "source_node_id": "RET-14",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 90,
+        "monthly_sales": 2300
+      }
+    },
+    {
+      "source_node_id": "RET-14",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 265,
+        "monthly_sales": 5800
+      }
+    },
+    {
+      "source_node_id": "RET-15",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 95,
+        "monthly_sales": 2400
+      }
+    },
+    {
+      "source_node_id": "RET-15",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-002",
+      "properties": {
+        "price_usd": 270,
+        "monthly_sales": 5900
+      }
+    },
+    {
+      "source_node_id": "RET-16",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 100,
+        "monthly_sales": 2500
+      }
+    },
+    {
+      "source_node_id": "RET-17",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 105,
+        "monthly_sales": 2600
+      }
+    },
+    {
+      "source_node_id": "RET-18",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 110,
+        "monthly_sales": 2700
+      }
+    },
+    {
+      "source_node_id": "RET-19",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 115,
+        "monthly_sales": 2800
+      }
+    },
+    {
+      "source_node_id": "RET-20",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 120,
+        "monthly_sales": 2900
+      }
+    },
+    {
+      "source_node_id": "RET-21",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 125,
+        "monthly_sales": 3000
+      }
+    },
+    {
+      "source_node_id": "RET-22",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 130,
+        "monthly_sales": 3100
+      }
+    },
+    {
+      "source_node_id": "RET-23",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 135,
+        "monthly_sales": 3200
+      }
+    },
+    {
+      "source_node_id": "RET-24",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 140,
+        "monthly_sales": 3300
+      }
+    },
+    {
+      "source_node_id": "RET-25",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 145,
+        "monthly_sales": 3400
+      }
+    },
+    {
+      "source_node_id": "RET-26",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 150,
+        "monthly_sales": 3500
+      }
+    },
+    {
+      "source_node_id": "RET-27",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 155,
+        "monthly_sales": 3600
+      }
+    },
+    {
+      "source_node_id": "RET-28",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 160,
+        "monthly_sales": 3700
+      }
+    },
+    {
+      "source_node_id": "RET-29",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 165,
+        "monthly_sales": 3800
+      }
+    },
+    {
+      "source_node_id": "RET-30",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 170,
+        "monthly_sales": 3900
+      }
+    },
+    {
+      "source_node_id": "RET-31",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 175,
+        "monthly_sales": 4000
+      }
+    },
+    {
+      "source_node_id": "RET-32",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 180,
+        "monthly_sales": 4100
+      }
+    },
+    {
+      "source_node_id": "RET-33",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 185,
+        "monthly_sales": 4200
+      }
+    },
+    {
+      "source_node_id": "RET-34",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 190,
+        "monthly_sales": 4300
+      }
+    },
+    {
+      "source_node_id": "RET-35",
+      "relationship_type": "SELLS",
+      "target_node_id": "PROD-001",
+      "properties": {
+        "price_usd": 195,
+        "monthly_sales": 4400
+      }
+    }
+  ]
+}

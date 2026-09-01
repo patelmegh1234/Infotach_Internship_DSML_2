@@ -129,3 +129,55 @@ RETURN
     count(r)                        AS out_degree
 LIMIT $limit
 """
+# ── Supply-Chain Analysis Queries ──────────────────────────
+
+GET_SUPPLIER_NETWORK = """
+MATCH p = (supplier:Supplier {node_id: $supplier_id})-[*1..5]-(neighbor)
+WHERE length(p) <= $max_hops
+RETURN p, length(p) AS hops
+ORDER BY hops
+"""
+
+GET_PORT_TRAFFIC = """
+MATCH (port:Port {node_id: $port_id})
+OPTIONAL MATCH (port)-[connection]-()
+RETURN
+    port.node_id AS port_id,
+    port.name AS port_name,
+    port.city AS city,
+    port.country AS country,
+    port.throughput_teu AS throughput_teu,
+    port.geo_importance_score AS geo_importance_score,
+    count(DISTINCT connection) AS connection_count
+"""
+
+GET_CRITICAL_PATH = """
+MATCH p = (supplier:Supplier)
+    -[:SUPPLIES|MANUFACTURES|SHIPS_THROUGH|ROUTES_TO|DISTRIBUTES|SELLS*1..8]->
+    (destination)
+WHERE all(node IN nodes(p) WHERE single(visited IN nodes(p) WHERE visited = node))
+RETURN
+    p,
+    length(p) AS hop_count,
+    supplier.node_id AS source_node_id,
+    destination.node_id AS destination_node_id
+ORDER BY hop_count DESC
+LIMIT 1
+"""
+# ── Entity Linking Queries ─────────────────────────────────
+
+GET_ENTITY_LINK_CANDIDATES = """
+MATCH (n)
+WHERE n.node_id IS NOT NULL
+  AND ANY(node_label IN labels(n) WHERE node_label IN $node_types)
+RETURN
+    n.node_id AS node_id,
+    labels(n)[0] AS node_type,
+    coalesce(n.name, "") AS name,
+    coalesce(n.city, "") AS city,
+    coalesce(n.country, "") AS country,
+    coalesce(n.risk_score, 0.0) AS risk_score,
+    coalesce(n.disruption_severity, 0.0) AS severity,
+    coalesce(n.disruption_type, "unknown") AS disruption_type
+ORDER BY n.name
+"""
