@@ -23,6 +23,8 @@ export interface GraphViewProps {
   edges: SupplyChainEdge[];
   selectedId?: string | null;
   onSelectNode?: (id: string | null) => void;
+  onDeleteNode?: (id: string) => void;
+  onDeleteEdge?: (source: string, target: string) => void;
   affectedIds?: string[];
   originId?: string | null;
   hideUnaffected?: boolean;
@@ -37,6 +39,8 @@ export function GraphView({
   edges,
   selectedId,
   onSelectNode,
+  onDeleteNode,
+  onDeleteEdge,
   affectedIds = [],
   originId = null,
   hideUnaffected = false,
@@ -60,63 +64,60 @@ export function GraphView({
             n.name.toLowerCase().includes(q) ||
             n.id.toLowerCase().includes(q) ||
             n.location.toLowerCase().includes(q) ||
-            (n.country && n.country.toLowerCase().includes(q)) ||
-            (n.city && n.city.toLowerCase().includes(q))
+            (n.country && n.country.toLowerCase().includes(q)),
         )
       : filtered;
-    const visibleNodes = hideUnaffected && hasAffected ? searched.filter((n) => affectedSet.has(n.id)) : searched;
-    const visibleIds = new Set(visibleNodes.map((n) => n.id));
 
-    const rf: Node<GraphNodeData>[] = visibleNodes.map((n) => {
-      const isOrigin = n.id === originId;
-      const isAffected = affectedSet.has(n.id);
-      const dimmed = hasAffected && !isAffected;
-      return {
+    const visibleNodeIds = new Set(searched.map((n) => n.id));
+
+    const flowNodes: Node<GraphNodeData>[] = searched
+      .filter((n) => (!hideUnaffected || !hasAffected ? true : affectedSet.has(n.id) || n.id === originId))
+      .map((n) => ({
         id: n.id,
         type: 'custom',
-        position: { x: n.x, y: n.y },
+        position: { x: n.x ?? 100, y: n.y ?? 100 },
         data: {
-          label: n.id,
+          label: n.name || n.id,
           name: n.name,
           type: n.type,
-          riskScore: n.riskScore,
           status: n.status,
-          affected: isAffected,
-          origin: isOrigin,
-          dimmed,
           country: n.country,
-          capacity: n.capacity_utilization,
+          node: n,
+          selected: n.id === selectedId,
+          affected: affectedSet.has(n.id),
+          origin: n.id === originId,
+          riskScore: n.riskScore,
         },
-        draggable: true,
-      };
-    });
-    setRfNodes(rf);
+      }));
 
-    const rfE: Edge[] = edges
-      .filter((e) => visibleIds.has(e.source) && visibleIds.has(e.target))
+    const flowEdges: Edge[] = edges
+      .filter((e) => visibleNodeIds.has(e.source) && visibleNodeIds.has(e.target))
+      .filter((e) => {
+        if (!hideUnaffected || !hasAffected) return true;
+        return (affectedSet.has(e.source) || e.source === originId) && (affectedSet.has(e.target) || e.target === originId);
+      })
       .map((e) => {
-        const sourceAffected = affectedSet.has(e.source);
-        const targetAffected = affectedSet.has(e.target);
-        const isProp = sourceAffected && targetAffected;
+        const isAffectedRoute = (affectedSet.has(e.source) || e.source === originId) && affectedSet.has(e.target);
         return {
           id: e.id,
           source: e.source,
           target: e.target,
           type: 'default',
-          animated: isProp,
-          label: showLabels && e.relationship ? e.relationship : undefined,
-          labelStyle: { fill: '#94a3b8', fontSize: 10, fontFamily: 'monospace' },
-          labelBgStyle: { fill: '#0f172a', fillOpacity: 0.8 },
-          labelBgPadding: [4, 2] as [number, number],
-          labelBgBorderRadius: 4,
+          animated: isAffectedRoute,
+          label: showLabels ? e.relationship || undefined : undefined,
           style: {
-            stroke: isProp ? scoreHex(85) : 'rgba(148, 163, 184, 0.35)',
-            strokeWidth: isProp ? 2.5 : 1.2,
+            stroke: isAffectedRoute ? '#fb7185' : 'rgba(148, 163, 184, 0.35)',
+            strokeWidth: isAffectedRoute ? 2.5 : 1.2,
           },
+          labelStyle: { fill: '#94a3b8', fontSize: 9, fontWeight: 500 },
+          labelBgStyle: { fill: '#0a0e17', fillOpacity: 0.85, rx: 4, ry: 4 },
+          labelBgPadding: [4, 2] as [number, number],
         };
       });
-    setRfEdges(rfE);
-  }, [nodes, edges, filterTypes, searchQuery, affectedSet, originId, hasAffected, hideUnaffected, showLabels, setRfNodes, setRfEdges]);
+
+    setRfNodes(flowNodes);
+    setRfEdges(flowEdges);
+  }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected, setRfNodes, setRfEdges]);
 
   const handleNodeClick: NodeMouseHandler = useCallback(
     (_e, node) => {
@@ -181,6 +182,8 @@ export function GraphView({
             onClose={() => onSelectNode?.(null)}
             allNodes={nodes}
             onSelectNode={onSelectNode}
+            onDeleteNode={onDeleteNode}
+            onDeleteEdge={onDeleteEdge}
           />
         </div>
       )}

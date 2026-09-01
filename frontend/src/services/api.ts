@@ -170,7 +170,6 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
   return { nodes: parsedNodes, edges: parsedEdges };
 }
 
-// In-memory prediction cache
 let _cachedPredictions: RiskPrediction[] = [];
 let _cachedScenarios: Scenario[] = [];
 
@@ -200,6 +199,76 @@ export const api = {
   async getNode(id: string): Promise<SupplyChainNode | undefined> {
     const all = await this.getNodes();
     return all.find((n) => n.id === id || n.node_id === id);
+  },
+
+  async createNode(node: {
+    node_id: string;
+    node_type: NodeType;
+    name: string;
+    country?: string;
+    city?: string;
+    capacity_utilization?: number;
+    historical_delay_avg?: number;
+    risk_score?: number;
+    geo_importance_score?: number;
+    throughput_teu?: number;
+  }): Promise<{ status: string; node_id: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/node`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(node),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async deleteNode(nodeId: string): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/node/${encodeURIComponent(nodeId)}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async createEdge(edge: {
+    source: string;
+    target: string;
+    relationship: string;
+    quantity?: number;
+    transit_days?: number;
+    transport_mode?: string;
+  }): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/edge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(edge),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async deleteEdge(source: string, target: string): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/edge/${encodeURIComponent(source)}/${encodeURIComponent(target)}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async clearGraph(): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/clear`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async resetDataset(): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/reset-dataset`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
   },
 
   async getGraphStats(): Promise<{ node_counts: { type: string; count: number }[]; total_edges: number }> {
@@ -466,7 +535,6 @@ export const api = {
       console.warn('[api] simulate API failed, falling back', err);
     }
 
-    const net = await this.getNetwork();
     const event: DisruptionEvent = {
       id: `SIM-LOCAL`,
       type: req.type,

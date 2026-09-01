@@ -1,7 +1,7 @@
 """
 AtmoGraph — API Routes: Graph
 ================================
-Endpoints for querying, adding, and managing supply chain graph nodes & edges.
+Endpoints for querying, adding, deleting, and managing supply chain graph nodes & edges.
 
 Week 1+2 Deliverable (Megh Patel — Team Leader)
 """
@@ -237,6 +237,33 @@ async def create_node(request: Request, node: CreateNodeRequest):
     }
 
 
+@router.delete("/node/{node_id}", summary="Delete a node and its connected routes")
+async def delete_node(request: Request, node_id: str):
+    """Delete a node from the graph along with any connected relationships."""
+    global _DYNAMIC_EDGES
+    driver = getattr(request.app.state, "neo4j", None)
+
+    # Remove from in-memory store
+    deleted_node = _DYNAMIC_NODES.pop(node_id, None)
+    _DYNAMIC_EDGES = [e for e in _DYNAMIC_EDGES if e.get("source") != node_id and e.get("target") != node_id]
+
+    if driver:
+        try:
+            with driver.session() as session:
+                session.run(
+                    "MATCH (n) WHERE elementId(n) = $id OR n.node_id = $id DETACH DELETE n",
+                    id=node_id,
+                )
+        except Exception as exc:
+            logger.warning(f"Neo4j node delete error: {exc}")
+
+    return {
+        "status": "deleted",
+        "node_id": node_id,
+        "message": f"Node '{node_id}' and all connected routes deleted.",
+    }
+
+
 @router.post("/edge", summary="Add a new supply chain route/relationship")
 async def create_edge(request: Request, edge: CreateEdgeRequest):
     """Create a relationship connecting two supply chain nodes."""
@@ -269,6 +296,33 @@ async def create_edge(request: Request, edge: CreateEdgeRequest):
         "target": edge.target,
         "relationship": edge.relationship,
         "message": f"Route from {edge.source} to {edge.target} ({edge.relationship}) added",
+    }
+
+
+@router.delete("/edge/{source}/{target}", summary="Delete a specific route/relationship")
+async def delete_edge(request: Request, source: str, target: str):
+    """Delete a relationship between two nodes."""
+    global _DYNAMIC_EDGES
+    driver = getattr(request.app.state, "neo4j", None)
+
+    _DYNAMIC_EDGES = [e for e in _DYNAMIC_EDGES if not (e.get("source") == source and e.get("target") == target)]
+
+    if driver:
+        try:
+            with driver.session() as session:
+                session.run(
+                    "MATCH (a {node_id: $source})-[r]->(b {node_id: $target}) DELETE r",
+                    source=source,
+                    target=target,
+                )
+        except Exception as exc:
+            logger.warning(f"Neo4j edge delete error: {exc}")
+
+    return {
+        "status": "deleted",
+        "source": source,
+        "target": target,
+        "message": f"Route between {source} and {target} deleted.",
     }
 
 

@@ -1,4 +1,4 @@
-import { X, MapPin, Activity, DollarSign, ArrowDownRight, ArrowUpRight, Boxes, Users, Gauge, Clock, ShieldAlert } from 'lucide-react';
+import { X, MapPin, Activity, DollarSign, ArrowDownRight, ArrowUpRight, Boxes, Users, Gauge, Clock, ShieldAlert, Trash2 } from 'lucide-react';
 import type { SupplyChainNode } from '@/types';
 import { RiskBadge } from '@/components/RiskBadge';
 import { formatCurrency, riskLevelFromScore, classNames } from '@/utils/helpers';
@@ -14,11 +14,15 @@ export function NodeDetailsPanel({
   node,
   onClose,
   onSelectNode,
+  onDeleteNode,
+  onDeleteEdge,
   allNodes,
 }: {
   node: SupplyChainNode;
   onClose: () => void;
   onSelectNode?: (id: string) => void;
+  onDeleteNode?: (id: string) => void;
+  onDeleteEdge?: (source: string, target: string) => void;
   allNodes: SupplyChainNode[];
 }) {
   const level = riskLevelFromScore(node.riskScore);
@@ -56,7 +60,7 @@ export function NodeDetailsPanel({
           } />
         </div>
 
-        {/* Operational Metrics (from Neo4j) */}
+        {/* Operational Metrics */}
         {(node.capacity_utilization !== undefined || node.historical_delay_avg !== undefined || node.geo_importance_score !== undefined || node.throughput_teu !== undefined) && (
           <div>
             <SectionLabel>Operational Metrics</SectionLabel>
@@ -92,30 +96,55 @@ export function NodeDetailsPanel({
         </div>
 
         <RelationList
-          title="Dependencies (upstream)"
+          title="Dependencies (incoming)"
           icon={ArrowUpRight}
           ids={node.dependencies}
+          currentNodeId={node.id}
+          isIncoming={true}
           byId={byId}
           onSelectNode={onSelectNode}
-          emptyText="No direct upstream dependencies recorded."
+          onDeleteEdge={onDeleteEdge}
+          emptyText="No incoming routes."
         />
         <RelationList
-          title="Dependents (downstream)"
+          title="Dependents (outgoing)"
           icon={ArrowDownRight}
           ids={node.dependents}
+          currentNodeId={node.id}
+          isIncoming={false}
           byId={byId}
           onSelectNode={onSelectNode}
-          emptyText="No direct downstream dependents recorded."
+          onDeleteEdge={onDeleteEdge}
+          emptyText="No outgoing routes."
         />
         {node.connectedSuppliers && node.connectedSuppliers.length > 0 && (
           <RelationList
             title="Connected Suppliers"
             icon={Users}
             ids={node.connectedSuppliers}
+            currentNodeId={node.id}
+            isIncoming={true}
             byId={byId}
             onSelectNode={onSelectNode}
+            onDeleteEdge={onDeleteEdge}
             emptyText="None"
           />
+        )}
+
+        {/* Delete Node Action */}
+        {onDeleteNode && (
+          <div className="pt-4 border-t border-white/10">
+            <button
+              onClick={() => {
+                if (window.confirm(`Are you sure you want to delete node "${node.name}" (${node.id}) and all its routes?`)) {
+                  onDeleteNode(node.id);
+                }
+              }}
+              className="w-full btn-outline border-rose-500/30 text-rose-400 hover:bg-rose-500/15 hover:border-rose-500/50 flex items-center justify-center gap-2 py-2 text-xs"
+            >
+              <Trash2 className="h-4 w-4" /> Delete This Node
+            </button>
+          </div>
         )}
       </div>
     </div>
@@ -157,15 +186,21 @@ function RelationList({
   title,
   icon: Icon,
   ids,
+  currentNodeId,
+  isIncoming,
   byId,
   onSelectNode,
+  onDeleteEdge,
   emptyText,
 }: {
   title: string;
   icon: typeof Users;
   ids: string[];
+  currentNodeId: string;
+  isIncoming: boolean;
   byId: (id: string) => SupplyChainNode | undefined;
   onSelectNode?: (id: string) => void;
+  onDeleteEdge?: (source: string, target: string) => void;
   emptyText: string;
 }) {
   return (
@@ -181,17 +216,38 @@ function RelationList({
         <div className="space-y-1.5 max-h-48 overflow-y-auto scrollbar-thin">
           {ids.map((id) => {
             const n = byId(id);
+            const source = isIncoming ? id : currentNodeId;
+            const target = isIncoming ? currentNodeId : id;
+
             return (
-              <button
+              <div
                 key={id}
-                onClick={() => onSelectNode?.(id)}
-                disabled={!onSelectNode}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-ink-950/60 border border-white/5 hover:bg-white/10 hover:border-accent-500/30 transition text-left disabled:cursor-default"
+                className="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-ink-950/60 border border-white/5 hover:bg-white/10 hover:border-accent-500/30 transition text-left"
               >
-                <span className="font-mono text-xs text-accent-400">{id}</span>
-                <span className="text-xs text-slate-300 truncate">{n?.name ?? id}</span>
-                {n && <span className="ml-auto h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: n.riskScore >= 80 ? '#ef4444' : n.riskScore >= 60 ? '#fb7185' : n.riskScore >= 40 ? '#f59e0b' : '#10b981' }} />}
-              </button>
+                <button
+                  onClick={() => onSelectNode?.(id)}
+                  disabled={!onSelectNode}
+                  className="flex-1 flex items-center gap-2 min-w-0"
+                >
+                  <span className="font-mono text-xs text-accent-400">{id}</span>
+                  <span className="text-xs text-slate-300 truncate">{n?.name ?? id}</span>
+                  {n && <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: n.riskScore >= 80 ? '#ef4444' : n.riskScore >= 60 ? '#fb7185' : n.riskScore >= 40 ? '#f59e0b' : '#10b981' }} />}
+                </button>
+                {onDeleteEdge && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm(`Delete route from ${source} to ${target}?`)) {
+                        onDeleteEdge(source, target);
+                      }
+                    }}
+                    title="Delete this route"
+                    className="text-slate-500 hover:text-rose-400 p-1 rounded transition"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
             );
           })}
         </div>
