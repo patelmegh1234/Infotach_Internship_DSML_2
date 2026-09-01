@@ -67,6 +67,22 @@
   }
 }
 
+/* Critical: Ensure ReactFlow nodes and handles are always visible and interactive */
+.react-flow__node {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+.react-flow__handle {
+  pointer-events: all !important;
+}
+
+.react-flow__edge {
+  pointer-events: all !important;
+  cursor: pointer;
+}
+
 .react-flow__attribution {
   display: none;
 }

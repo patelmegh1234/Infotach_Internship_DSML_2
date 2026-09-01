@@ -52,7 +52,7 @@ export function GraphView({
   originId = null,
   hideUnaffected = false,
   showLabels = true,
-  height = 'h-[680px]',
+  height = 'h-[720px]',
   filterTypes,
   searchQuery = '',
 }: GraphViewProps) {
@@ -60,7 +60,7 @@ export function GraphView({
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState([]);
   const rfInstance = useRef<ReactFlowInstance | null>(null);
 
-  // Maintain dragged positions across re-renders
+  // Maintain dragged positions across re-renders permanently
   const draggedPositions = useRef<Record<string, { x: number; y: number }>>({});
   const prevNodeCount = useRef<number>(0);
 
@@ -86,13 +86,15 @@ export function GraphView({
       .filter((n) => (!hideUnaffected || !hasAffected ? true : affectedSet.has(n.id) || n.id === originId))
       .map((n) => {
         const savedPos = draggedPositions.current[n.id];
-        const defaultX = n.x ?? 120;
-        const defaultY = n.y ?? 120;
+        const defaultX = n.x ?? 150;
+        const defaultY = n.y ?? 150;
 
         return {
           id: n.id,
           type: 'custom',
           position: savedPos || { x: defaultX, y: defaultY },
+          width: 140,
+          height: 85,
           data: {
             label: n.name || n.id,
             name: n.name,
@@ -124,7 +126,7 @@ export function GraphView({
           animated: isAffectedRoute,
           label: showLabels ? e.relationship || undefined : undefined,
           style: {
-            stroke: isAffectedRoute ? '#fb7185' : 'rgba(56, 189, 248, 0.45)',
+            stroke: isAffectedRoute ? '#fb7185' : 'rgba(56, 189, 248, 0.55)',
             strokeWidth: isAffectedRoute ? 2.5 : 1.5,
           },
           labelStyle: { fill: '#94a3b8', fontSize: 10, fontWeight: 500 },
@@ -136,16 +138,20 @@ export function GraphView({
     setRfNodes(flowNodes);
     setRfEdges(flowEdges);
 
-    // Auto fit view if node count increased or graph was just loaded
+    // Auto fit view smoothly when nodes are added or first loaded
     if (nodes.length > 0 && (prevNodeCount.current === 0 || nodes.length !== prevNodeCount.current)) {
       setTimeout(() => {
         rfInstance.current?.fitView({ padding: 0.25, duration: 400 });
-      }, 50);
+      }, 60);
     }
     prevNodeCount.current = nodes.length;
   }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected, setRfNodes, setRfEdges]);
 
-  // Save node positions on drag stop so they remain permanently where the user moved them
+  // Save node positions on drag so they remain permanently where the user dropped them
+  const handleNodeDrag: NodeDragHandler = useCallback((_event, node) => {
+    draggedPositions.current[node.id] = { x: node.position.x, y: node.position.y };
+  }, []);
+
   const handleNodeDragStop: NodeDragHandler = useCallback((_event, node) => {
     draggedPositions.current[node.id] = { x: node.position.x, y: node.position.y };
   }, []);
@@ -190,12 +196,13 @@ export function GraphView({
   const selectedNode = selectedId ? nodes.find((n) => n.id === selectedId) : null;
 
   return (
-    <div className={classNames('relative w-full overflow-hidden rounded-xl border border-white/5 bg-ink-950/80', height)}>
+    <div className={classNames('relative w-full overflow-hidden rounded-xl border border-white/10 bg-ink-950/90 shadow-2xl', height)}>
       <ReactFlow
         nodes={rfNodes}
         edges={rfEdges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDrag={handleNodeDrag}
         onNodeDragStop={handleNodeDragStop}
         onConnect={handleConnect}
         onEdgeClick={handleEdgeClick}
@@ -216,7 +223,7 @@ export function GraphView({
         deleteKeyCode={['Backspace', 'Delete']}
         proOptions={{ hideAttribution: true }}
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1.2} color="rgba(100,116,139,0.25)" />
+        <Background variant={BackgroundVariant.Dots} gap={24} size={1.2} color="rgba(100,116,139,0.3)" />
         <Controls
           showInteractive={false}
           position="bottom-right"
@@ -238,8 +245,8 @@ export function GraphView({
 
       {/* Hints Toolbar */}
       <div className="absolute top-3 left-3 flex items-center gap-2">
-        <div className="chip glass-strong text-slate-400 text-[11px] flex items-center gap-1.5 shadow-sm">
-          <span>💡 <strong>Drag</strong> nodes to reposition · <strong>Drag dot handles</strong> to connect routes · <strong>Click edge</strong> to delete</span>
+        <div className="chip glass-strong text-slate-300 text-[11px] flex items-center gap-1.5 shadow-md">
+          <span>💡 <strong>Drag</strong> nodes to move · <strong>Drag dots</strong> to connect routes · <strong>Click route</strong> to delete</span>
         </div>
         {!showLabels && (
           <div className="chip glass-strong text-slate-400 text-[11px]">Labels hidden</div>
@@ -247,7 +254,7 @@ export function GraphView({
       </div>
 
       {selectedNode && (
-        <div className="absolute top-0 right-0 h-full w-full sm:w-[340px] glass-strong border-l border-white/10 shadow-2xl z-20 animate-fadeIn">
+        <div className="absolute top-0 right-0 h-full w-full sm:w-[350px] glass-strong border-l border-white/10 shadow-2xl z-20 animate-fadeIn">
           <NodeDetailsPanel
             node={selectedNode}
             onClose={() => onSelectNode?.(null)}
