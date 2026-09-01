@@ -197,6 +197,24 @@ export function GraphPage({ search }: { search: string }) {
     }
   };
 
+  // Connect edge by dragging handles
+  const handleAddEdgeDirect = async (source: string, target: string) => {
+    try {
+      await api.createEdge({
+        source,
+        target,
+        relationship: 'SUPPLIES',
+        transport_mode: 'sea',
+        quantity: 1000,
+        transit_days: 3,
+      });
+      toast.push({ kind: 'success', title: 'Route Connected', message: `Connected ${source} → ${target}` });
+      await fetchGraph(true);
+    } catch (err: any) {
+      toast.push({ kind: 'error', title: 'Route Failed', message: err.message || 'Could not connect route.' });
+    }
+  };
+
   // Delete Node handler
   const handleDeleteNode = async (nodeId: string) => {
     try {
@@ -257,7 +275,7 @@ export function GraphPage({ search }: { search: string }) {
             Supply Chain Knowledge Graph
           </h1>
           <p className="mt-1 text-sm text-slate-400">
-            Interactive graph canvas — add, inspect, and delete custom supply chain nodes and routes.
+            Interactive graph canvas — drag nodes, connect handle dots to link routes, or inspect and delete elements.
           </p>
         </div>
 
@@ -440,6 +458,7 @@ export function GraphPage({ search }: { search: string }) {
           onSelectNode={setSelectedId}
           onDeleteNode={handleDeleteNode}
           onDeleteEdge={handleDeleteEdge}
+          onAddEdge={handleAddEdgeDirect}
           showLabels={showLabels}
           height="h-[680px]"
           searchQuery={q}

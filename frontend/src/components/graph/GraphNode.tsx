@@ -53,15 +53,28 @@ function GraphNodeInner({ data, selected }: NodeProps<GraphNodeData>) {
   return (
     <div
       className={classNames(
-        'relative transition-all duration-300',
+        'relative group cursor-grab active:cursor-grabbing select-none transition-all duration-200',
         data.dimmed && 'opacity-25',
       )}
     >
-      <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+      {/* Target Handles (Incoming connections) */}
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="left-target"
+        className="!w-2.5 !h-2.5 !bg-accent-400 !border-2 !border-ink-950 !rounded-full opacity-60 group-hover:opacity-100 transition-opacity hover:!scale-125 cursor-crosshair"
+      />
+      <Handle
+        type="target"
+        position={Position.Top}
+        id="top-target"
+        className="!w-2.5 !h-2.5 !bg-accent-400 !border-2 !border-ink-950 !rounded-full opacity-40 group-hover:opacity-100 transition-opacity hover:!scale-125 cursor-crosshair"
+      />
+
       <div
         className={classNames(
-          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl border bg-ink-850/95 backdrop-blur-md transition-all duration-200 min-w-[96px] max-w-[140px]',
-          selected ? 'border-accent-400 shadow-glow scale-105 ring-2 ring-accent-400/40' : 'border-white/10 hover:border-white/30',
+          'flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border bg-ink-850/95 backdrop-blur-md transition-all duration-200 min-w-[110px] max-w-[150px] shadow-lg',
+          selected ? 'border-accent-400 shadow-glow scale-105 ring-2 ring-accent-400/50' : 'border-white/10 hover:border-white/40 hover:shadow-xl',
           data.origin && 'border-red-500/60 shadow-[0_0_0_1px_rgba(239,68,68,0.4),0_0_24px_rgba(239,68,68,0.25)]',
           data.affected && !data.origin && 'border-white/20',
         )}
@@ -74,22 +87,35 @@ function GraphNodeInner({ data, selected }: NodeProps<GraphNodeData>) {
           )}
           style={{ backgroundColor: `${ring}1f`, color: ring, border: `1px solid ${ring}55` }}
         >
-          <Icon className="h-4.5 w-4.5" />
+          <Icon className="h-5 w-5" />
         </div>
-        <span className="text-[10px] font-mono font-medium text-slate-300 truncate max-w-[120px]" title={data.name || data.label}>
+        <span className="text-[11px] font-mono font-semibold text-slate-200 truncate max-w-[130px]" title={data.name || data.label}>
           {data.label}
         </span>
         {data.name && data.name !== data.label && (
-          <span className="text-[9px] text-slate-400 truncate max-w-[120px]" title={data.name}>
+          <span className="text-[10px] text-slate-400 truncate max-w-[130px]" title={data.name}>
             {data.name}
           </span>
         )}
-        <div className="flex items-center gap-1 mt-0.5">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: scoreHex(risk) }} />
-          <span className="text-[9px] font-mono text-slate-400">{risk}</span>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: scoreHex(risk) }} />
+          <span className="text-[10px] font-mono font-medium text-slate-300">{risk}/100</span>
         </div>
       </div>
-      <Handle type="source" position={Position.Right} style={{ opacity: 0 }} />
+
+      {/* Source Handles (Outgoing connections) */}
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="right-source"
+        className="!w-2.5 !h-2.5 !bg-cyan-400 !border-2 !border-ink-950 !rounded-full opacity-60 group-hover:opacity-100 transition-opacity hover:!scale-125 cursor-crosshair"
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="bottom-source"
+        className="!w-2.5 !h-2.5 !bg-cyan-400 !border-2 !border-ink-950 !rounded-full opacity-40 group-hover:opacity-100 transition-opacity hover:!scale-125 cursor-crosshair"
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -7,8 +7,13 @@ import ReactFlow, {
   useEdgesState,
   type Node,
   type Edge,
+  type Connection,
   type NodeMouseHandler,
+  type EdgeMouseHandler,
+  type NodeDragHandler,
+  type ReactFlowInstance,
   BackgroundVariant,
+  addEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import type { SupplyChainNode, SupplyChainEdge, NodeType } from '@/types';
@@ -25,6 +30,7 @@ export interface GraphViewProps {
   onSelectNode?: (id: string | null) => void;
   onDeleteNode?: (id: string) => void;
   onDeleteEdge?: (source: string, target: string) => void;
+  onAddEdge?: (source: string, target: string) => void;
   affectedIds?: string[];
   originId?: string | null;
   hideUnaffected?: boolean;
@@ -41,6 +47,7 @@ export function GraphView({
   onSelectNode,
   onDeleteNode,
   onDeleteEdge,
+  onAddEdge,
   affectedIds = [],
   originId = null,
   hideUnaffected = false,
@@ -51,6 +58,11 @@ export function GraphView({
 }: GraphViewProps) {
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState([]);
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState([]);
+  const rfInstance = useRef<ReactFlowInstance | null>(null);
+
+  // Maintain dragged positions across re-renders
+  const draggedPositions = useRef<Record<string, { x: number; y: number }>>({});
+  const prevNodeCount = useRef<number>(0);
 
   const affectedSet = useMemo(() => new Set(affectedIds), [affectedIds]);
   const hasAffected = affectedSet.size > 0;
@@ -72,23 +84,29 @@ export function GraphView({
 
     const flowNodes: Node<GraphNodeData>[] = searched
       .filter((n) => (!hideUnaffected || !hasAffected ? true : affectedSet.has(n.id) || n.id === originId))
-      .map((n) => ({
-        id: n.id,
-        type: 'custom',
-        position: { x: n.x ?? 100, y: n.y ?? 100 },
-        data: {
-          label: n.name || n.id,
-          name: n.name,
-          type: n.type,
-          status: n.status,
-          country: n.country,
-          node: n,
-          selected: n.id === selectedId,
-          affected: affectedSet.has(n.id),
-          origin: n.id === originId,
-          riskScore: n.riskScore,
-        },
-      }));
+      .map((n) => {
+        const savedPos = draggedPositions.current[n.id];
+        const defaultX = n.x ?? 120;
+        const defaultY = n.y ?? 120;
+
+        return {
+          id: n.id,
+          type: 'custom',
+          position: savedPos || { x: defaultX, y: defaultY },
+          data: {
+            label: n.name || n.id,
+            name: n.name,
+            type: n.type,
+            status: n.status,
+            country: n.country,
+            node: n,
+            selected: n.id === selectedId,
+            affected: affectedSet.has(n.id),
+            origin: n.id === originId,
+            riskScore: n.riskScore,
+          },
+        };
+      });
 
     const flowEdges: Edge[] = edges
       .filter((e) => visibleNodeIds.has(e.source) && visibleNodeIds.has(e.target))
@@ -106,18 +124,57 @@ export function GraphView({
           animated: isAffectedRoute,
           label: showLabels ? e.relationship || undefined : undefined,
           style: {
-            stroke: isAffectedRoute ? '#fb7185' : 'rgba(148, 163, 184, 0.35)',
-            strokeWidth: isAffectedRoute ? 2.5 : 1.2,
+            stroke: isAffectedRoute ? '#fb7185' : 'rgba(56, 189, 248, 0.45)',
+            strokeWidth: isAffectedRoute ? 2.5 : 1.5,
           },
-          labelStyle: { fill: '#94a3b8', fontSize: 9, fontWeight: 500 },
-          labelBgStyle: { fill: '#0a0e17', fillOpacity: 0.85, rx: 4, ry: 4 },
-          labelBgPadding: [4, 2] as [number, number],
+          labelStyle: { fill: '#94a3b8', fontSize: 10, fontWeight: 500 },
+          labelBgStyle: { fill: '#0a0e17', fillOpacity: 0.9, rx: 4, ry: 4 },
+          labelBgPadding: [6, 3] as [number, number],
         };
       });
 
     setRfNodes(flowNodes);
     setRfEdges(flowEdges);
+
+    // Auto fit view if node count increased or graph was just loaded
+    if (nodes.length > 0 && (prevNodeCount.current === 0 || nodes.length !== prevNodeCount.current)) {
+      setTimeout(() => {
+        rfInstance.current?.fitView({ padding: 0.25, duration: 400 });
+      }, 50);
+    }
+    prevNodeCount.current = nodes.length;
   }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected, setRfNodes, setRfEdges]);
+
+  // Save node positions on drag stop so they remain permanently where the user moved them
+  const handleNodeDragStop: NodeDragHandler = useCallback((_event, node) => {
+    draggedPositions.current[node.id] = { x: node.position.x, y: node.position.y };
+  }, []);
+
+  // Connect drag handle handler (create edge by dragging from handle to handle)
+  const handleConnect = useCallback(
+    (connection: Connection) => {
+      if (connection.source && connection.target && connection.source !== connection.target) {
+        if (onAddEdge) {
+          onAddEdge(connection.source, connection.target);
+        } else {
+          setRfEdges((eds) => addEdge({ ...connection, animated: true }, eds));
+        }
+      }
+    },
+    [onAddEdge, setRfEdges],
+  );
+
+  // Click on an edge to prompt deletion
+  const handleEdgeClick: EdgeMouseHandler = useCallback(
+    (_event, edge) => {
+      if (onDeleteEdge) {
+        if (window.confirm(`Delete route from "${edge.source}" to "${edge.target}"?`)) {
+          onDeleteEdge(edge.source, edge.target);
+        }
+      }
+    },
+    [onDeleteEdge],
+  );
 
   const handleNodeClick: NodeMouseHandler = useCallback(
     (_e, node) => {
@@ -139,19 +196,27 @@ export function GraphView({
         edges={rfEdges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStop={handleNodeDragStop}
+        onConnect={handleConnect}
+        onEdgeClick={handleEdgeClick}
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
         onPaneClick={handlePaneClick}
+        onInit={(instance) => {
+          rfInstance.current = instance;
+          instance.fitView({ padding: 0.25 });
+        }}
         fitView
-        fitViewOptions={{ padding: 0.2 }}
+        fitViewOptions={{ padding: 0.25 }}
         minZoom={0.1}
         maxZoom={2.5}
-        onlyRenderVisibleElements={true}
+        nodesDraggable={true}
+        nodesConnectable={true}
+        elementsSelectable={true}
+        deleteKeyCode={['Backspace', 'Delete']}
         proOptions={{ hideAttribution: true }}
-        nodesConnectable={false}
-        nodesDraggable
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1.2} color="rgba(100,116,139,0.2)" />
+        <Background variant={BackgroundVariant.Dots} gap={24} size={1.2} color="rgba(100,116,139,0.25)" />
         <Controls
           showInteractive={false}
           position="bottom-right"
@@ -164,16 +229,22 @@ export function GraphView({
             const d = n.data as GraphNodeData;
             if (d.origin) return '#ef4444';
             if (d.affected) return scoreHex(d.riskScore);
-            return 'rgba(100,116,139,0.5)';
+            return 'rgba(100,116,139,0.6)';
           }}
           maskColor="rgba(7,11,20,0.75)"
           className="hidden md:block !bg-ink-900/90 !border !border-white/10 !rounded-lg"
         />
       </ReactFlow>
 
-      {!showLabels && (
-        <div className="absolute top-3 left-3 chip glass-strong text-slate-400 text-[11px]">Relationship labels hidden</div>
-      )}
+      {/* Hints Toolbar */}
+      <div className="absolute top-3 left-3 flex items-center gap-2">
+        <div className="chip glass-strong text-slate-400 text-[11px] flex items-center gap-1.5 shadow-sm">
+          <span>💡 <strong>Drag</strong> nodes to reposition · <strong>Drag dot handles</strong> to connect routes · <strong>Click edge</strong> to delete</span>
+        </div>
+        {!showLabels && (
+          <div className="chip glass-strong text-slate-400 text-[11px]">Labels hidden</div>
+        )}
+      </div>
 
       {selectedNode && (
         <div className="absolute top-0 right-0 h-full w-full sm:w-[340px] glass-strong border-l border-white/10 shadow-2xl z-20 animate-fadeIn">
