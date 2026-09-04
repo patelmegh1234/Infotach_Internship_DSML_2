@@ -9,7 +9,6 @@ import { api, type SimulationResult } from '@/services/api';
 import { useToast } from '@/hooks/useToast';
 import { formatCurrency, classNames } from '@/utils/helpers';
 import type { SupplyChainNode, SupplyChainEdge } from '@/types';
-import { Activity as ActivityIcon } from 'lucide-react';
 
 export function SimulatorPage() {
   const [nodes, setNodes] = useState<SupplyChainNode[]>([]);
@@ -138,7 +137,7 @@ export function SimulatorPage() {
           {result && !running && (
             <>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <MiniStat icon={ActivityIcon} label="Affected Nodes" value={String(result.affectedNodes.length)} accent="rose" />
+                <MiniStat icon={Activity} label="Affected Nodes" value={String(result.affectedNodes.length)} accent="rose" />
                 <MiniStat icon={DollarSign} label="Estimated Loss" value={formatCurrency(result.event.estimatedLoss)} accent="amber" />
                 <MiniStat icon={TrendingUp} label="Risk Score" value={`${result.event.riskScore}/100`} accent="violet" />
                 <MiniStat icon={Clock} label="Recovery Time" value={`${result.event.recoveryTimeDays}d`} accent="cyan" />

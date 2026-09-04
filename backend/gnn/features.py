@@ -81,7 +81,7 @@ def encode_node_features(node: dict[str, Any]) -> np.ndarray:
     feat[10] = float(node.get("capacity_utilization", 0.5))
     feat[11] = float(node.get("geo_importance_score", 0.5))
 
-    return feat
+    return torch.from_numpy(feat)
 
 
 def build_pyg_graph(
@@ -99,31 +99,28 @@ def build_pyg_graph(
 
     Returns:
         torch_geometric.data.Data object ready for GNN inference.
-
-    Example:
-        nodes = [
-            {"id": "port_001", "node_type": "Port", "risk_score": 0.8, ...},
-            {"id": "supplier_001", "node_type": "Supplier", ...},
-        ]
-        edges = [
-            {"source": "supplier_001", "target": "port_001", "weight": 0.9},
-        ]
-        graph = build_pyg_graph(nodes, edges)
-        print(graph.x.shape)   # [2, 12]
-        print(graph.edge_index) # [2, 1]
     """
     # Build node index mapping
-    id_to_idx = {node[node_id_field]: i for i, node in enumerate(nodes)}
+    id_to_idx = {
+        node.get(node_id_field, node.get("node_id", i)): i
+        for i, node in enumerate(nodes)
+    }
 
     # Build feature matrix
-    x = np.stack([encode_node_features(n) for n in nodes], axis=0)
-    x_tensor = torch.tensor(x, dtype=torch.float32)
+    x_tensors = [encode_node_features(n) for n in nodes]
+    if x_tensors:
+        if isinstance(x_tensors[0], torch.Tensor):
+            x_tensor = torch.stack(x_tensors)
+        else:
+            x_tensor = torch.tensor(np.stack(x_tensors), dtype=torch.float32)
+    else:
+        x_tensor = torch.zeros((0, FEATURE_DIM), dtype=torch.float32)
 
     # Build edge index
     src_list, dst_list = [], []
     for edge in edges:
-        src_id = edge.get("source") or edge.get("src") or edge.get("from")
-        dst_id = edge.get("target") or edge.get("dst") or edge.get("to")
+        src_id = edge.get("source") if edge.get("source") is not None else (edge.get("src") or edge.get("from"))
+        dst_id = edge.get("target") if edge.get("target") is not None else (edge.get("dst") or edge.get("to"))
         if src_id in id_to_idx and dst_id in id_to_idx:
             src_list.append(id_to_idx[src_id])
             dst_list.append(id_to_idx[dst_id])
@@ -141,12 +138,17 @@ def build_pyg_graph(
             dtype=torch.float32,
         ).unsqueeze(1)
 
+    node_ids = [
+        node.get(node_id_field, node.get("node_id", i))
+        for i, node in enumerate(nodes)
+    ]
+
     return Data(
         x=x_tensor,
         edge_index=edge_index,
         y=y,
         num_nodes=len(nodes),
-        node_ids=[n[node_id_field] for n in nodes],  # Keep original IDs
+        node_ids=node_ids,  # Keep original IDs
     )
 
 

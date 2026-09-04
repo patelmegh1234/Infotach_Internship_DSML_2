@@ -10,7 +10,10 @@ from __future__ import annotations
 from functools import lru_cache
 from neo4j import GraphDatabase, Driver
 from loguru import logger
-from ..config.settings import get_settings
+try:
+    from config.settings import get_settings
+except ImportError:
+    from ..config.settings import get_settings
 
 
 @lru_cache()
@@ -25,7 +28,8 @@ def get_neo4j_driver() -> Driver:
         auth=(settings.neo4j_user, settings.neo4j_password),
         max_connection_lifetime=3600,
         max_connection_pool_size=50,
-        connection_acquisition_timeout=5,
+        connection_acquisition_timeout=2.0,
+        connection_timeout=2.0,
     )
     # Verify connectivity
     driver.verify_connectivity()

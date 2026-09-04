@@ -1,0 +1,145 @@
+{
+  "title": "Textile & Fast-Fashion Global Apparel Network",
+  "industry": "Textiles & Fast Fashion",
+  "description": "Raw cotton gins, yarn spinning, dye works, garment assembly in Southeast Asia, and flagship fast-fashion stores.",
+  "nodes": [
+    {
+      "node_id": "SUP-TEX-01",
+      "node_type": "Supplier",
+      "name": "Gujarat Raw Cotton Ginning Co-Op",
+      "country": "India",
+      "city": "Ahmedabad",
+      "capacity_utilization": 0.91,
+      "historical_delay_avg": 3.0,
+      "risk_score": 0.22
+    },
+    {
+      "node_id": "SUP-TEX-02",
+      "node_type": "Supplier",
+      "name": "Toray Synthetic Microfibers",
+      "country": "Japan",
+      "city": "Osaka",
+      "capacity_utilization": 0.88,
+      "historical_delay_avg": 2.0,
+      "risk_score": 0.15
+    },
+    {
+      "node_id": "MAN-TEX-01",
+      "node_type": "Manufacturer",
+      "name": "Beximco Apparel Industrial Park",
+      "country": "Bangladesh",
+      "city": "Dhaka",
+      "capacity_utilization": 0.96,
+      "historical_delay_avg": 4.5,
+      "risk_score": 0.35
+    },
+    {
+      "node_id": "MAN-TEX-02",
+      "node_type": "Manufacturer",
+      "name": "Viet Tien Garment Export Corporation",
+      "country": "Vietnam",
+      "city": "Ho Chi Minh City",
+      "capacity_utilization": 0.93,
+      "historical_delay_avg": 2.8,
+      "risk_score": 0.25
+    },
+    {
+      "node_id": "PORT-TEX-01",
+      "node_type": "Port",
+      "name": "Port of Chittagong",
+      "country": "Bangladesh",
+      "city": "Chittagong",
+      "capacity_utilization": 0.95,
+      "throughput_teu": 3200000,
+      "risk_score": 0.38
+    },
+    {
+      "node_id": "PORT-TEX-02",
+      "node_type": "Port",
+      "name": "Port of Cat Lai",
+      "country": "Vietnam",
+      "city": "Ho Chi Minh City",
+      "capacity_utilization": 0.9,
+      "throughput_teu": 5500000,
+      "risk_score": 0.22
+    },
+    {
+      "node_id": "DC-TEX-01",
+      "node_type": "DistributionCenter",
+      "name": "Inditex Zara Central Logistics Hub",
+      "country": "Spain",
+      "city": "Zaragoza",
+      "capacity_utilization": 0.94,
+      "historical_delay_avg": 0.9,
+      "risk_score": 0.12
+    },
+    {
+      "node_id": "RET-TEX-01",
+      "node_type": "Retailer",
+      "name": "Global Fast-Fashion Flagship Outlets",
+      "country": "United Kingdom",
+      "city": "London",
+      "capacity_utilization": 0.82,
+      "historical_delay_avg": 0.7,
+      "risk_score": 0.1
+    }
+  ],
+  "edges": [
+    {
+      "source": "SUP-TEX-01",
+      "target": "MAN-TEX-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "sea",
+      "transit_days": 6,
+      "quantity": 80000
+    },
+    {
+      "source": "SUP-TEX-02",
+      "target": "MAN-TEX-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "sea",
+      "transit_days": 5,
+      "quantity": 50000
+    },
+    {
+      "source": "MAN-TEX-01",
+      "target": "PORT-TEX-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 120000
+    },
+    {
+      "source": "MAN-TEX-02",
+      "target": "PORT-TEX-02",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 90000
+    },
+    {
+      "source": "PORT-TEX-01",
+      "target": "DC-TEX-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 18,
+      "quantity": 150000
+    },
+    {
+      "source": "PORT-TEX-02",
+      "target": "DC-TEX-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 16,
+      "quantity": 110000
+    },
+    {
+      "source": "DC-TEX-01",
+      "target": "RET-TEX-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "air",
+      "transit_days": 1,
+      "quantity": 200000
+    }
+  ]
+}

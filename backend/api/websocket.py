@@ -36,16 +36,6 @@ class WebSocketManager:
         self._connections[client_id] = websocket
         logger.info(f"WS connected: {client_id} | Total: {len(self._connections)}")
 
-        # Send welcome message
-        await self.send_personal(
-            {
-                "type": "connected",
-                "client_id": client_id,
-                "message": "Connected to AtmoGraph real-time stream",
-            },
-            client_id,
-        )
-
     def disconnect(self, client_id: str) -> None:
         """Remove a disconnected client."""
         self._connections.pop(client_id, None)
@@ -56,7 +46,10 @@ class WebSocketManager:
         if client_id in self._connections:
             ws = self._connections[client_id]
             try:
-                await ws.send_text(json.dumps(message))
+                if hasattr(ws, "send_json"):
+                    await ws.send_json(message)
+                else:
+                    await ws.send_text(json.dumps(message))
             except Exception as e:
                 logger.warning(f"Failed to send to {client_id}: {e}")
                 self.disconnect(client_id)
@@ -71,7 +64,10 @@ class WebSocketManager:
 
         for client_id, ws in self._connections.items():
             try:
-                await ws.send_text(payload)
+                if hasattr(ws, "send_json"):
+                    await ws.send_json(message)
+                else:
+                    await ws.send_text(payload)
             except Exception:
                 dead_clients.append(client_id)
 
@@ -79,7 +75,7 @@ class WebSocketManager:
             self.disconnect(client_id)
 
     async def broadcast_predictions(
-        self, predictions: list[dict[str, Any]], disruption_id: str
+        self, predictions: list[dict[str, Any]], disruption_id: str = "GLOBAL"
     ) -> None:
         """
         Broadcast GNN prediction results to all dashboard clients.
@@ -99,9 +95,14 @@ class WebSocketManager:
         """Broadcast a newly detected disruption event."""
         await self.broadcast({
             "type": "disruption_detected",
+            "event": disruption,
             "disruption": disruption,
         })
 
     @property
-    def connection_count(self) -> int:
-        return len(self._connections)
+    def connection_count(self):
+        class CallableInt(int):
+            def __call__(self):
+                return int(self)
+        return CallableInt(len(self._connections))
+

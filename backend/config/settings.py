@@ -7,7 +7,7 @@ All modules should import from here instead of using os.environ directly.
 
 import os
 from functools import lru_cache
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -33,7 +33,30 @@ class Settings(BaseSettings):
     # ── FastAPI ──────────────────────────────────────────
     api_host: str = Field(default="0.0.0.0", env="API_HOST")
     api_port: int = Field(default=8000, env="API_PORT")
-    cors_origins: list[str] = Field(default=["http://localhost:3000"], env="CORS_ORIGINS")
+    cors_origins: list[str] = Field(
+        default=[
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://127.0.0.1:3000",
+        ],
+        validation_alias="CORS_ORIGINS",
+    )
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v):
+        if isinstance(v, str):
+            v_clean = v.strip()
+            if v_clean.startswith("[") and v_clean.endswith("]"):
+                import json
+                try:
+                    return json.loads(v_clean)
+                except Exception:
+                    pass
+            return [origin.strip() for origin in v_clean.split(",") if origin.strip()]
+        return v
+
 
     # ── GNN Model ────────────────────────────────────────
     model_path: str = Field(default="./models/gnn_model.pt", env="MODEL_PATH")
@@ -49,7 +72,7 @@ class Settings(BaseSettings):
     news_api_key: str = Field(default="", env="NEWS_API_KEY")
     news_poll_interval: int = Field(default=300, env="NEWS_POLL_INTERVAL_SECONDS")
 
-    model_config = {"env_file": ".env", "case_sensitive": False}
+    model_config = {"env_file": ".env", "case_sensitive": False, "extra": "ignore"}
 
 
 @lru_cache()

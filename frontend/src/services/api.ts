@@ -28,7 +28,11 @@ import {
   nodeTypeRisk as emptyNodeTypeRisk,
 } from '@/data/mockData';
 
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || 'http://127.0.0.1:8000';
+// Empty string = relative URL → requests go through the Vite dev proxy to http://127.0.0.1:8000
+// This avoids CORS issues entirely. For production, set VITE_API_URL to the backend URL.
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) === 'http://127.0.0.1:8000'
+  ? ''
+  : (import.meta.env.VITE_API_URL as string | undefined) || '';
 
 export interface SimulationRequest {
   type: DisruptionType;
@@ -43,6 +47,24 @@ export interface SimulationResult {
   affectedNodes: string[];
   propagationLevels: Record<string, string[]>;
   insights: AIInsight;
+}
+
+export interface DemoTemplate {
+  id: string;
+  name: string;
+  industry: string;
+  description: string;
+  node_count: number;
+  edge_count: number;
+}
+
+export interface SampleFileItem {
+  filename: string;
+  title: string;
+  industry: string;
+  description: string;
+  nodes: any[];
+  edges: any[];
 }
 
 /**
@@ -173,6 +195,10 @@ function layoutGraphNodes(rawNodes: any[], rawEdges: any[]): { nodes: SupplyChai
 let _cachedPredictions: RiskPrediction[] = [];
 let _cachedScenarios: Scenario[] = [];
 
+function _clearPredictionCache() {
+  _cachedPredictions = [];
+}
+
 export const api = {
   async getNetwork(): Promise<{ nodes: SupplyChainNode[]; edges: SupplyChainEdge[] }> {
     try {
@@ -219,6 +245,7 @@ export const api = {
       body: JSON.stringify(node),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
     return await res.json();
   },
 
@@ -227,6 +254,7 @@ export const api = {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
     return await res.json();
   },
 
@@ -244,6 +272,7 @@ export const api = {
       body: JSON.stringify(edge),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
     return await res.json();
   },
 
@@ -252,6 +281,7 @@ export const api = {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
     return await res.json();
   },
 
@@ -260,6 +290,7 @@ export const api = {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
     return await res.json();
   },
 
@@ -267,6 +298,60 @@ export const api = {
     const res = await fetch(`${API_BASE}/api/graph/reset-dataset`, {
       method: 'POST',
     });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  // 1-Click Templates
+  async getTemplates(): Promise<DemoTemplate[]> {
+    try {
+      const res = await fetch(`${API_BASE}/api/graph/templates`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.templates || [];
+      }
+    } catch (err) {
+      console.warn('[api] getTemplates failed', err);
+    }
+    return [];
+  },
+
+  async loadTemplate(templateId: string): Promise<{ status: string; name: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/load-template/${encodeURIComponent(templateId)}`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
+    return await res.json();
+  },
+
+  // File Import & Export
+  async importGraph(payload: { title?: string; nodes: any[]; edges: any[] }): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/graph/import`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
+    return await res.json();
+  },
+
+  async getSampleFiles(): Promise<SampleFileItem[]> {
+    try {
+      const res = await fetch(`${API_BASE}/api/graph/sample-files`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.files || [];
+      }
+    } catch (err) {
+      console.warn('[api] getSampleFiles failed', err);
+    }
+    return [];
+  },
+
+  async exportGraph(): Promise<any> {
+    const res = await fetch(`${API_BASE}/api/graph/export`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   },
