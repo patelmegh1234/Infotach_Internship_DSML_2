@@ -13,8 +13,38 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 from loguru import logger
 from .graph import _load_fallback_graph
+from database.queries import GET_GNN_FEATURES, GET_ALL_EDGES
 
 router = APIRouter()
+
+
+def _pull_live_graph(driver) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """
+    Pull live supply chain graph directly from Neo4j using GET_GNN_FEATURES and GET_ALL_EDGES.
+    Falls back gracefully to mock graph when Neo4j is offline or empty.
+    """
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+
+    if driver:
+        try:
+            with driver.session() as session:
+                nodes_result = session.run(GET_GNN_FEATURES, limit=5000)
+                nodes = [dict(r) for r in nodes_result]
+
+                edges_result = session.run(GET_ALL_EDGES, limit=20000)
+                edges = [dict(r) for r in edges_result]
+                if nodes:
+                    logger.info(f"Pulled live Neo4j graph: {len(nodes)} nodes, {len(edges)} edges")
+        except Exception as exc:
+            logger.warning(f"Neo4j live query failed: {exc}. Using fallback dataset.")
+
+    if not nodes:
+        fallback = _load_fallback_graph(limit=2000)
+        nodes = fallback.nodes
+        edges = fallback.edges
+
+    return nodes, edges
 
 
 class DisruptionInput(BaseModel):
@@ -45,29 +75,32 @@ def _analytical_propagation(nodes: list[dict], edges: list[dict], disruption: di
     # Build adjacency
     adj: dict[str, list[str]] = {}
     for e in edges:
-        src, tgt = e.get("source", ""), e.get("target", "")
+        src = str(e.get("source") or e.get("source_node_id") or "")
+        tgt = str(e.get("target") or e.get("target_node_id") or "")
         if src:
             adj.setdefault(src, []).append(tgt)
+            adj.setdefault(src.lower(), []).append(tgt)
 
     # BFS k-hop distance
-    hop_dist: dict[str, int] = {origin_id: 0}
+    hop_dist: dict[str, int] = {origin_id: 0, origin_id.lower(): 0}
     queue = [origin_id]
     while queue:
         curr = queue.pop(0)
         curr_dist = hop_dist[curr]
         if curr_dist >= 4:
             continue
-        for nxt in adj.get(curr, []):
+        for nxt in adj.get(curr, []) + adj.get(curr.lower(), []):
             if nxt not in hop_dist:
                 hop_dist[nxt] = curr_dist + 1
+                hop_dist[nxt.lower()] = curr_dist + 1
                 queue.append(nxt)
 
     results: list[dict[str, Any]] = []
     hop_decay = [1.0, 0.78, 0.58, 0.38, 0.22]
 
     for node in nodes:
-        nid = node.get("id") or node.get("node_id", "")
-        dist = hop_dist.get(nid)
+        nid = str(node.get("node_id") or node.get("id") or "")
+        dist = hop_dist.get(nid) or hop_dist.get(nid.lower())
         if dist is not None:
             decay = hop_decay[min(dist, len(hop_decay) - 1)]
             delay_days = round(severity * decay * 32.0 + float(node.get("historical_delay_avg", 1.5)) * 2.0, 1)
@@ -84,6 +117,7 @@ def _analytical_propagation(nodes: list[dict], edges: list[dict], disruption: di
             "node_id": nid,
             "node_type": node.get("node_type", "Unknown"),
             "name": node.get("name", nid),
+            "delay_days": delay_days,
             "predicted_delay_days": delay_days,
             "confidence": conf,
             "risk_score": risk,
@@ -105,36 +139,7 @@ async def run_prediction(request: Request, disruption: DisruptionInput):
     gnn_engine = getattr(request.app.state, "gnn_engine", None)
     ws_manager = getattr(request.app.state, "ws_manager", None)
 
-    nodes: list[dict] = []
-    edges: list[dict] = []
-
-    if driver:
-        try:
-            with driver.session() as session:
-                nodes_result = session.run("""
-                    MATCH (n) RETURN
-                        elementId(n) AS id,
-                        labels(n)[0] AS node_type,
-                        properties(n) AS props
-                    LIMIT 2000
-                """)
-                nodes = [{"id": r["id"], "node_type": r["node_type"], **r["props"]} for r in nodes_result]
-
-                edges_result = session.run("""
-                    MATCH (a)-[r]->(b) RETURN
-                        elementId(a) AS source,
-                        elementId(b) AS target,
-                        type(r) AS relationship
-                    LIMIT 10000
-                """)
-                edges = [{"source": r["source"], "target": r["target"]} for r in edges_result]
-        except Exception as exc:
-            logger.warning(f"Neo4j query failed in predict route: {exc}. Using fallback.")
-
-    if not nodes:
-        fallback = _load_fallback_graph(limit=1000)
-        nodes = fallback.nodes
-        edges = fallback.edges
+    nodes, edges = _pull_live_graph(driver)
 
     if not nodes:
         return {
@@ -146,6 +151,7 @@ async def run_prediction(request: Request, disruption: DisruptionInput):
         }
 
     # Run GNN inference or analytical propagation fallback
+    predictions = None
     if gnn_engine:
         try:
             predictions = gnn_engine.predict(
@@ -155,8 +161,8 @@ async def run_prediction(request: Request, disruption: DisruptionInput):
             )
         except Exception as exc:
             logger.warning(f"GNN engine predict failed: {exc}. Using analytical propagation.")
-            predictions = _analytical_propagation(nodes, edges, disruption.model_dump())
-    else:
+
+    if not predictions:
         predictions = _analytical_propagation(nodes, edges, disruption.model_dump())
 
     # Broadcast to WebSocket clients if manager exists
@@ -166,10 +172,10 @@ async def run_prediction(request: Request, disruption: DisruptionInput):
                 predictions=predictions,
                 disruption_id=disruption.node_id,
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning(f"WebSocket broadcast failed: {exc}")
 
-    high_risk = [p for p in predictions if p["risk_level"] in ("high", "critical")]
+    high_risk = [p for p in predictions if p.get("risk_level") in ("high", "critical")]
 
     return {
         "status": "success",
@@ -190,42 +196,22 @@ async def predict_timeline(request: Request, payload: TimelinePredictionInput):
     driver = getattr(request.app.state, "neo4j", None)
     gnn_engine = getattr(request.app.state, "gnn_engine", None)
 
-    nodes: list[dict] = []
-    edges: list[dict] = []
-
-    if driver:
-        try:
-            with driver.session() as session:
-                nodes_result = session.run("""
-                    MATCH (n) RETURN elementId(n) AS id, labels(n)[0] AS node_type, properties(n) AS props
-                    LIMIT 2000
-                """)
-                nodes = [{"id": r["id"], "node_type": r["node_type"], **r["props"]} for r in nodes_result]
-                edges_result = session.run("""
-                    MATCH (a)-[r]->(b) RETURN elementId(a) AS source, elementId(b) AS target
-                    LIMIT 10000
-                """)
-                edges = [{"source": r["source"], "target": r["target"]} for r in edges_result]
-        except Exception:
-            pass
-
-    if not nodes:
-        fallback = _load_fallback_graph(limit=1000)
-        nodes = fallback.nodes
-        edges = fallback.edges
-
+    nodes, edges = _pull_live_graph(driver)
     timeline_data: dict[str, list[dict[str, Any]]] = {}
 
     if gnn_engine:
         try:
-            timeline_data = gnn_engine.predict_timeline(
+            timeline_res = gnn_engine.predict_timeline(
                 nodes=nodes,
                 edges=edges,
                 disruption_event=payload.disruption.model_dump(),
                 horizons=payload.horizons,
             )
-        except Exception:
-            pass
+            for h, preds in timeline_res.items():
+                key = f"{h}_days" if isinstance(h, int) else str(h)
+                timeline_data[key] = preds
+        except Exception as exc:
+            logger.warning(f"GNN engine predict_timeline failed: {exc}. Using analytical propagation.")
 
     if not timeline_data:
         base_preds = _analytical_propagation(nodes, edges, payload.disruption.model_dump())
@@ -237,6 +223,7 @@ async def predict_timeline(request: Request, payload: TimelinePredictionInput):
                     "node_type": p["node_type"],
                     "name": p["name"],
                     "predicted_delay_days": round(p["predicted_delay_days"] * factor, 1),
+                    "delay_days": round(p.get("delay_days", p["predicted_delay_days"]) * factor, 1),
                     "risk_score": min(1.0, round(p["risk_score"] * factor, 2)),
                     "confidence": p["confidence"],
                 }

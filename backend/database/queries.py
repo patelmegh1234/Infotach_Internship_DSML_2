@@ -70,11 +70,13 @@ RETURN n
 GET_ALL_EDGES = """
 MATCH (a)-[r]->(b)
 RETURN
-    elementId(a)    AS source,
-    elementId(b)    AS target,
-    type(r)         AS relationship,
-    r.weight        AS weight,
-    r.lead_time_days AS lead_time_days
+    elementId(a)             AS source,
+    coalesce(a.node_id, elementId(a)) AS source_node_id,
+    elementId(b)             AS target,
+    coalesce(b.node_id, elementId(b)) AS target_node_id,
+    type(r)                  AS relationship,
+    coalesce(r.weight, 1.0)  AS weight,
+    coalesce(r.lead_time_days, 7) AS lead_time_days
 LIMIT $limit
 """
 
@@ -116,17 +118,41 @@ RETURN count(n) AS nodes_reset
 GET_GNN_FEATURES = """
 MATCH (n)
 OPTIONAL MATCH (n)-[r]->()
+WITH n, count(r) AS out_degree
 RETURN
-    elementId(n)                    AS id,
-    n.node_id                       AS node_id,
-    labels(n)[0]                    AS node_type,
-    coalesce(n.risk_score, 0.0)     AS risk_score,
+    elementId(n)                         AS id,
+    coalesce(n.node_id, elementId(n))    AS node_id,
+    labels(n)[0]                         AS node_type,
+    coalesce(n.name, n.node_id, elementId(n)) AS name,
+    coalesce(n.country, "")              AS country,
+    coalesce(n.city, "")                 AS city,
+    coalesce(n.risk_score, 0.0)          AS risk_score,
     coalesce(n.disruption_flag, false)   AS disruption_flag,
     coalesce(n.disruption_severity, 0.0) AS disruption_severity,
-    coalesce(n.historical_delay_avg, 0.0) AS historical_delay_avg,
-    coalesce(n.capacity_utilization, 0.5) AS capacity_utilization,
-    coalesce(n.geo_importance_score, 0.5) AS geo_importance_score,
-    count(r)                        AS out_degree
+    coalesce(n.historical_delay_avg,
+      CASE 
+        WHEN labels(n)[0] = 'Supplier' THEN 2.0
+        WHEN labels(n)[0] = 'Port' THEN 1.5
+        WHEN labels(n)[0] = 'Manufacturer' THEN 2.5
+        WHEN labels(n)[0] = 'DistributionCenter' THEN 1.0
+        ELSE 0.5 
+      END)                               AS historical_delay_avg,
+    coalesce(n.capacity_utilization,
+      CASE 
+        WHEN n.production_capacity IS NOT NULL THEN toFloat(n.production_capacity) / 1200000.0
+        WHEN n.storage_capacity IS NOT NULL THEN toFloat(n.storage_capacity) / 150000.0
+        WHEN labels(n)[0] = 'Port' THEN 0.85
+        ELSE 0.70 
+      END)                               AS capacity_utilization,
+    coalesce(n.geo_importance_score,
+      CASE 
+        WHEN n.throughput_teu IS NOT NULL THEN toFloat(n.throughput_teu) / 50000000.0
+        WHEN labels(n)[0] = 'Port' THEN 0.80
+        WHEN labels(n)[0] = 'Supplier' THEN 0.60
+        ELSE 0.50 
+      END)                               AS geo_importance_score,
+    out_degree                           AS out_degree
+ORDER BY n.node_id
 LIMIT $limit
 """
 # ── Supply-Chain Analysis Queries ──────────────────────────
