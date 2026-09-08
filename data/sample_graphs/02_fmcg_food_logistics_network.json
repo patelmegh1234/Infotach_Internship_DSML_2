@@ -1,0 +1,173 @@
+{
+  "title": "FMCG & Temperature-Controlled Food Logistics",
+  "industry": "Food, Beverage & Agriculture",
+  "description": "Grain silos, dairy co-ops, processing facilities, deep freeze logistics, and supermarket distribution.",
+  "nodes": [
+    {
+      "node_id": "SUP-FOOD-01",
+      "node_type": "Supplier",
+      "name": "Cargill Bulk Grain Terminals",
+      "country": "United States",
+      "city": "Minneapolis",
+      "capacity_utilization": 0.92,
+      "historical_delay_avg": 2.0,
+      "risk_score": 0.18
+    },
+    {
+      "node_id": "SUP-FOOD-02",
+      "node_type": "Supplier",
+      "name": "JBS Sustainable Beef Supply",
+      "country": "Brazil",
+      "city": "S\u00e3o Paulo",
+      "capacity_utilization": 0.95,
+      "historical_delay_avg": 4.2,
+      "risk_score": 0.28
+    },
+    {
+      "node_id": "SUP-FOOD-03",
+      "node_type": "Supplier",
+      "name": "Tetra Pak Aseptic Packaging",
+      "country": "Sweden",
+      "city": "Lund",
+      "capacity_utilization": 0.88,
+      "historical_delay_avg": 1.6,
+      "risk_score": 0.12
+    },
+    {
+      "node_id": "MAN-FOOD-01",
+      "node_type": "Manufacturer",
+      "name": "Nestl\u00e9 Vevey Food Processing",
+      "country": "Switzerland",
+      "city": "Vevey",
+      "capacity_utilization": 0.94,
+      "historical_delay_avg": 1.5,
+      "risk_score": 0.15
+    },
+    {
+      "node_id": "MAN-FOOD-02",
+      "node_type": "Manufacturer",
+      "name": "Unilever Hellmanns Mega Factory",
+      "country": "United States",
+      "city": "Englewood",
+      "capacity_utilization": 0.9,
+      "historical_delay_avg": 1.8,
+      "risk_score": 0.16
+    },
+    {
+      "node_id": "PORT-FOOD-01",
+      "node_type": "Port",
+      "name": "Port of Santos Agro Terminal",
+      "country": "Brazil",
+      "city": "Santos",
+      "capacity_utilization": 0.93,
+      "throughput_teu": 4800000,
+      "risk_score": 0.3
+    },
+    {
+      "node_id": "PORT-FOOD-02",
+      "node_type": "Port",
+      "name": "Port of New Orleans Grain Silos",
+      "country": "United States",
+      "city": "New Orleans",
+      "capacity_utilization": 0.89,
+      "throughput_teu": 2500000,
+      "risk_score": 0.22
+    },
+    {
+      "node_id": "DC-FOOD-01",
+      "node_type": "DistributionCenter",
+      "name": "Lineage Cold Storage Mega Vault",
+      "country": "United States",
+      "city": "Dallas",
+      "capacity_utilization": 0.96,
+      "historical_delay_avg": 0.8,
+      "risk_score": 0.14
+    },
+    {
+      "node_id": "RET-FOOD-01",
+      "node_type": "Retailer",
+      "name": "Walmart Regional Supercenters",
+      "country": "United States",
+      "city": "Bentonville",
+      "capacity_utilization": 0.89,
+      "historical_delay_avg": 0.5,
+      "risk_score": 0.08
+    },
+    {
+      "node_id": "RET-FOOD-02",
+      "node_type": "Retailer",
+      "name": "Carrefour European Hypermarket Chain",
+      "country": "France",
+      "city": "Massy",
+      "capacity_utilization": 0.86,
+      "historical_delay_avg": 0.6,
+      "risk_score": 0.1
+    }
+  ],
+  "edges": [
+    {
+      "source": "SUP-FOOD-01",
+      "target": "PORT-FOOD-02",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "rail",
+      "transit_days": 3,
+      "quantity": 100000
+    },
+    {
+      "source": "SUP-FOOD-02",
+      "target": "PORT-FOOD-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "road",
+      "transit_days": 2,
+      "quantity": 80000
+    },
+    {
+      "source": "PORT-FOOD-01",
+      "target": "MAN-FOOD-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "sea",
+      "transit_days": 16,
+      "quantity": 65000
+    },
+    {
+      "source": "PORT-FOOD-02",
+      "target": "MAN-FOOD-02",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "rail",
+      "transit_days": 2,
+      "quantity": 70000
+    },
+    {
+      "source": "SUP-FOOD-03",
+      "target": "MAN-FOOD-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "road",
+      "transit_days": 2,
+      "quantity": 40000
+    },
+    {
+      "source": "MAN-FOOD-01",
+      "target": "RET-FOOD-02",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 85000
+    },
+    {
+      "source": "MAN-FOOD-02",
+      "target": "DC-FOOD-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 2,
+      "quantity": 90000
+    },
+    {
+      "source": "DC-FOOD-01",
+      "target": "RET-FOOD-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 95000
+    }
+  ]
+}

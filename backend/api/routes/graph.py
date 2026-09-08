@@ -1,7 +1,7 @@
 """
 AtmoGraph — API Routes: Graph
 ================================
-Endpoints for querying, adding, deleting, and managing supply chain graph nodes & edges.
+Endpoints for querying, adding, deleting, importing, and managing supply chain graph nodes & edges.
 
 Week 1+2 Deliverable (Megh Patel — Team Leader)
 """
@@ -9,11 +9,13 @@ Week 1+2 Deliverable (Megh Patel — Team Leader)
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Any
 from fastapi import APIRouter, HTTPException, Request, Query
 from pydantic import BaseModel, Field
 from loguru import logger
+from database.sample_templates import ALL_BUILTIN_TEMPLATES, FILE_TEMPLATES
 
 router = APIRouter()
 
@@ -45,6 +47,12 @@ class CreateEdgeRequest(BaseModel):
     quantity: Optional[int] = Field(500, description="Quantity / volume")
     transit_days: Optional[int] = Field(5, description="Transit duration (days)")
     transport_mode: Optional[str] = Field("sea", description="sea | air | road | rail")
+
+
+class ImportGraphRequest(BaseModel):
+    title: Optional[str] = Field(None, description="Graph title")
+    nodes: list[dict] = Field(..., description="List of node objects")
+    edges: list[dict] = Field(..., description="List of edge objects")
 
 
 # In-memory graph storage for dynamic local CRUD
@@ -203,6 +211,20 @@ async def create_node(request: Request, node: CreateNodeRequest):
     node_data = node.model_dump()
     node_id = node.node_id
 
+    # CRITICAL: ensure in-memory store is initialized BEFORE adding the node.
+    # Without this, the next GET /api/graph/ triggers _init_in_memory_dataset()
+    # which would NOT include this new node (it only reads from the JSON file).
+    _init_in_memory_dataset()
+
+    # Check for duplicate node ID
+    if node_id in _DYNAMIC_NODES:
+        return {
+            "status": "exists",
+            "node_id": node_id,
+            "node": _DYNAMIC_NODES[node_id],
+            "message": f"Node '{node_id}' already exists. Use a different ID.",
+        }
+
     # Add to in-memory store
     _DYNAMIC_NODES[node_id] = {
         "id": node_id,
@@ -270,10 +292,22 @@ async def create_edge(request: Request, edge: CreateEdgeRequest):
     driver = getattr(request.app.state, "neo4j", None)
     edge_data = edge.model_dump()
 
-    _DYNAMIC_EDGES.append({
-        "id": f"edge-{edge.source}-{edge.target}",
-        **edge_data,
-    })
+    # Ensure initialization is complete before adding edges
+    _init_in_memory_dataset()
+
+    # Validate that source and target nodes exist
+    if edge.source not in _DYNAMIC_NODES:
+        raise HTTPException(status_code=404, detail=f"Source node '{edge.source}' not found")
+    if edge.target not in _DYNAMIC_NODES:
+        raise HTTPException(status_code=404, detail=f"Target node '{edge.target}' not found")
+
+    # Prevent duplicate edges with same source→target
+    existing = any(e.get("source") == edge.source and e.get("target") == edge.target for e in _DYNAMIC_EDGES)
+    if not existing:
+        _DYNAMIC_EDGES.append({
+            "id": f"edge-{edge.source}-{edge.target}",
+            **edge_data,
+        })
 
     if driver:
         try:
@@ -368,6 +402,179 @@ async def reset_graph_dataset(request: Request):
     }
 
 
+# =========================================================================
+# Demo Templates & File Import Endpoints (10 Demo Graphs)
+# =========================================================================
+
+@router.get("/templates", summary="Get 5 built-in 1-click demo graph templates")
+async def list_demo_templates():
+    """Returns metadata for the 5 built-in demo graph options."""
+    templates = []
+    for tid, t in ALL_BUILTIN_TEMPLATES.items():
+        templates.append({
+            "id": tid,
+            "name": t["name"],
+            "industry": t["industry"],
+            "description": t["description"],
+            "node_count": len(t["nodes"]),
+            "edge_count": len(t["edges"]),
+        })
+    return {"templates": templates}
+
+
+@router.post("/load-template/{template_id}", summary="Load a built-in demo graph template")
+async def load_demo_template(request: Request, template_id: str):
+    """Replaces current graph with one of the 5 built-in demo templates."""
+    global _GRAPH_INITIALIZED
+    template = ALL_BUILTIN_TEMPLATES.get(template_id)
+    if not template:
+        raise HTTPException(status_code=404, detail=f"Template '{template_id}' not found")
+
+    driver = getattr(request.app.state, "neo4j", None)
+    _DYNAMIC_NODES.clear()
+    _DYNAMIC_EDGES.clear()
+    _GRAPH_INITIALIZED = True
+
+    for n in template["nodes"]:
+        nid = n["node_id"]
+        _DYNAMIC_NODES[nid] = {
+            "id": nid,
+            **n,
+        }
+
+    for e in template["edges"]:
+        src = e["source"]
+        tgt = e["target"]
+        _DYNAMIC_EDGES.append({
+            "id": f"edge-{src}-{tgt}",
+            **e,
+        })
+
+    if driver:
+        try:
+            with driver.session() as session:
+                session.run("MATCH (n) DETACH DELETE n")
+                for n in template["nodes"]:
+                    session.run(
+                        f"""
+                        MERGE (n:{n.get('node_type', 'Supplier')} {{node_id: $node_id}})
+                        SET n += $props
+                        """,
+                        node_id=n["node_id"],
+                        props=n,
+                    )
+                for e in template["edges"]:
+                    session.run(
+                        f"""
+                        MATCH (a {{node_id: $source}}), (b {{node_id: $target}})
+                        MERGE (a)-[r:{e.get('relationship', 'CONNECTED_TO')}]->(b)
+                        SET r += $props
+                        """,
+                        source=e["source"],
+                        target=e["target"],
+                        props=e,
+                    )
+        except Exception as exc:
+            logger.warning(f"Neo4j template load warning: {exc}")
+
+    return {
+        "status": "loaded",
+        "template_id": template_id,
+        "name": template["name"],
+        "total_nodes": len(_DYNAMIC_NODES),
+        "total_edges": len(_DYNAMIC_EDGES),
+        "message": f"Successfully loaded '{template['name']}' ({len(_DYNAMIC_NODES)} nodes, {len(_DYNAMIC_EDGES)} routes).",
+    }
+
+
+@router.post("/import", summary="Import custom graph from JSON file payload")
+async def import_graph_json(request: Request, payload: ImportGraphRequest):
+    """Import a complete supply chain graph from uploaded JSON."""
+    global _GRAPH_INITIALIZED
+    driver = getattr(request.app.state, "neo4j", None)
+
+    _DYNAMIC_NODES.clear()
+    _DYNAMIC_EDGES.clear()
+    _GRAPH_INITIALIZED = True
+
+    for n in payload.nodes:
+        nid = n.get("node_id") or n.get("id")
+        if nid:
+            _DYNAMIC_NODES[nid] = {
+                "id": nid,
+                "node_id": nid,
+                "node_type": n.get("node_type") or n.get("type") or "Supplier",
+                **n,
+            }
+
+    for idx, e in enumerate(payload.edges):
+        src = e.get("source") or e.get("source_node_id")
+        tgt = e.get("target") or e.get("target_node_id")
+        if src and tgt:
+            _DYNAMIC_EDGES.append({
+                "id": e.get("id") or f"edge-{src}-{tgt}-{idx}",
+                "source": src,
+                "target": tgt,
+                "relationship": e.get("relationship") or e.get("relationship_type") or "SUPPLIES",
+                **e,
+            })
+
+    if driver:
+        try:
+            with driver.session() as session:
+                session.run("MATCH (n) DETACH DELETE n")
+                for n in _DYNAMIC_NODES.values():
+                    session.run(
+                        f"""
+                        MERGE (n:{n.get('node_type', 'Supplier')} {{node_id: $node_id}})
+                        SET n += $props
+                        """,
+                        node_id=n["node_id"],
+                        props=n,
+                    )
+                for e in _DYNAMIC_EDGES:
+                    session.run(
+                        f"""
+                        MATCH (a {{node_id: $source}}), (b {{node_id: $target}})
+                        MERGE (a)-[r:{e.get('relationship', 'CONNECTED_TO')}]->(b)
+                        SET r += $props
+                        """,
+                        source=e["source"],
+                        target=e["target"],
+                        props=e,
+                    )
+        except Exception as exc:
+            logger.warning(f"Neo4j import write warning: {exc}")
+
+    return {
+        "status": "imported",
+        "title": payload.title or "Imported Graph",
+        "total_nodes": len(_DYNAMIC_NODES),
+        "total_edges": len(_DYNAMIC_EDGES),
+        "message": f"Successfully imported {len(_DYNAMIC_NODES)} nodes and {len(_DYNAMIC_EDGES)} routes.",
+    }
+
+
+@router.get("/sample-files", summary="Get list of downloadable sample graph JSON files")
+async def list_sample_files():
+    """Returns the 5 sample graph files with complete JSON payload for 1-click preview & download."""
+    return {"files": FILE_TEMPLATES}
+
+
+@router.get("/export", summary="Export active graph as downloadable JSON")
+async def export_graph_json(request: Request):
+    """Export the current active graph nodes and routes as structured JSON."""
+    _init_in_memory_dataset()
+    return {
+        "title": "AtmoGraph Supply Chain Export",
+        "exported_at": datetime.now(timezone.utc).isoformat(),
+        "total_nodes": len(_DYNAMIC_NODES),
+        "total_edges": len(_DYNAMIC_EDGES),
+        "nodes": list(_DYNAMIC_NODES.values()),
+        "edges": _DYNAMIC_EDGES,
+    }
+
+
 @router.get("/node/{node_id}", summary="Get single node details")
 async def get_node(request: Request, node_id: str):
     """Get detailed properties of a specific node."""
@@ -428,3 +635,10 @@ async def get_graph_stats(request: Request):
             "node_counts": [],
             "total_edges": len(_DYNAMIC_EDGES),
         }
+
+
+@router.get("/{node_id}", summary="Get single node details by ID")
+async def get_node_by_id(request: Request, node_id: str):
+    """Direct alias for /node/{node_id}."""
+    return await get_node(request, node_id)
+

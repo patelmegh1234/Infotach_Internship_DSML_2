@@ -1,0 +1,163 @@
+{
+  "title": "Critical Minerals & Rare Earth Elements",
+  "industry": "Mining & Strategic Materials",
+  "description": "Neodymium, dysprosium, cobalt, battery-grade nickel, chemical refining, and magnet manufacturing.",
+  "nodes": [
+    {
+      "node_id": "SUP-MIN-01",
+      "node_type": "Supplier",
+      "name": "Bayan Obo Rare Earth Mega Mine",
+      "country": "China",
+      "city": "Baotou",
+      "capacity_utilization": 0.98,
+      "historical_delay_avg": 3.5,
+      "risk_score": 0.4
+    },
+    {
+      "node_id": "SUP-MIN-02",
+      "node_type": "Supplier",
+      "name": "Mt Weld Rare Earths Complex",
+      "country": "Australia",
+      "city": "Laverton",
+      "capacity_utilization": 0.89,
+      "historical_delay_avg": 2.8,
+      "risk_score": 0.2
+    },
+    {
+      "node_id": "SUP-MIN-03",
+      "node_type": "Supplier",
+      "name": "Mutanda Cobalt & Copper Mine",
+      "country": "Global",
+      "city": "Kolwezi",
+      "capacity_utilization": 0.93,
+      "historical_delay_avg": 6.2,
+      "risk_score": 0.48
+    },
+    {
+      "node_id": "MAN-MIN-01",
+      "node_type": "Manufacturer",
+      "name": "Lynas Advanced Materials Refining Plant",
+      "country": "Malaysia",
+      "city": "Kuantan",
+      "capacity_utilization": 0.91,
+      "historical_delay_avg": 2.4,
+      "risk_score": 0.22
+    },
+    {
+      "node_id": "MAN-MIN-02",
+      "node_type": "Manufacturer",
+      "name": "JL MAG Permanent Magnet Smelting",
+      "country": "China",
+      "city": "Ganzhou",
+      "capacity_utilization": 0.95,
+      "historical_delay_avg": 2.0,
+      "risk_score": 0.3
+    },
+    {
+      "node_id": "PORT-MIN-01",
+      "node_type": "Port",
+      "name": "Port of Fremantle Bulk Gateway",
+      "country": "Australia",
+      "city": "Fremantle",
+      "capacity_utilization": 0.88,
+      "throughput_teu": 850000,
+      "risk_score": 0.16
+    },
+    {
+      "node_id": "PORT-MIN-02",
+      "node_type": "Port",
+      "name": "Port of Durban Mineral Terminal",
+      "country": "Global",
+      "city": "Durban",
+      "capacity_utilization": 0.92,
+      "throughput_teu": 2900000,
+      "risk_score": 0.36
+    },
+    {
+      "node_id": "DC-MIN-01",
+      "node_type": "DistributionCenter",
+      "name": "European Strategic Minerals Reserve",
+      "country": "Germany",
+      "city": "Bremen",
+      "capacity_utilization": 0.87,
+      "historical_delay_avg": 1.2,
+      "risk_score": 0.12
+    },
+    {
+      "node_id": "RET-MIN-01",
+      "node_type": "Retailer",
+      "name": "EV Motors & Wind Turbine Manufacturers",
+      "country": "Germany",
+      "city": "Stuttgart",
+      "capacity_utilization": 0.9,
+      "historical_delay_avg": 1.0,
+      "risk_score": 0.1
+    }
+  ],
+  "edges": [
+    {
+      "source": "SUP-MIN-01",
+      "target": "MAN-MIN-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "rail",
+      "transit_days": 4,
+      "quantity": 90000
+    },
+    {
+      "source": "SUP-MIN-02",
+      "target": "PORT-MIN-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "rail",
+      "transit_days": 2,
+      "quantity": 40000
+    },
+    {
+      "source": "PORT-MIN-01",
+      "target": "MAN-MIN-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 9,
+      "quantity": 45000
+    },
+    {
+      "source": "SUP-MIN-03",
+      "target": "PORT-MIN-02",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "rail",
+      "transit_days": 8,
+      "quantity": 30000
+    },
+    {
+      "source": "PORT-MIN-02",
+      "target": "MAN-MIN-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 18,
+      "quantity": 35000
+    },
+    {
+      "source": "MAN-MIN-01",
+      "target": "DC-MIN-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 20,
+      "quantity": 50000
+    },
+    {
+      "source": "MAN-MIN-02",
+      "target": "DC-MIN-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 24,
+      "quantity": 70000
+    },
+    {
+      "source": "DC-MIN-01",
+      "target": "RET-MIN-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 85000
+    }
+  ]
+}

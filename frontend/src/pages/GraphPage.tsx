@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import {
   Filter,
   Search,
@@ -15,11 +15,18 @@ import {
   Check,
   AlertCircle,
   Database,
+  Upload,
+  Download,
+  FileCode,
+  Sparkles,
+  Zap,
+  FolderOpen,
+  HelpCircle,
 } from 'lucide-react';
 import { GraphView } from '@/components/graph/GraphView';
 import { RiskLegend } from '@/components/graph/RiskLegend';
 import { LoadingState } from '@/components/LoadingState';
-import { api } from '@/services/api';
+import { api, type DemoTemplate, type SampleFileItem } from '@/services/api';
 import { classNames } from '@/utils/helpers';
 import { useToast } from '@/hooks/useToast';
 import type { SupplyChainNode, SupplyChainEdge, NodeType } from '@/types';
@@ -38,7 +45,14 @@ export function GraphPage({ search }: { search: string }) {
   // Modals
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
   const [showAddEdgeModal, setShowAddEdgeModal] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Demo & Sample State
+  const [templates, setTemplates] = useState<DemoTemplate[]>([]);
+  const [sampleFiles, setSampleFiles] = useState<SampleFileItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Node form state
   const [nodeForm, setNodeForm] = useState({
@@ -70,9 +84,15 @@ export function GraphPage({ search }: { search: string }) {
     else setLoading(true);
 
     try {
-      const net = await api.getNetwork();
+      const [net, tpls, sFiles] = await Promise.all([
+        api.getNetwork(),
+        api.getTemplates(),
+        api.getSampleFiles(),
+      ]);
       setNodes(net.nodes);
       setEdges(net.edges);
+      setTemplates(tpls);
+      setSampleFiles(sFiles);
     } catch (err) {
       console.error('Failed to load graph', err);
       toast.push({ kind: 'error', title: 'Connection error', message: 'Could not fetch graph data.' });
@@ -251,42 +271,149 @@ export function GraphPage({ search }: { search: string }) {
     }
   };
 
-  // Reset Dataset handler
-  const handleResetDataset = async () => {
-    if (!window.confirm('Load the 215-node benchmark supply chain dataset?')) return;
+  // Load Built-in 1-Click Template handler
+  const handleLoadTemplate = async (templateId: string) => {
+    setSubmitting(true);
     try {
-      await api.resetDataset();
-      toast.push({ kind: 'success', title: 'Benchmark Loaded', message: 'Loaded full benchmark supply chain network.' });
+      const res = await api.loadTemplate(templateId);
+      toast.push({ kind: 'success', title: 'Template Loaded', message: res.message });
+      setShowDemoModal(false);
       await fetchGraph(true);
     } catch (err: any) {
-      toast.push({ kind: 'error', title: 'Reset Failed', message: err.message || 'Failed to reset dataset.' });
+      toast.push({ kind: 'error', title: 'Load Failed', message: err.message || 'Could not load template.' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Load from File Payload handler
+  const handleLoadSampleFile = async (item: SampleFileItem) => {
+    setSubmitting(true);
+    try {
+      const res = await api.importGraph({
+        title: item.title,
+        nodes: item.nodes,
+        edges: item.edges,
+      });
+      toast.push({ kind: 'success', title: 'Graph Imported', message: res.message });
+      setShowImportModal(false);
+      await fetchGraph(true);
+    } catch (err: any) {
+      toast.push({ kind: 'error', title: 'Import Failed', message: err.message || 'Could not import graph file.' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Download Sample File handler
+  const handleDownloadSampleFile = (item: SampleFileItem) => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(item, null, 2));
+    const a = document.createElement('a');
+    a.href = dataStr;
+    a.download = item.filename;
+    a.click();
+    toast.push({ kind: 'success', title: 'File Downloaded', message: `Downloaded ${item.filename}` });
+  };
+
+  // Upload Custom File handler
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const parsed = JSON.parse(evt.target?.result as string);
+        if (!parsed.nodes || !Array.isArray(parsed.nodes)) {
+          throw new Error('Invalid graph format: missing "nodes" array.');
+        }
+        const res = await api.importGraph({
+          title: parsed.title || file.name,
+          nodes: parsed.nodes,
+          edges: parsed.edges || [],
+        });
+        toast.push({ kind: 'success', title: 'File Imported', message: res.message });
+        setShowImportModal(false);
+        await fetchGraph(true);
+      } catch (err: any) {
+        toast.push({ kind: 'error', title: 'Invalid File', message: err.message || 'Could not parse JSON file.' });
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Export Active Graph handler
+  const handleExportActiveGraph = async () => {
+    try {
+      const data = await api.exportGraph();
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = 'atmograph_supply_chain.json';
+      a.click();
+      toast.push({ kind: 'success', title: 'Graph Exported', message: 'Downloaded atmograph_supply_chain.json' });
+    } catch (err: any) {
+      toast.push({ kind: 'error', title: 'Export Failed', message: err.message || 'Could not export graph.' });
     }
   };
 
   if (loading) return <LoadingState label="Loading supply chain network from graph API…" />;
 
   return (
-    <div className="space-y-5 animate-fadeIn">
-      {/* Header */}
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="space-y-4 animate-fadeIn">
+      {/* Header & Main Toolbar */}
+      <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-white tracking-tight flex items-center gap-2.5">
             <Network className="h-6 w-6 text-accent-400" />
             Supply Chain Knowledge Graph
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
-            Interactive graph canvas — drag nodes, connect handle dots to link routes, or inspect and delete elements.
+          <p className="mt-0.5 text-xs text-slate-400">
+            Interactive canvas — create nodes, drag handles to connect routes, or load from 10 sample demo networks.
           </p>
         </div>
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-2 flex-wrap">
+          {/* 5 Built-in Demo Templates Dropdown Button */}
+          <button
+            onClick={() => setShowDemoModal(true)}
+            className="btn-outline border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 text-xs flex items-center gap-1.5 px-3 py-2 shadow-sm"
+            title="Choose from 5 built-in 1-click industry demo graphs"
+          >
+            <Sparkles className="h-4 w-4 text-cyan-400" /> 1-Click Demo Graphs
+          </button>
+
+          {/* 5 Sample Files & Custom Upload Button */}
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="btn-outline border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10 text-xs flex items-center gap-1.5 px-3 py-2 shadow-sm"
+            title="Import from 5 sample files or upload your own JSON"
+          >
+            <Upload className="h-4 w-4 text-indigo-400" /> Import Graph Files (5)
+          </button>
+
+          {/* Export JSON Button */}
+          <button
+            onClick={handleExportActiveGraph}
+            disabled={nodes.length === 0}
+            className="btn-outline text-xs flex items-center gap-1.5 px-3 py-2 text-slate-300 hover:text-white"
+            title="Export active graph to JSON file"
+          >
+            <Download className="h-3.5 w-3.5" /> Export JSON
+          </button>
+
+          <div className="h-5 w-[1px] bg-white/10 mx-1 hidden sm:block" />
+
+          {/* Add Node Button */}
           <button
             onClick={() => setShowAddNodeModal(true)}
             className="btn-primary text-xs flex items-center gap-1.5 px-3 py-2 shadow-glow"
           >
             <Plus className="h-4 w-4" /> Add Node
           </button>
+
+          {/* Add Route Button */}
           <button
             onClick={() => setShowAddEdgeModal(true)}
             disabled={nodes.length < 2}
@@ -294,21 +421,18 @@ export function GraphPage({ search }: { search: string }) {
           >
             <GitBranch className="h-4 w-4 text-accent-400" /> Add Route
           </button>
+
+          {/* Clear All Button */}
           <button
             onClick={handleClearGraph}
             disabled={nodes.length === 0}
-            className="btn-outline border-rose-500/30 text-rose-400 hover:bg-rose-500/10 text-xs flex items-center gap-1.5 px-3 py-2"
+            className="btn-outline border-rose-500/30 text-rose-400 hover:bg-rose-500/10 text-xs flex items-center gap-1.5 px-2.5 py-2"
             title="Clear all nodes and routes"
           >
-            <Trash2 className="h-3.5 w-3.5" /> Clear All
+            <Trash2 className="h-3.5 w-3.5" /> Clear
           </button>
-          <button
-            onClick={handleResetDataset}
-            className="btn-outline text-xs flex items-center gap-1.5 px-3 py-2 text-slate-400 hover:text-white"
-            title="Load benchmark dataset"
-          >
-            <Database className="h-3.5 w-3.5 text-cyan-400" /> Benchmark Data
-          </button>
+
+          {/* Refresh Button */}
           <button
             onClick={() => fetchGraph(true)}
             disabled={refreshing}
@@ -321,51 +445,51 @@ export function GraphPage({ search }: { search: string }) {
       </header>
 
       {/* Live Graph Stats Ribbon */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="card p-3 flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-            <Network className="h-4 w-4" />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div className="card p-2.5 flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+            <Network className="h-3.5 w-3.5" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-slate-500">Total Nodes</div>
-            <div className="text-base font-bold font-mono text-white">{stats.total}</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Total Nodes</div>
+            <div className="text-sm font-bold font-mono text-white">{stats.total}</div>
           </div>
         </div>
 
-        <div className="card p-3 flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
-            <Workflow className="h-4 w-4" />
+        <div className="card p-2.5 flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+            <Workflow className="h-3.5 w-3.5" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-slate-500">Connected Routes</div>
-            <div className="text-base font-bold font-mono text-white">{stats.edgesCount}</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Connected Routes</div>
+            <div className="text-sm font-bold font-mono text-white">{stats.edgesCount}</div>
           </div>
         </div>
 
-        <div className="card p-3 flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400">
-            <ShieldAlert className="h-4 w-4" />
+        <div className="card p-2.5 flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400">
+            <ShieldAlert className="h-3.5 w-3.5" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-slate-500">At-Risk Nodes</div>
-            <div className="text-base font-bold font-mono text-rose-400">{stats.critical}</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">At-Risk Nodes</div>
+            <div className="text-sm font-bold font-mono text-rose-400">{stats.critical}</div>
           </div>
         </div>
 
-        <div className="card p-3 flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
-            <Activity className="h-4 w-4" />
+        <div className="card p-2.5 flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+            <Activity className="h-3.5 w-3.5" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-slate-500">Avg Risk Score</div>
-            <div className="text-base font-bold font-mono text-amber-400">{stats.avgRisk}<span className="text-xs text-slate-500 font-normal">/100</span></div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Avg Risk Score</div>
+            <div className="text-sm font-bold font-mono text-amber-400">{stats.avgRisk}<span className="text-xs text-slate-500 font-normal">/100</span></div>
           </div>
         </div>
       </div>
 
       {/* Filter and Search Controls */}
-      <div className="card p-4 space-y-3">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div className="card p-3 space-y-2.5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
           {/* Node Type Filter Chips */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-xs text-slate-500 flex items-center gap-1 mr-1">
@@ -394,7 +518,7 @@ export function GraphPage({ search }: { search: string }) {
 
           {/* Quick Node Search */}
           <div className="flex items-center gap-2">
-            <div className="relative min-w-[240px]">
+            <div className="relative min-w-[220px]">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
               <input
                 type="text"
@@ -429,24 +553,27 @@ export function GraphPage({ search }: { search: string }) {
         <RiskLegend />
       </div>
 
-      {/* Main Graph View Canvas / Empty State */}
+      {/* Main Graph Canvas */}
       {nodes.length === 0 ? (
-        <div className="card p-12 text-center space-y-4 border-dashed border-white/10">
+        <div className="card p-10 text-center space-y-4 border-dashed border-white/10">
           <div className="h-12 w-12 rounded-full bg-accent-500/10 border border-accent-500/20 text-accent-400 flex items-center justify-center mx-auto">
             <Network className="h-6 w-6" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-white">Supply Chain Graph is Empty</h3>
             <p className="text-xs text-slate-400 max-w-md mx-auto mt-1">
-              No nodes created yet. Click <strong>Add Node</strong> to insert your suppliers, ports, and factories, or load the benchmark network.
+              Start building by clicking <strong>Add Node</strong>, or instantly load one of the <strong>10 Demo Graphs</strong> below.
             </p>
           </div>
-          <div className="flex items-center justify-center gap-3 pt-2">
-            <button onClick={() => setShowAddNodeModal(true)} className="btn-primary text-xs flex items-center gap-1.5 px-4 py-2">
-              <Plus className="h-4 w-4" /> Create First Node
+          <div className="flex items-center justify-center gap-3 pt-1 flex-wrap">
+            <button onClick={() => setShowDemoModal(true)} className="btn-primary text-xs flex items-center gap-1.5 px-4 py-2">
+              <Sparkles className="h-4 w-4" /> 1-Click Demo Graphs (5 Options)
             </button>
-            <button onClick={handleResetDataset} className="btn-outline text-xs flex items-center gap-1.5 px-4 py-2">
-              <Database className="h-4 w-4 text-cyan-400" /> Load Benchmark Dataset
+            <button onClick={() => setShowImportModal(true)} className="btn-outline text-xs flex items-center gap-1.5 px-4 py-2">
+              <Upload className="h-4 w-4 text-indigo-400" /> Import Graph Files (5 Files)
+            </button>
+            <button onClick={() => setShowAddNodeModal(true)} className="btn-ghost text-xs flex items-center gap-1.5 px-3 py-2 text-slate-300">
+              <Plus className="h-4 w-4" /> Manual Node Entry
             </button>
           </div>
         </div>
@@ -460,9 +587,142 @@ export function GraphPage({ search }: { search: string }) {
           onDeleteEdge={handleDeleteEdge}
           onAddEdge={handleAddEdgeDirect}
           showLabels={showLabels}
-          height="h-[680px]"
+          height="h-[720px]"
           searchQuery={q}
         />
+      )}
+
+      {/* 1-Click Demo Graphs Modal (5 Options) */}
+      {showDemoModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="card p-6 w-full max-w-2xl border border-cyan-500/30 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto scrollbar-thin">
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <div>
+                <h3 className="text-base font-semibold text-white flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-cyan-400" /> 1-Click Demo Graphs (5 Options)
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Select any industry demo to replace your active graph with a realistic supply chain network.
+                </p>
+              </div>
+              <button onClick={() => setShowDemoModal(false)} className="text-slate-400 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+              {templates.map((tpl) => (
+                <div
+                  key={tpl.id}
+                  className="rounded-xl bg-ink-900/80 border border-white/10 p-4 hover:border-cyan-500/50 hover:bg-ink-850 transition flex flex-col justify-between space-y-3"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="chip bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-[10px]">
+                        {tpl.industry}
+                      </span>
+                      <span className="font-mono text-[11px] text-slate-400">
+                        {tpl.node_count} nodes · {tpl.edge_count} routes
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-semibold text-white mt-2">{tpl.name}</h4>
+                    <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">{tpl.description}</p>
+                  </div>
+
+                  <button
+                    onClick={() => handleLoadTemplate(tpl.id)}
+                    disabled={submitting}
+                    className="w-full btn-primary text-xs flex items-center justify-center gap-1.5 py-2 mt-2"
+                  >
+                    <Zap className="h-3.5 w-3.5" /> Load This Demo Graph
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Graph Files Modal (5 File Templates + Upload Custom) */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="card p-6 w-full max-w-3xl border border-indigo-500/30 shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto scrollbar-thin">
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <div>
+                <h3 className="text-base font-semibold text-white flex items-center gap-2">
+                  <Upload className="h-5 w-5 text-indigo-400" /> Import Graph Files (5 Ready-to-Use Datasets)
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  1-click load pre-built JSON file templates, download them to edit, or upload your own custom JSON.
+                </p>
+              </div>
+              <button onClick={() => setShowImportModal(false)} className="text-slate-400 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Custom File Upload Box */}
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-xl border-2 border-dashed border-indigo-500/30 hover:border-indigo-500/60 bg-indigo-500/5 p-5 text-center cursor-pointer transition space-y-2"
+            >
+              <FileCode className="h-7 w-7 text-indigo-400 mx-auto" />
+              <div>
+                <span className="text-xs font-semibold text-white">Upload Custom JSON Graph File</span>
+                <p className="text-[11px] text-slate-400 mt-0.5">Click to browse or drop any .json file containing nodes and edges</p>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json,application/json"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+            </div>
+
+            {/* 5 Downloadable / Loadable Sample File Cards */}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+                <FolderOpen className="h-3.5 w-3.5 text-accent-400" /> 5 Pre-Built Sample Graph Files (data/sample_graphs/)
+              </h4>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {sampleFiles.map((sf, idx) => (
+                  <div
+                    key={sf.filename}
+                    className="rounded-xl bg-ink-900/80 border border-white/10 p-3.5 flex flex-col justify-between space-y-3"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-1.5">
+                        <span className="font-mono text-[10px] text-accent-400 truncate max-w-[170px]">{sf.filename}</span>
+                        <span className="font-mono text-[10px] text-slate-500">{sf.nodes.length}n · {sf.edges.length}e</span>
+                      </div>
+                      <h5 className="text-xs font-semibold text-white mt-1.5">{sf.title}</h5>
+                      <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-2">{sf.description}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1 border-t border-white/5">
+                      <button
+                        onClick={() => handleLoadSampleFile(sf)}
+                        disabled={submitting}
+                        className="btn-primary text-xs flex-1 py-1.5 flex items-center justify-center gap-1"
+                      >
+                        <Zap className="h-3 w-3" /> 1-Click Load
+                      </button>
+                      <button
+                        onClick={() => handleDownloadSampleFile(sf)}
+                        className="btn-outline text-xs px-2.5 py-1.5 flex items-center gap-1 text-slate-300 hover:text-white"
+                        title="Download JSON file to inspect or edit"
+                      >
+                        <Download className="h-3 w-3" /> Download
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Add Node Modal */}

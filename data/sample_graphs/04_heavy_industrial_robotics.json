@@ -1,0 +1,153 @@
+{
+  "title": "Industrial Machinery & Automation Robotics",
+  "industry": "Robotics & Heavy Industry",
+  "description": "High-precision servo motors, planetary gearboxes, harmonic reducers, industrial robotic arms, and smart factory lines.",
+  "nodes": [
+    {
+      "node_id": "SUP-ROB-01",
+      "node_type": "Supplier",
+      "name": "Harmonic Drive Systems Precision Reducers",
+      "country": "Japan",
+      "city": "Nagano",
+      "capacity_utilization": 0.93,
+      "historical_delay_avg": 2.2,
+      "risk_score": 0.16
+    },
+    {
+      "node_id": "SUP-ROB-02",
+      "node_type": "Supplier",
+      "name": "Yaskawa Electric Servo Motors",
+      "country": "Japan",
+      "city": "Kitakyushu",
+      "capacity_utilization": 0.9,
+      "historical_delay_avg": 1.9,
+      "risk_score": 0.18
+    },
+    {
+      "node_id": "SUP-ROB-03",
+      "node_type": "Supplier",
+      "name": "Siemens Industrial PLC Controllers",
+      "country": "Germany",
+      "city": "Nuremberg",
+      "capacity_utilization": 0.88,
+      "historical_delay_avg": 1.7,
+      "risk_score": 0.14
+    },
+    {
+      "node_id": "MAN-ROB-01",
+      "node_type": "Manufacturer",
+      "name": "FANUC Robotics Mega Fab Oshino",
+      "country": "Japan",
+      "city": "Oshino",
+      "capacity_utilization": 0.97,
+      "historical_delay_avg": 1.5,
+      "risk_score": 0.2
+    },
+    {
+      "node_id": "MAN-ROB-02",
+      "node_type": "Manufacturer",
+      "name": "KUKA Robotics Automated Assembly",
+      "country": "Germany",
+      "city": "Augsburg",
+      "capacity_utilization": 0.91,
+      "historical_delay_avg": 2.0,
+      "risk_score": 0.18
+    },
+    {
+      "node_id": "MAN-ROB-03",
+      "node_type": "Manufacturer",
+      "name": "ABB Robotics Mega Factory",
+      "country": "China",
+      "city": "Shanghai",
+      "capacity_utilization": 0.94,
+      "historical_delay_avg": 2.2,
+      "risk_score": 0.25
+    },
+    {
+      "node_id": "DC-ROB-01",
+      "node_type": "DistributionCenter",
+      "name": "North America Automation Distribution",
+      "country": "United States",
+      "city": "Rochester Hills",
+      "capacity_utilization": 0.85,
+      "historical_delay_avg": 1.4,
+      "risk_score": 0.12
+    },
+    {
+      "node_id": "RET-ROB-01",
+      "node_type": "Retailer",
+      "name": "Automotive Tier-1 Smart Gigafactories",
+      "country": "United States",
+      "city": "Detroit",
+      "capacity_utilization": 0.89,
+      "historical_delay_avg": 1.0,
+      "risk_score": 0.1
+    }
+  ],
+  "edges": [
+    {
+      "source": "SUP-ROB-01",
+      "target": "MAN-ROB-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 15000
+    },
+    {
+      "source": "SUP-ROB-01",
+      "target": "MAN-ROB-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "air",
+      "transit_days": 2,
+      "quantity": 8000
+    },
+    {
+      "source": "SUP-ROB-02",
+      "target": "MAN-ROB-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 20000
+    },
+    {
+      "source": "SUP-ROB-03",
+      "target": "MAN-ROB-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 12000
+    },
+    {
+      "source": "SUP-ROB-03",
+      "target": "MAN-ROB-03",
+      "relationship": "SUPPLIES",
+      "transport_mode": "air",
+      "transit_days": 2,
+      "quantity": 9000
+    },
+    {
+      "source": "MAN-ROB-01",
+      "target": "DC-ROB-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 14,
+      "quantity": 35000
+    },
+    {
+      "source": "MAN-ROB-02",
+      "target": "DC-ROB-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 10,
+      "quantity": 22000
+    },
+    {
+      "source": "DC-ROB-01",
+      "target": "RET-ROB-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 45000
+    }
+  ]
+}

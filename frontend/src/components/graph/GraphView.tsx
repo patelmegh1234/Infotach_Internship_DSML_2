@@ -145,7 +145,8 @@ export function GraphView({
       }, 60);
     }
     prevNodeCount.current = nodes.length;
-  }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected, setRfNodes, setRfEdges]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected]);
 
   // Save node positions on drag so they remain permanently where the user dropped them
   const handleNodeDrag: NodeDragHandler = useCallback((_event, node) => {
@@ -189,6 +190,25 @@ export function GraphView({
     [onSelectNode],
   );
 
+  // Handle keyboard deletion (Backspace/Delete) - sync with backend
+  const handleNodesDelete = useCallback(
+    (deletedNodes: Node[]) => {
+      deletedNodes.forEach((node) => {
+        onDeleteNode?.(node.id);
+      });
+    },
+    [onDeleteNode],
+  );
+
+  const handleEdgesDelete = useCallback(
+    (deletedEdges: Edge[]) => {
+      deletedEdges.forEach((edge) => {
+        onDeleteEdge?.(edge.source, edge.target);
+      });
+    },
+    [onDeleteEdge],
+  );
+
   const handlePaneClick = useCallback(() => {
     onSelectNode?.(null);
   }, [onSelectNode]);
@@ -206,6 +226,8 @@ export function GraphView({
         onNodeDragStop={handleNodeDragStop}
         onConnect={handleConnect}
         onEdgeClick={handleEdgeClick}
+        onNodesDelete={handleNodesDelete}
+        onEdgesDelete={handleEdgesDelete}
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
         onPaneClick={handlePaneClick}

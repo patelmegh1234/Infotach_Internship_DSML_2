@@ -48,6 +48,14 @@
   .input {
     @apply w-full rounded-lg bg-ink-900/80 border border-white/10 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-accent-500/60 focus:ring-1 focus:ring-accent-500/40;
   }
+  /* Alias used throughout form inputs */
+  .input-field {
+    @apply w-full rounded-lg bg-ink-900/80 border border-white/10 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-accent-500/60 focus:ring-1 focus:ring-accent-500/40;
+  }
+  /* Style native selects to match dark theme */
+  select.input-field, select.input {
+    @apply bg-ink-900 text-slate-100 border-white/10 cursor-pointer;
+  }
   .label {
     @apply block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5;
   }

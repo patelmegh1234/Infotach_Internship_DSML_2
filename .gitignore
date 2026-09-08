@@ -82,8 +82,13 @@ dmypy.json
 *.pth
 *.ckpt
 *.safetensors
-models/
+models/*
 !models/.gitkeep
+!models/best_model.pt
+!models/training_history.json
+!backend/models/.gitkeep
+!backend/models/best_model.pt
+!backend/models/training_history.json
 checkpoints/
 runs/
 wandb/

@@ -1,0 +1,191 @@
+{
+  "title": "Aerospace & Precision Defense Network",
+  "industry": "Aerospace & Aviation",
+  "description": "Titanium forgings, jet turbines, avionics suites, wing structures, final assembly, and airline deliveries.",
+  "nodes": [
+    {
+      "node_id": "SUP-AERO-01",
+      "node_type": "Supplier",
+      "name": "VSMPO-AVISMA Titanium Forgings",
+      "country": "Global",
+      "city": "Verkhnyaya",
+      "capacity_utilization": 0.94,
+      "historical_delay_avg": 5.0,
+      "risk_score": 0.35
+    },
+    {
+      "node_id": "SUP-AERO-02",
+      "node_type": "Supplier",
+      "name": "Safran Aircraft Engines & Nacelles",
+      "country": "France",
+      "city": "Courcouronnes",
+      "capacity_utilization": 0.9,
+      "historical_delay_avg": 2.8,
+      "risk_score": 0.2
+    },
+    {
+      "node_id": "SUP-AERO-03",
+      "node_type": "Supplier",
+      "name": "Collins Aerospace Flight Avionics",
+      "country": "United States",
+      "city": "Charlotte",
+      "capacity_utilization": 0.87,
+      "historical_delay_avg": 2.1,
+      "risk_score": 0.16
+    },
+    {
+      "node_id": "SUP-AERO-04",
+      "node_type": "Supplier",
+      "name": "Toray Carbon Fiber Prepregs",
+      "country": "Japan",
+      "city": "Tokyo",
+      "capacity_utilization": 0.89,
+      "historical_delay_avg": 2.4,
+      "risk_score": 0.18
+    },
+    {
+      "node_id": "MAN-AERO-01",
+      "node_type": "Manufacturer",
+      "name": "Airbus Toulouse Final Assembly Line",
+      "country": "France",
+      "city": "Toulouse",
+      "capacity_utilization": 0.96,
+      "historical_delay_avg": 3.4,
+      "risk_score": 0.25
+    },
+    {
+      "node_id": "MAN-AERO-02",
+      "node_type": "Manufacturer",
+      "name": "Boeing Everett Widebody Plant",
+      "country": "United States",
+      "city": "Everett",
+      "capacity_utilization": 0.92,
+      "historical_delay_avg": 4.1,
+      "risk_score": 0.3
+    },
+    {
+      "node_id": "PORT-AERO-01",
+      "node_type": "Port",
+      "name": "Port of Le Havre Maritime Entry",
+      "country": "France",
+      "city": "Le Havre",
+      "capacity_utilization": 0.86,
+      "throughput_teu": 3100000,
+      "risk_score": 0.18
+    },
+    {
+      "node_id": "PORT-AERO-02",
+      "node_type": "Port",
+      "name": "Port of Seattle Aero Cargo Terminal",
+      "country": "United States",
+      "city": "Seattle",
+      "capacity_utilization": 0.88,
+      "throughput_teu": 3700000,
+      "risk_score": 0.22
+    },
+    {
+      "node_id": "DC-AERO-01",
+      "node_type": "DistributionCenter",
+      "name": "Satair European Spares Hub Hamburg",
+      "country": "Germany",
+      "city": "Hamburg",
+      "capacity_utilization": 0.89,
+      "historical_delay_avg": 1.2,
+      "risk_score": 0.12
+    },
+    {
+      "node_id": "DC-AERO-02",
+      "node_type": "DistributionCenter",
+      "name": "Boeing Global Distribution Dallas",
+      "country": "United States",
+      "city": "Dallas",
+      "capacity_utilization": 0.86,
+      "historical_delay_avg": 1.5,
+      "risk_score": 0.14
+    },
+    {
+      "node_id": "RET-AERO-01",
+      "node_type": "Retailer",
+      "name": "Commercial Airlines Delivery Center",
+      "country": "United States",
+      "city": "Chicago",
+      "capacity_utilization": 0.8,
+      "historical_delay_avg": 0.9,
+      "risk_score": 0.1
+    }
+  ],
+  "edges": [
+    {
+      "source": "SUP-AERO-01",
+      "target": "MAN-AERO-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "sea",
+      "transit_days": 18,
+      "quantity": 4000
+    },
+    {
+      "source": "SUP-AERO-01",
+      "target": "MAN-AERO-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "sea",
+      "transit_days": 22,
+      "quantity": 4500
+    },
+    {
+      "source": "SUP-AERO-02",
+      "target": "MAN-AERO-01",
+      "relationship": "SUPPLIES",
+      "transport_mode": "air",
+      "transit_days": 1,
+      "quantity": 120
+    },
+    {
+      "source": "SUP-AERO-03",
+      "target": "MAN-AERO-02",
+      "relationship": "SUPPLIES",
+      "transport_mode": "road",
+      "transit_days": 2,
+      "quantity": 300
+    },
+    {
+      "source": "SUP-AERO-04",
+      "target": "MAN-AERO-01",
+      "relationship": "SHIPS_THROUGH",
+      "transport_mode": "sea",
+      "transit_days": 26,
+      "quantity": 15000
+    },
+    {
+      "source": "MAN-AERO-01",
+      "target": "DC-AERO-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "air",
+      "transit_days": 1,
+      "quantity": 5000
+    },
+    {
+      "source": "MAN-AERO-02",
+      "target": "DC-AERO-02",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 2,
+      "quantity": 6000
+    },
+    {
+      "source": "DC-AERO-01",
+      "target": "RET-AERO-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "air",
+      "transit_days": 2,
+      "quantity": 8000
+    },
+    {
+      "source": "DC-AERO-02",
+      "target": "RET-AERO-01",
+      "relationship": "DELIVERS_TO",
+      "transport_mode": "road",
+      "transit_days": 1,
+      "quantity": 10000
+    }
+  ]
+}

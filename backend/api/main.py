@@ -78,10 +78,12 @@ app = FastAPI(
 )
 
 # ── CORS ──────────────────────────────────────────────────
+# Allow all origins in development so the Vite dev server (port 5173)
+# and any other local client can reach the API without CORS errors.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -1,5 +1,6 @@
 import { Network, LayoutDashboard, Workflow, Zap, ShieldAlert, Brain, FlaskConical, Bell, FileText, Activity, Cpu, Database, Server } from 'lucide-react';
 import { classNames } from '@/utils/helpers';
+import { useEffect, useState } from 'react';
 
 export type PageKey =
   | 'dashboard'
@@ -22,6 +23,17 @@ const nav: { key: PageKey; label: string; icon: typeof LayoutDashboard }[] = [
   { key: 'reports', label: 'Reports', icon: FileText },
 ];
 
+type StatusColor = 'emerald' | 'amber' | 'rose';
+
+interface HealthStatus {
+  api: StatusColor;
+  apiLabel: string;
+  neo4j: StatusColor;
+  neo4jLabel: string;
+  gnn: StatusColor;
+  gnnLabel: string;
+}
+
 export function Sidebar({
   active,
   onNavigate,
@@ -33,6 +45,64 @@ export function Sidebar({
   open: boolean;
   onClose: () => void;
 }) {
+  const [health, setHealth] = useState<HealthStatus>({
+    api: 'amber', apiLabel: 'Checking…',
+    neo4j: 'amber', neo4jLabel: 'Checking…',
+    gnn: 'amber', gnnLabel: 'Checking…',
+  });
+
+  useEffect(() => {
+    let alive = true;
+
+    const checkHealth = async () => {
+      try {
+        let r: Response | null = await fetch('/health/').catch(() => null);
+        if (!r || !r.ok) {
+          r = await fetch('http://127.0.0.1:8000/health/').catch(() => null);
+        }
+        if (!r || !r.ok) {
+          r = await fetch('http://localhost:8000/health/').catch(() => null);
+        }
+        if (!r || !r.ok) {
+          throw new Error('Health check offline');
+        }
+        const data = await r.json();
+        if (!alive) return;
+        if (!data || !data.components) {
+          setHealth({
+            api: 'rose', apiLabel: 'Offline',
+            neo4j: 'rose', neo4jLabel: 'Offline',
+            gnn: 'rose', gnnLabel: 'Offline',
+          });
+          return;
+        }
+        const neo4jOk = data.components.neo4j === 'connected';
+        const gnnOk = data.components.gnn_engine === 'loaded';
+        setHealth({
+          api: 'emerald', apiLabel: 'Connected',
+          neo4j: neo4jOk ? 'emerald' : 'amber',
+          neo4jLabel: neo4jOk ? 'Connected' : 'In-Memory',
+          gnn: gnnOk ? 'emerald' : 'amber',
+          gnnLabel: gnnOk ? 'Online' : 'Fallback',
+        });
+      } catch {
+        if (!alive) return;
+        setHealth({
+          api: 'rose', apiLabel: 'Offline',
+          neo4j: 'rose', neo4jLabel: 'Offline',
+          gnn: 'rose', gnnLabel: 'Offline',
+        });
+      }
+    };
+
+    checkHealth();
+    const interval = setInterval(checkHealth, 3000);
+    return () => {
+      alive = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <>
       {open && <div className="fixed inset-0 bg-black/60 z-30 lg:hidden" onClick={onClose} />}
@@ -83,9 +153,9 @@ export function Sidebar({
         <div className="px-3 py-4 border-t border-white/5 space-y-2">
           <p className="px-2 text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1">System Status</p>
           <StatusRow icon={Activity} label="System Status" value="Operational" color="emerald" />
-          <StatusRow icon={Cpu} label="AI Engine" value="Online" color="emerald" />
-          <StatusRow icon={Database} label="Neo4j" value="Connected" color="emerald" />
-          <StatusRow icon={Server} label="API" value="Connected" color="emerald" />
+          <StatusRow icon={Cpu} label="AI Engine" value={health.gnnLabel} color={health.gnn} />
+          <StatusRow icon={Database} label="Neo4j" value={health.neo4jLabel} color={health.neo4j} />
+          <StatusRow icon={Server} label="API" value={health.apiLabel} color={health.api} />
         </div>
       </aside>
     </>
@@ -101,7 +171,7 @@ function StatusRow({
   icon: typeof Activity;
   label: string;
   value: string;
-  color: 'emerald' | 'amber' | 'rose';
+  color: StatusColor;
 }) {
   const dot = color === 'emerald' ? 'bg-emerald-400' : color === 'amber' ? 'bg-amber-400' : 'bg-rose-400';
   const txt = color === 'emerald' ? 'text-emerald-400' : color === 'amber' ? 'text-amber-400' : 'text-rose-400';
@@ -110,7 +180,7 @@ function StatusRow({
       <Icon className="h-3.5 w-3.5 text-slate-500" />
       <span className="text-xs text-slate-400">{label}</span>
       <span className="ml-auto flex items-center gap-1.5">
-        <span className={classNames('h-1.5 w-1.5 rounded-full animate-pulseGlow', dot)} />
+        <span className={classNames('h-1.5 w-1.5 rounded-full', dot, color === 'emerald' ? 'animate-pulseGlow' : '')} />
         <span className={classNames('text-xs font-medium', txt)}>{value}</span>
       </span>
     </div>
