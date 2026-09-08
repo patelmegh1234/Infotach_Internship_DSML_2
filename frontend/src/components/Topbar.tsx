@@ -1,5 +1,6 @@
-import { Search, Bell, Menu, RefreshCw } from 'lucide-react';
+import { Search, Bell, Menu, RefreshCw, Radio } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { wsService, type WebSocketStatus } from '@/services/websocket';
 
 export function Topbar({
   onMenu,
@@ -11,9 +12,15 @@ export function Topbar({
   search: string;
 }) {
   const [now, setNow] = useState(new Date());
+  const [wsStatus, setWsStatus] = useState<WebSocketStatus>('disconnected');
+
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(t);
+    const unsubWs = wsService.subscribeStatus(setWsStatus);
+    return () => {
+      clearInterval(t);
+      unsubWs();
+    };
   }, []);
 
   return (
@@ -31,6 +38,27 @@ export function Topbar({
             placeholder="Search suppliers, factories, ports…"
             className="input pl-9"
           />
+        </div>
+
+        {/* Live WebSocket Status Badge */}
+        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border border-white/10 bg-white/5">
+          <span
+            className={`h-2 w-2 rounded-full ${
+              wsStatus === 'connected'
+                ? 'bg-emerald-400 animate-pulse'
+                : wsStatus === 'connecting'
+                ? 'bg-amber-400 animate-pulse'
+                : 'bg-rose-400'
+            }`}
+          />
+          <Radio className="h-3 w-3 text-slate-400" />
+          <span className="text-slate-300">
+            {wsStatus === 'connected'
+              ? 'Real-Time Stream'
+              : wsStatus === 'connecting'
+              ? 'Connecting...'
+              : 'Stream Offline'}
+          </span>
         </div>
 
         <div className="hidden md:flex items-center gap-2 text-xs text-slate-500 ml-2">

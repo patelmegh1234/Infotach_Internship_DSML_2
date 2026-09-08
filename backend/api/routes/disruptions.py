@@ -48,14 +48,41 @@ async def extract_nlp_disruption(request: Request, payload: NLPExtractRequest):
     """
     NLP extraction endpoint: takes a raw news headline, extracts entity,
     identifies disruption category and severity, and links it to a node ID.
+    Uses the advanced NLPPipeline with NER and entity linking.
     """
     text = payload.headline.strip()
     if not text:
         raise HTTPException(status_code=400, detail="Headline text cannot be empty")
 
+    # Try NLPPipeline first
+    try:
+        from nlp.pipeline import get_default_pipeline
+        pipeline = get_default_pipeline()
+        events = pipeline.process(text)
+        if events:
+            ev = events[0]
+            event = DisruptionEvent(
+                disruption_id=f"DIS-{uuid.uuid4().hex[:8].upper()}",
+                node_id=ev.node_id,
+                node_type=ev.node_type,
+                disruption_type=ev.disruption_type,
+                location=ev.location,
+                severity=ev.severity,
+                estimated_duration_days=ev.estimated_duration_days,
+                source_headline=text,
+            )
+            return {
+                "status": "extracted",
+                "headline": text,
+                "event": event.model_dump(),
+                "all_extracted_events": [e.to_dict() for e in events],
+            }
+    except Exception as exc:
+        logger.warning(f"NLPPipeline extraction failed, using fallback heuristic: {exc}")
+
     lower = text.lower()
 
-    # Rule-based / NLP classifier heuristic
+    # Rule-based / NLP classifier heuristic fallback
     disruption_type = "general"
     severity = 0.65
     duration_days = 10
@@ -81,7 +108,7 @@ async def extract_nlp_disruption(request: Request, payload: NLPExtractRequest):
         severity = 0.60
         duration_days = 7
 
-    # Entity detection
+    # Entity detection fallback
     matched_node_id = "PORT-001"
     location = "Global"
     node_type = "Port"
@@ -95,7 +122,7 @@ async def extract_nlp_disruption(request: Request, payload: NLPExtractRequest):
         location = "Singapore"
         node_type = "Port"
     elif "rotterdam" in lower:
-        matched_node_id = "PORT-004"
+        matched_node_id = "PORT-003"
         location = "Rotterdam, Netherlands"
         node_type = "Port"
     elif "tata" in lower or "steel" in lower:
@@ -128,10 +155,12 @@ async def extract_nlp_disruption(request: Request, payload: NLPExtractRequest):
 @router.post("/", summary="Ingest a new disruption event")
 async def ingest_disruption(request: Request, event: DisruptionEvent):
     """
-    Ingests a disruption event, updates risk scores, and broadcasts to dashboard.
+    Ingests a disruption event, updates risk scores in Neo4j,
+    triggers GNN ripple effect inference, and broadcasts to dashboard in real-time.
     """
     driver = getattr(request.app.state, "neo4j", None)
     ws_manager = getattr(request.app.state, "ws_manager", None)
+    gnn_engine = getattr(request.app.state, "gnn_engine", None)
 
     dis_id = event.disruption_id or f"DIS-{uuid.uuid4().hex[:8].upper()}"
     event_dict = event.model_dump()
@@ -140,6 +169,7 @@ async def ingest_disruption(request: Request, event: DisruptionEvent):
     # Store in memory for active listing
     _ACTIVE_DISRUPTIONS[dis_id] = event_dict
 
+    # 1. Update Neo4j node attributes
     if driver:
         try:
             with driver.session() as session:
@@ -161,12 +191,36 @@ async def ingest_disruption(request: Request, event: DisruptionEvent):
         except Exception as exc:
             logger.warning(f"Neo4j write failed: {exc}")
 
-    # Broadcast disruption alert to all WebSocket clients
+    # 2. Broadcast disruption alert to all WebSocket clients
     if ws_manager:
         try:
             await ws_manager.broadcast_disruption(event_dict)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning(f"WebSocket disruption broadcast failed: {exc}")
+
+    # 3. Automatically run GNN inference and broadcast predictions
+    predictions = None
+    try:
+        from .predictions import _pull_live_graph, _analytical_propagation
+        nodes, edges = _pull_live_graph(driver)
+
+        if gnn_engine and nodes:
+            predictions = gnn_engine.predict(
+                nodes=nodes,
+                edges=edges,
+                disruption_event=event_dict,
+            )
+        if not predictions and nodes:
+            predictions = _analytical_propagation(nodes, edges, event_dict)
+
+        if ws_manager and predictions:
+            await ws_manager.broadcast_predictions(
+                predictions=predictions,
+                disruption_id=dis_id,
+            )
+            logger.info(f"Broadcasted GNN predictions for {dis_id}: {len(predictions)} nodes")
+    except Exception as exc:
+        logger.warning(f"Auto-trigger GNN inference failed: {exc}")
 
     return {
         "status": "ingested",
@@ -174,6 +228,9 @@ async def ingest_disruption(request: Request, event: DisruptionEvent):
         "node_id": event.node_id,
         "message": f"Disruption at {event.location} ({event.disruption_type}) successfully recorded and broadcasted",
         "event": event_dict,
+        "gnn_prediction_triggered": predictions is not None,
+        "affected_nodes_count": len([p for p in predictions if p.get("hop_distance", -1) >= 0]) if predictions else 0,
+        "predictions": predictions[:10] if predictions else [],
     }
 
 

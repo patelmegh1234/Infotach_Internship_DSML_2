@@ -652,6 +652,27 @@ export const api = {
     };
   },
 
+  async extractNlpDisruption(headline: string): Promise<any> {
+    const res = await fetch(`${API_BASE}/api/disrupt/nlp-extract`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ headline }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async ingestDisruption(event: any): Promise<any> {
+    const res = await fetch(`${API_BASE}/api/disrupt/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(event),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _clearPredictionCache();
+    return await res.json();
+  },
+
   async generateReport(): Promise<{ ok: boolean; message: string }> {
     return { ok: true, message: 'Report generated successfully.' };
   },
