@@ -52,10 +52,24 @@ class GNNInferenceEngine:
         ).to(self.device)
 
         # Load weights if checkpoint exists
-        model_path = Path(model_path)
-        if model_path.exists():
-            self._load_weights(model_path)
-            logger.info(f"✅ GNN model loaded from {model_path}")
+        path_obj = Path(model_path)
+        candidates = [
+            path_obj,
+            Path.cwd() / model_path,
+            Path(__file__).resolve().parent.parent / "models" / "best_model.pt",
+            Path(__file__).resolve().parent.parent.parent / "models" / "best_model.pt",
+            Path(__file__).resolve().parent.parent / "models" / "gnn_model.pt",
+            Path(__file__).resolve().parent.parent.parent / "models" / "gnn_model.pt",
+        ]
+        resolved_path = None
+        for c in candidates:
+            if c.exists() and c.is_file():
+                resolved_path = c
+                break
+
+        if resolved_path:
+            self._load_weights(resolved_path)
+            logger.info(f"✅ GNN model loaded from {resolved_path}")
         else:
             logger.warning(
                 f"⚠️  No model checkpoint at {model_path}. "
@@ -115,11 +129,57 @@ class GNNInferenceEngine:
         confidence = out["confidence"].cpu().numpy().flatten()
         node_ids = graph.node_ids
 
+        # Node metadata lookup
+        node_info = {}
+        for n in nodes:
+            nid = str(n.get("node_id") or n.get("id") or "")
+            if nid:
+                node_info[nid] = n
+                node_info[nid.lower()] = n
+            if "id" in n and n["id"] is not None:
+                node_info[str(n["id"])] = n
+                node_info[str(n["id"]).lower()] = n
+
+        # Downstream BFS hop distance from disruption origin
+        hop_dist: dict[str, int] = {}
+        if disruption_event and "node_id" in disruption_event:
+            origin_raw = str(disruption_event["node_id"]).strip()
+            origin_id = origin_raw
+            if hasattr(graph, "node_id_to_idx"):
+                idx = graph.node_id_to_idx.get(origin_raw) or graph.node_id_to_idx.get(origin_raw.lower())
+                if idx is not None and idx < len(graph.node_ids):
+                    origin_id = graph.node_ids[idx]
+
+            adj: dict[str, list[str]] = {}
+            for edge in edges:
+                src = str(edge.get("source") if edge.get("source") is not None else (edge.get("source_node_id") or edge.get("src") or ""))
+                tgt = str(edge.get("target") if edge.get("target") is not None else (edge.get("target_node_id") or edge.get("dst") or ""))
+                if src:
+                    adj.setdefault(src, []).append(tgt)
+                    adj.setdefault(src.lower(), []).append(tgt)
+
+            hop_dist[origin_id] = 0
+            hop_dist[origin_id.lower()] = 0
+            queue = [origin_id]
+            while queue:
+                curr = queue.pop(0)
+                curr_d = hop_dist[curr]
+                if curr_d >= 5:
+                    continue
+                for nxt in adj.get(curr, []) + adj.get(curr.lower(), []):
+                    if nxt not in hop_dist:
+                        hop_dist[nxt] = curr_d + 1
+                        hop_dist[nxt.lower()] = curr_d + 1
+                        queue.append(nxt)
+
         # Build result list
         results = []
         for i, node_id in enumerate(node_ids):
             delay = float(delay_days[i])
             conf = float(confidence[i])
+            orig_node = node_info.get(node_id) or node_info.get(node_id.lower()) or {}
+            dist = hop_dist.get(node_id) or hop_dist.get(node_id.lower())
+            hop_distance = dist if dist is not None else -1
 
             # Categorise risk level
             if delay < 7:
@@ -131,13 +191,23 @@ class GNNInferenceEngine:
             else:
                 risk_level = "critical"
 
+            risk_score = round(min(1.0, delay / 60.0), 2)
+            if hop_distance == 0 and disruption_event:
+                risk_score = max(risk_score, float(disruption_event.get("severity", 0.8)))
+
             results.append({
                 "node_id": node_id,
+                "node_type": orig_node.get("node_type", "Unknown"),
+                "name": orig_node.get("name", node_id),
                 "delay_days": round(delay, 1),
+                "predicted_delay_days": round(delay, 1),
                 "confidence": round(conf, 3),
+                "risk_score": risk_score,
                 "risk_level": risk_level,
+                "hop_distance": hop_distance,
             })
 
+        results.sort(key=lambda x: x["predicted_delay_days"], reverse=True)
         return results
 
     @torch.no_grad()

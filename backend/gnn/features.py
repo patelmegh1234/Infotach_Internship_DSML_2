@@ -100,11 +100,23 @@ def build_pyg_graph(
     Returns:
         torch_geometric.data.Data object ready for GNN inference.
     """
-    # Build node index mapping
-    id_to_idx = {
-        node.get(node_id_field, node.get("node_id", i)): i
-        for i, node in enumerate(nodes)
-    }
+    # Build node index mapping supporting both elementId, node_id, and case variations
+    id_to_idx: dict[str, int] = {}
+    node_ids: list[str] = []
+
+    for i, node in enumerate(nodes):
+        canonical_id = str(node.get("node_id") or node.get("id") or node.get(node_id_field, i))
+        node_ids.append(canonical_id)
+
+        # Register all possible identifiers for this node
+        for key in ("id", "node_id", node_id_field):
+            val = node.get(key)
+            if val is not None:
+                id_to_idx[str(val)] = i
+                id_to_idx[str(val).lower()] = i
+        id_to_idx[canonical_id] = i
+        id_to_idx[canonical_id.lower()] = i
+        id_to_idx[str(i)] = i
 
     # Build feature matrix
     x_tensors = [encode_node_features(n) for n in nodes]
@@ -119,11 +131,18 @@ def build_pyg_graph(
     # Build edge index
     src_list, dst_list = [], []
     for edge in edges:
-        src_id = edge.get("source") if edge.get("source") is not None else (edge.get("src") or edge.get("from"))
-        dst_id = edge.get("target") if edge.get("target") is not None else (edge.get("dst") or edge.get("to"))
-        if src_id in id_to_idx and dst_id in id_to_idx:
-            src_list.append(id_to_idx[src_id])
-            dst_list.append(id_to_idx[dst_id])
+        src_raw = edge.get("source") if edge.get("source") is not None else (edge.get("source_node_id") or edge.get("src") or edge.get("from"))
+        dst_raw = edge.get("target") if edge.get("target") is not None else (edge.get("target_node_id") or edge.get("dst") or edge.get("to"))
+
+        src_key = str(src_raw) if src_raw is not None else ""
+        dst_key = str(dst_raw) if dst_raw is not None else ""
+
+        src_idx = id_to_idx.get(src_key) or id_to_idx.get(src_key.lower())
+        dst_idx = id_to_idx.get(dst_key) or id_to_idx.get(dst_key.lower())
+
+        if src_idx is not None and dst_idx is not None:
+            src_list.append(src_idx)
+            dst_list.append(dst_idx)
 
     if src_list:
         edge_index = torch.tensor([src_list, dst_list], dtype=torch.long)
@@ -138,18 +157,15 @@ def build_pyg_graph(
             dtype=torch.float32,
         ).unsqueeze(1)
 
-    node_ids = [
-        node.get(node_id_field, node.get("node_id", i))
-        for i, node in enumerate(nodes)
-    ]
-
-    return Data(
+    data = Data(
         x=x_tensor,
         edge_index=edge_index,
         y=y,
         num_nodes=len(nodes),
-        node_ids=node_ids,  # Keep original IDs
+        node_ids=node_ids,  # Keep canonical IDs
     )
+    data.node_id_to_idx = id_to_idx
+    return data
 
 
 def update_node_risk(
@@ -173,12 +189,22 @@ def update_node_risk(
     Returns:
         Updated Data object (in-place modification).
     """
-    if not hasattr(graph, "node_ids"):
-        raise AttributeError("Graph has no 'node_ids' attribute. Build with build_pyg_graph().")
+    target_id_str = str(node_id).strip()
+    node_idx = None
 
-    try:
-        node_idx = graph.node_ids.index(node_id)
-    except ValueError:
+    if hasattr(graph, "node_id_to_idx"):
+        node_idx = graph.node_id_to_idx.get(target_id_str) or graph.node_id_to_idx.get(target_id_str.lower())
+
+    if node_idx is None and hasattr(graph, "node_ids"):
+        try:
+            node_idx = graph.node_ids.index(target_id_str)
+        except ValueError:
+            for i, nid in enumerate(graph.node_ids):
+                if str(nid).lower() == target_id_str.lower():
+                    node_idx = i
+                    break
+
+    if node_idx is None:
         raise ValueError(f"Node ID '{node_id}' not found in graph.")
 
     # Update risk features in-place
