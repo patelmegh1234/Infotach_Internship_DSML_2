@@ -50,7 +50,9 @@ class DisruptionEvent:
     )
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        d = asdict(self)
+        d["detected_at"] = self.timestamp
+        return d
 
 
 # ---------------------------------------------------------------------------
@@ -258,8 +260,8 @@ if __name__ == "__main__":
         events = pipeline.process(headline)
         if events:
             for event in events:
-                print(f"  → Node: {event.node_id} ({event.node_type})")
+                print(f"  -> Node: {event.node_id} ({event.node_type})")
                 print(f"    Type: {event.disruption_type} | Severity: {event.severity:.2f}")
                 print(f"    Est. duration: {event.estimated_duration_days} days")
         else:
-            print("  → No supply chain nodes matched.")
+            print("  -> No supply chain nodes matched.")

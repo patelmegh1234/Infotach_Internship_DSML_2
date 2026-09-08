@@ -12,8 +12,12 @@ from typing import Any
 
 from loguru import logger
 
-from ..database.connector import get_neo4j_driver
-from ..database.queries import GET_ENTITY_LINK_CANDIDATES
+try:
+    from database.connector import get_neo4j_driver
+    from database.queries import GET_ENTITY_LINK_CANDIDATES
+except ImportError:
+    from ..database.connector import get_neo4j_driver
+    from ..database.queries import GET_ENTITY_LINK_CANDIDATES
 
 
 ALL_NODE_TYPES = [
@@ -93,22 +97,115 @@ def _match_score(entity_text: str, candidate: dict[str, Any]) -> float:
     return max(scores, default=0.0)
 
 
-def fetch_entity_link_candidates() -> list[dict[str, Any]]:
-    """
-    Fetch all entity-linking candidates once from Neo4j.
+def _load_fallback_candidates() -> list[dict[str, Any]]:
+    """Load candidates from mock supply chain data or built-in registry when Neo4j is offline."""
+    import json
+    from pathlib import Path
 
-    This prevents a new Neo4j session from being opened for every entity.
-    """
-    driver = get_neo4j_driver()
+    candidates: list[dict[str, Any]] = []
+    possible_paths = [
+        Path(__file__).resolve().parent.parent.parent / "data" / "mock" / "supply_chain_nodes.json",
+        Path("data/mock/supply_chain_nodes.json"),
+        Path("../data/mock/supply_chain_nodes.json"),
+    ]
 
-    with driver.session() as session:
-        return [
-            record.data()
-            for record in session.run(
-                GET_ENTITY_LINK_CANDIDATES,
-                node_types=ALL_NODE_TYPES,
-            )
-        ]
+    for p in possible_paths:
+        if p.exists():
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                nodes = data.get("nodes", {})
+
+                type_map = {
+                    "suppliers": "Supplier",
+                    "manufacturers": "Manufacturer",
+                    "ports": "Port",
+                    "distribution_centers": "DistributionCenter",
+                    "retailers": "Retailer",
+                }
+
+                for key, node_type in type_map.items():
+                    for item in nodes.get(key, []):
+                        candidates.append({
+                            "node_id": item.get("node_id", ""),
+                            "node_type": node_type,
+                            "name": item.get("name", ""),
+                            "city": item.get("city", ""),
+                            "country": item.get("country", ""),
+                            "risk_score": float(item.get("risk_score", 0.0)),
+                            "severity": float(item.get("severity", 0.0)),
+                            "disruption_type": item.get("disruption_type", "None"),
+                        })
+                if candidates:
+                    logger.info("Loaded {} fallback entity candidates from mock JSON.", len(candidates))
+                    return candidates
+            except Exception as exc:
+                logger.warning("Error reading fallback JSON: {}", exc)
+
+    return [
+        {"node_id": "PORT-001", "node_type": "Port", "name": "Port of Shanghai", "city": "Shanghai", "country": "China", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-002", "node_type": "Port", "name": "Port of Singapore", "city": "Singapore", "country": "Singapore", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-003", "node_type": "Port", "name": "Port of Rotterdam", "city": "Rotterdam", "country": "Netherlands", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-004", "node_type": "Port", "name": "Port of Ningbo", "city": "Ningbo", "country": "China", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-005", "node_type": "Port", "name": "Port of Los Angeles", "city": "Los Angeles", "country": "United States", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-006", "node_type": "Port", "name": "Port of Hamburg", "city": "Hamburg", "country": "Germany", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-007", "node_type": "Port", "name": "Port of Antwerp", "city": "Antwerp", "country": "Belgium", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "PORT-008", "node_type": "Port", "name": "Port of Busan", "city": "Busan", "country": "South Korea", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-001", "node_type": "Supplier", "name": "Tata Steel", "city": "Jamshedpur", "country": "India", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-002", "node_type": "Supplier", "name": "Nippon Steel", "city": "Tokyo", "country": "Japan", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-003", "node_type": "Supplier", "name": "POSCO", "city": "Pohang", "country": "South Korea", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-004", "node_type": "Supplier", "name": "BASF", "city": "Ludwigshafen", "country": "Germany", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-005", "node_type": "Supplier", "name": "Reliance Industries", "city": "Mumbai", "country": "India", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "SUP-006", "node_type": "Supplier", "name": "ArcelorMittal", "city": "Luxembourg", "country": "Luxembourg", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "MAN-001", "node_type": "Manufacturer", "name": "Apple", "city": "Cupertino", "country": "United States", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "MAN-002", "node_type": "Manufacturer", "name": "Samsung Electronics", "city": "Suwon", "country": "South Korea", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "MAN-003", "node_type": "Manufacturer", "name": "Toyota Motor Corporation", "city": "Toyota", "country": "Japan", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "MAN-004", "node_type": "Manufacturer", "name": "TSMC", "city": "Hsinchu", "country": "Taiwan", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+        {"node_id": "MAN-005", "node_type": "Manufacturer", "name": "Foxconn", "city": "Taipei", "country": "Taiwan", "risk_score": 0.0, "severity": 0.0, "disruption_type": "None"},
+    ]
+
+
+_CANDIDATE_CACHE: list[dict[str, Any]] | None = None
+_CANDIDATE_CACHE_TIME: float = 0.0
+_CACHE_TTL_SECONDS: float = 300.0
+
+
+def fetch_entity_link_candidates(force_refresh: bool = False) -> list[dict[str, Any]]:
+    """
+    Fetch all entity-linking candidates once from Neo4j with 5-min in-memory cache.
+    Falls back to mock supply chain data if Neo4j is offline or empty.
+    """
+    global _CANDIDATE_CACHE, _CANDIDATE_CACHE_TIME
+    import time
+    now = time.time()
+
+    if not force_refresh and _CANDIDATE_CACHE is not None and (now - _CANDIDATE_CACHE_TIME) < _CACHE_TTL_SECONDS:
+        return _CANDIDATE_CACHE
+
+    candidates = None
+    try:
+        driver = get_neo4j_driver()
+        with driver.session() as session:
+            db_candidates = [
+                record.data()
+                for record in session.run(
+                    GET_ENTITY_LINK_CANDIDATES,
+                    node_types=ALL_NODE_TYPES,
+                )
+            ]
+            if db_candidates:
+                candidates = db_candidates
+    except Exception as exc:
+        logger.warning(
+            "Could not fetch entity link candidates from Neo4j ({}). Using fallback mock candidates.",
+            exc,
+        )
+
+    if not candidates:
+        candidates = _load_fallback_candidates()
+
+    _CANDIDATE_CACHE = candidates
+    _CANDIDATE_CACHE_TIME = now
+    return candidates
 
 
 def link_entity(

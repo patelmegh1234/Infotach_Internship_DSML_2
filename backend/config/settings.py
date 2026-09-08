@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     # ── FastAPI ──────────────────────────────────────────
     api_host: str = Field(default="0.0.0.0", env="API_HOST")
     api_port: int = Field(default=8000, env="API_PORT")
+    api_base_url: str = Field(default="http://localhost:8000", env="API_BASE_URL")
     cors_origins: list[str] = Field(
         default=[
             "http://localhost:3000",

@@ -1,33 +1,44 @@
 """
 AtmoGraph — NLP Background Worker
+=================================
+Background worker that auto-polls news headlines, runs the NER pipeline,
+links extracted entities to Neo4j supply chain nodes, and POSTs structured
+disruptions to the REST API (/api/disrupt/).
 
-Reads raw news headlines from a Redis queue, runs them through
-the NLP pipeline, and writes structured DisruptionEvents back
-to Redis so the FastAPI WebSocket layer can broadcast them.
+Also supports optional Redis message queue integration for hybrid operation:
+- INPUT  -> Redis list  key: "nlp:queue:incoming"
+- OUTPUT -> Redis list  key: "nlp:queue:events"
 
-Queue protocol
---------------
-  INPUT  → Redis list  key: "nlp:queue:incoming"  (LPUSH from API)
-  OUTPUT → Redis list  key: "nlp:queue:events"     (RPUSH, read by WS)
-
-Run via:
-    python -m nlp.worker
-Or via docker-compose:
-    command: python -m nlp.worker
+Part of Issue #19 (Megh Patel — Team Leader)
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import signal
 import sys
 import time
-from typing import Any
+from typing import Any, Optional
 
+import httpx
 from loguru import logger
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+try:
+    from config.settings import get_settings
+except ImportError:
+    from ..config.settings import get_settings
+
+try:
+    from nlp.pipeline import NLPPipeline
+    from nlp.news_fetcher import NewsFetcher
+except ImportError:
+    from .pipeline import NLPPipeline
+    from .news_fetcher import NewsFetcher
+
+
+# ── Logging Setup ─────────────────────────────────────────────────────────────
 logger.remove()
 logger.add(
     sys.stdout,
@@ -35,146 +46,282 @@ logger.add(
     level=os.getenv("LOG_LEVEL", "INFO"),
 )
 
-# ── Config ───────────────────────────────────────────────────────────────────
-REDIS_URL        = os.getenv("REDIS_URL", "redis://:atmograph2026@localhost:6379")
-INCOMING_QUEUE   = "nlp:queue:incoming"   # raw headlines land here
-EVENTS_QUEUE     = "nlp:queue:events"     # structured events written here
-BLOCK_TIMEOUT_S  = 5     # BLPOP block time — allows clean shutdown checks
-WORKER_SLEEP_S   = 0.1   # tight-loop sleep when not blocking
+
+# ── Configuration Defaults ────────────────────────────────────────────────────
+INCOMING_QUEUE = "nlp:queue:incoming"
+EVENTS_QUEUE = "nlp:queue:events"
 
 
-# ── Graceful-shutdown flag ────────────────────────────────────────────────────
+# ── Graceful Shutdown ─────────────────────────────────────────────────────────
 _RUNNING = True
+
 
 def _handle_signal(signum: int, _frame: Any) -> None:
     global _RUNNING
-    logger.info("Signal {} received — shutting down NLP worker …", signum)
+    logger.info("Signal {} received - shutting down NLP worker cleanly ...", signum)
     _RUNNING = False
 
+
 signal.signal(signal.SIGTERM, _handle_signal)
-signal.signal(signal.SIGINT,  _handle_signal)
+signal.signal(signal.SIGINT, _handle_signal)
 
 
-# ── Redis connection ──────────────────────────────────────────────────────────
-def _connect_redis():
-    """Return a Redis client, retrying until Neo4j / Redis is ready."""
-    import redis as redis_lib
-
-    for attempt in range(1, 11):
-        try:
-            client = redis_lib.from_url(REDIS_URL, decode_responses=True)
-            client.ping()
-            logger.info("✅ Redis connected: {}", REDIS_URL.split("@")[-1])
-            return client
-        except Exception as exc:
-            logger.warning(
-                "Redis not ready (attempt {}/10): {} — retrying in 5 s …",
-                attempt, exc,
-            )
-            time.sleep(5)
-
-    logger.error("❌ Could not connect to Redis after 10 attempts. Exiting.")
-    sys.exit(1)
+# ── Optional Redis Connection ─────────────────────────────────────────────────
+def _connect_redis(redis_url: str, max_retries: int = 2) -> Any:
+    """
+    Attempt to connect to Redis.
+    Returns redis client or None if Redis is not running (allowing worker to run standalone).
+    """
+    try:
+        import redis as redis_lib
+        client = redis_lib.from_url(redis_url, decode_responses=True)
+        client.ping()
+        logger.info("Connected to Redis at: {}", redis_url.split("@")[-1])
+        return client
+    except Exception as exc:
+        logger.info("Redis not available ({}) - operating in direct polling mode.", exc)
+        return None
 
 
-# ── Pipeline (lazy import so worker starts fast) ──────────────────────────────
-_pipeline = None
+# ── Pipeline Instance ─────────────────────────────────────────────────────────
+_pipeline: Optional[NLPPipeline] = None
 
-def _get_pipeline():
+
+def get_worker_pipeline() -> NLPPipeline:
     global _pipeline
     if _pipeline is None:
-        from nlp.pipeline import NLPPipeline
         _pipeline = NLPPipeline(min_link_score=0.72)
-        logger.info("NLPPipeline initialised inside worker.")
+        logger.info("NLPPipeline initialized inside worker.")
     return _pipeline
 
 
-# ── Core processing ───────────────────────────────────────────────────────────
-def _process_message(raw: str, redis_client) -> None:
+# ── API Dispatch ──────────────────────────────────────────────────────────────
+def post_disruption_to_api(event: dict[str, Any], api_base_url: str) -> bool:
     """
-    Parse one raw Redis message, run it through the NLP pipeline,
-    and push results to the events queue.
-
-    Message format (JSON):
-        {"text": "Port workers in Rotterdam begin strike", "source": "NewsAPI"}
+    POST a structured DisruptionEvent to the AtmoGraph REST API.
+    Tries /api/disrupt/ first, then /api/disruptions/ as fallback.
     """
+    base = api_base_url.rstrip("/")
+    endpoints = [f"{base}/api/disrupt/", f"{base}/api/disruptions/"]
+
+    for url in endpoints:
+        try:
+            with httpx.Client(timeout=httpx.Timeout(3.0, connect=1.0)) as client:
+                resp = client.post(url, json=event)
+                if resp.status_code in (200, 201):
+                    logger.info(
+                        "-> Successfully ingested to API [{}]: node={} type={} sev={:.2f}",
+                        resp.status_code,
+                        event.get("node_id"),
+                        event.get("disruption_type"),
+                        event.get("severity", 0.0),
+                    )
+                    return True
+                elif resp.status_code == 404:
+                    continue  # Try next endpoint variant
+                else:
+                    logger.warning(
+                        "API returned HTTP {}: {}", resp.status_code, resp.text[:120]
+                    )
+                    return False
+        except httpx.ConnectError:
+            logger.warning("Could not connect to API at {} (server may be offline).", url)
+            break  # Server host is down, no need to retry second endpoint
+        except Exception as exc:
+            logger.warning("Error posting disruption to API ({}): {}", url, exc)
+            return False
+
+    return False
+
+
+# ── Article Processing ────────────────────────────────────────────────────────
+def process_article(
+    article: dict[str, Any],
+    api_base_url: str,
+    redis_client: Any = None,
+    pipeline: Optional[NLPPipeline] = None,
+    post_to_api: bool = True,
+) -> list[dict[str, Any]]:
+    """
+    Run one article through the NLP pipeline, link nodes, and POST to API.
+    """
+    pipe = pipeline or get_worker_pipeline()
+    text = article.get("text") or article.get("title") or ""
+    if not text.strip():
+        return []
+
+    headline = article.get("title") or text[:120]
+    logger.info("Processing headline: {!r}", headline[:75])
+
     try:
-        payload: dict[str, Any] = json.loads(raw)
-    except json.JSONDecodeError:
-        # Treat plain strings as the text field directly
-        payload = {"text": raw, "source": "unknown"}
-
-    text: str = payload.get("text", "").strip()
-    if not text:
-        logger.warning("Empty text in message — skipping.")
-        return
-
-    logger.info("Processing: {!r}", text[:80])
-
-    try:
-        events = _get_pipeline().process_to_dict(text)
+        events = pipe.process_to_dict(text)
     except Exception as exc:
-        logger.error("Pipeline error for {!r}: {}", text[:60], exc)
-        return
+        logger.error("NLP extraction error for {!r}: {}", headline[:60], exc)
+        return []
 
     if not events:
-        logger.info("No disruption events extracted from: {!r}", text[:60])
-        return
+        logger.info("No disruption events extracted for: {!r}", headline[:60])
+        return []
 
-    for event in events:
-        event["source"] = payload.get("source", "unknown")
-        redis_client.rpush(EVENTS_QUEUE, json.dumps(event))
-        logger.info(
-            "→ Event queued: {} ({}) sev={:.2f}",
-            event["node_id"],
-            event["disruption_type"],
-            event["severity"],
-        )
+    ingested_events: list[dict[str, Any]] = []
+    for evt in events:
+        evt["source"] = article.get("source", "NLP Worker")
+        evt["source_headline"] = headline
 
-    logger.info(
-        "Queued {} event(s) for: {!r}", len(events), text[:60]
+        # Ensure detected_at is populated
+        if "detected_at" not in evt:
+            evt["detected_at"] = evt.get("timestamp")
+
+        # Ingest to REST API
+        if post_to_api:
+            post_disruption_to_api(evt, api_base_url)
+
+        # Ingest to Redis queue if connected
+        if redis_client:
+            try:
+                redis_client.rpush(EVENTS_QUEUE, json.dumps(evt))
+                logger.debug("Event pushed to Redis: {}", evt["disruption_id"])
+            except Exception as exc:
+                logger.warning("Failed to push event to Redis: {}", exc)
+
+        ingested_events.append(evt)
+
+    logger.info("Extracted {} disruption event(s) from article.", len(ingested_events))
+    return ingested_events
+
+
+# ── Worker Main Loop ──────────────────────────────────────────────────────────
+def run_worker(
+    poll_interval: Optional[int] = None,
+    api_base_url: Optional[str] = None,
+    once: bool = False,
+    use_static: bool = False,
+    use_redis: bool = True,
+    post_to_api: bool = True,
+) -> None:
+    """
+    Continuous background loop:
+    1. Polls news articles using NewsFetcher (NewsAPI or static corpus).
+    2. Processes each new article through NER and entity linking.
+    3. Pushes valid disruptions to the FastAPI endpoint /api/disrupt/.
+    4. Also polls Redis queue for any on-demand incoming headlines if Redis is active.
+    5. Sleeps for poll_interval seconds between cycles.
+    """
+    settings = get_settings()
+    interval = poll_interval or settings.news_poll_interval or 30
+    api_url = api_base_url or getattr(settings, "api_base_url", "http://localhost:8000")
+    redis_url = os.getenv("REDIS_URL", settings.redis_url)
+
+    logger.info("Starting AtmoGraph NLP Worker ...")
+    logger.info("Configuration: poll_interval={}s, api_url={}, once={}", interval, api_url, once)
+
+    # Initialise fetcher and pipeline
+    fetcher = NewsFetcher(
+        api_key=settings.news_api_key,
+        use_static_corpus=use_static,
     )
+    pipeline = get_worker_pipeline()
 
+    # Connect to Redis (optional)
+    redis_client = _connect_redis(redis_url) if use_redis else None
 
-# ── Worker loop ───────────────────────────────────────────────────────────────
-def run_worker() -> None:
-    """Main worker loop — blocks on Redis BLPOP and processes each message."""
-    logger.info("🚀 AtmoGraph NLP Worker starting …")
-    redis_client = _connect_redis()
-
-    # Pre-load pipeline so first request isn't slow
-    try:
-        _get_pipeline()
-    except Exception as exc:
-        logger.warning("Pipeline pre-load failed (will retry on first message): {}", exc)
-
-    logger.info(
-        "Listening on Redis queue: '{}' → '{}'",
-        INCOMING_QUEUE,
-        EVENTS_QUEUE,
-    )
-
+    iteration = 0
     while _RUNNING:
+        iteration += 1
+        logger.info("--- Polling Cycle #{} ---", iteration)
+
+        # 1. Fetch fresh unseen news articles
         try:
-            # BLPOP blocks for BLOCK_TIMEOUT_S seconds then returns None
-            result = redis_client.blpop(INCOMING_QUEUE, timeout=BLOCK_TIMEOUT_S)
+            articles = fetcher.fetch_articles(limit=3)
+            logger.info("Fetched {} article(s) to inspect.", len(articles))
 
-            if result is None:
-                # Timeout — loop back and check _RUNNING
-                continue
-
-            _queue_key, raw_message = result
-            _process_message(raw_message, redis_client)
-
-        except KeyboardInterrupt:
-            break
+            for article in articles:
+                if not _RUNNING:
+                    break
+                process_article(
+                    article=article,
+                    api_base_url=api_url,
+                    redis_client=redis_client,
+                    pipeline=pipeline,
+                    post_to_api=post_to_api,
+                )
         except Exception as exc:
-            logger.error("Unexpected error in worker loop: {}", exc)
-            time.sleep(1)   # Back-off before retrying
+            logger.error("Error during news polling cycle: {}", exc)
+
+        # 2. Check on-demand Redis incoming queue if connected
+        if redis_client and _RUNNING:
+            try:
+                # Non-blocking pop to drain any immediate manual inputs
+                raw = redis_client.lpop(INCOMING_QUEUE)
+                if raw:
+                    logger.info("Received manual headline from Redis queue.")
+                    try:
+                        payload = json.loads(raw)
+                    except Exception:
+                        payload = {"text": raw, "source": "RedisManual"}
+                    process_article(
+                        article=payload,
+                        api_base_url=api_url,
+                        redis_client=redis_client,
+                        pipeline=pipeline,
+                        post_to_api=post_to_api,
+                    )
+            except Exception as exc:
+                logger.warning("Redis queue read error: {}", exc)
+
+        if once:
+            logger.info("Worker executed in --once mode. Exiting.")
+            break
+
+        # Responsive sleep that checks _RUNNING every 0.5s
+        sleep_until = time.time() + interval
+        while _RUNNING and time.time() < sleep_until:
+            time.sleep(0.5)
 
     logger.info("NLP Worker stopped cleanly.")
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# ── CLI Interface ─────────────────────────────────────────────────────────────
+def main() -> None:
+    parser = argparse.ArgumentParser(description="AtmoGraph NLP Background Worker")
+    parser.add_argument(
+        "--once",
+        action="store_true",
+        help="Run exactly one polling cycle and exit (useful for testing).",
+    )
+    parser.add_argument(
+        "--interval",
+        type=int,
+        default=None,
+        help="Polling interval in seconds (overrides NEWS_POLL_INTERVAL_SECONDS).",
+    )
+    parser.add_argument(
+        "--api-url",
+        type=str,
+        default=None,
+        help="AtmoGraph API base URL (e.g. http://localhost:8000).",
+    )
+    parser.add_argument(
+        "--static",
+        action="store_true",
+        help="Force use of static disruption corpus instead of live NewsAPI.",
+    )
+    parser.add_argument(
+        "--no-redis",
+        action="store_true",
+        help="Disable Redis queue checking.",
+    )
+
+    args = parser.parse_args()
+
+    run_worker(
+        poll_interval=args.interval,
+        api_base_url=args.api_url,
+        once=args.once,
+        use_static=args.static,
+        use_redis=not args.no_redis,
+    )
+
+
 if __name__ == "__main__":
-    run_worker()
+    main()
