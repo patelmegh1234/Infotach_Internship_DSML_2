@@ -280,6 +280,72 @@ def _deduplicate(entities: list[ExtractedEntity]) -> list[ExtractedEntity]:
 
 
 # ---------------------------------------------------------------------------
+# Supply Chain Gazetteer Fallback (No heavy ML dependencies required)
+# ---------------------------------------------------------------------------
+
+_GAZETTEER_LOCATIONS = [
+    "Port of Shanghai", "Port of Rotterdam", "Port of Singapore", "Port of Ningbo",
+    "Port of Los Angeles", "Port of Hamburg", "Port of Antwerp", "Port of Busan",
+    "Port of Qingdao", "Port of Hong Kong", "Port of Tianjin", "Port of Long Beach",
+    "Port of New York", "Port of Felixstowe", "Port of Dubai", "Port of Kaohsiung",
+    "Port of Valencia", "Port of Piraeus", "Suez Canal", "Panama Canal",
+    "Shanghai", "Rotterdam", "Singapore", "Ningbo", "Los Angeles", "Hamburg",
+    "Antwerp", "Busan", "Qingdao", "Hong Kong", "Tianjin", "Long Beach",
+    "New York", "Felixstowe", "Dubai", "Kaohsiung", "Valencia", "Piraeus",
+    "Taiwan", "China", "Japan", "Germany", "India", "South Korea", "Netherlands",
+    "United States", "Australia", "Brazil", "Vietnam", "Ludwigshafen", "Zhengzhou",
+]
+
+_GAZETTEER_ORGS = [
+    "Taiwan Semiconductor Manufacturing Co", "TSMC", "Foxconn", "Apple",
+    "Samsung Electronics", "Samsung", "Toyota Motor Corporation", "Toyota",
+    "Boeing", "Airbus", "Intel", "NVIDIA", "Tesla", "BASF", "Tata Steel",
+    "Nippon Steel", "POSCO", "Reliance Industries", "ArcelorMittal", "Rio Tinto",
+    "BHP", "Cargill", "ADM", "LyondellBasell", "Dow", "SABIC",
+    "Mitsubishi Chemical", "LG Chem", "Umicore", "Glencore", "Vale",
+    "Maersk", "MSC", "COSCO", "Hapag-Lloyd", "Walmart", "Amazon", "Target", "Costco",
+]
+
+
+def _extract_with_gazetteer(text: str) -> list[ExtractedEntity]:
+    """
+    Extract supply chain entities using domain gazetteer keyword matching.
+    Guarantees fast, robust extraction when deep learning models are offline.
+    """
+    entities: list[ExtractedEntity] = []
+
+    # Check locations (sorted by length descending so longer phrases match first)
+    for loc in sorted(_GAZETTEER_LOCATIONS, key=len, reverse=True):
+        pattern = rf"\b{re.escape(loc)}\b"
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            entities.append(
+                ExtractedEntity(
+                    text=match.group(0),
+                    label="LOC",
+                    confidence=0.92,
+                    start=match.start(),
+                    end=match.end(),
+                )
+            )
+
+    # Check organizations
+    for org in sorted(_GAZETTEER_ORGS, key=len, reverse=True):
+        pattern = rf"\b{re.escape(org)}\b"
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            entities.append(
+                ExtractedEntity(
+                    text=match.group(0),
+                    label="ORG",
+                    confidence=0.92,
+                    start=match.start(),
+                    end=match.end(),
+                )
+            )
+
+    return entities
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
@@ -287,7 +353,7 @@ def extract_entities(text: str) -> NERResult:
     """
     Extract NER entities, disruption type, and severity from raw text.
 
-    Tries HuggingFace BERT-NER first; falls back to spaCy if unavailable.
+    Tries HuggingFace BERT-NER first; falls back to spaCy, then domain gazetteer.
 
     Args:
         text: A news headline or short article paragraph.
@@ -305,6 +371,11 @@ def extract_entities(text: str) -> NERResult:
     if not entities:
         logger.debug("Falling back to spaCy NER for: {!r}", text[:80])
         entities = _extract_with_spacy(text)
+
+    # Fallback to Gazetteer if neither deep learning model returned entities
+    if not entities:
+        logger.debug("Falling back to Gazetteer NER for: {!r}", text[:80])
+        entities = _extract_with_gazetteer(text)
 
     entities = _deduplicate(entities)
     disruption_type = classify_disruption_type(text)
