@@ -9,6 +9,7 @@ Week 1+2 Deliverable (Megh Patel — Team Leader)
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import uuid
 from loguru import logger
 
 from fastapi import FastAPI
@@ -97,29 +98,31 @@ app.include_router(disruptions.router,  prefix="/api/disrupt",  tags=["Disruptio
 # ── WebSocket endpoint ────────────────────────────────────
 from fastapi import WebSocket, WebSocketDisconnect
 
+@app.websocket("/ws")
 @app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
+async def websocket_endpoint(websocket: WebSocket, client_id: str = ""):
     """
     WebSocket endpoint for real-time prediction streaming.
 
-    Connect at: ws://localhost:8000/ws/{client_id}
+    Connect at: ws://localhost:8000/ws or ws://localhost:8000/ws/{client_id}
 
     Messages pushed to client:
         - disruption_detected: NLP found a new supply chain event
         - predictions_updated: GNN finished re-scoring all nodes
         - node_risk_changed:   A specific node's risk level changed
     """
-    await ws_manager.connect(websocket, client_id)
+    cid = client_id if client_id else f"client_{uuid.uuid4().hex[:8]}"
+    await ws_manager.connect(websocket, cid)
     try:
         while True:
             data = await websocket.receive_text()
             # Echo back for heartbeat / ping-pong
             await ws_manager.send_personal(
-                {"type": "pong", "client_id": client_id}, client_id
+                {"type": "pong", "client_id": cid}, cid
             )
     except WebSocketDisconnect:
-        ws_manager.disconnect(client_id)
-        logger.info(f"Client {client_id} disconnected")
+        ws_manager.disconnect(cid)
+        logger.info(f"Client {cid} disconnected")
 
 
 # ── Root ──────────────────────────────────────────────────
