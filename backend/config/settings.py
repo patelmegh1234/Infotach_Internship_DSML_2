@@ -59,7 +59,7 @@ class Settings(BaseSettings):
 
 
     # ── GNN Model ────────────────────────────────────────
-    model_path: str = Field(default="./models/gnn_model.pt", env="MODEL_PATH")
+    model_path: str = Field(default="./models/best_model.pt", env="MODEL_PATH")
     model_hidden_dim: int = Field(default=64, env="MODEL_HIDDEN_DIM")
     model_num_layers: int = Field(default=3, env="MODEL_NUM_LAYERS")
     model_dropout: float = Field(default=0.3, env="MODEL_DROPOUT")

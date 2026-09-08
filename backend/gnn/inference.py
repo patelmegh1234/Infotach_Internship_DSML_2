@@ -35,7 +35,9 @@ class GNNInferenceEngine:
         model_path: str = "./models/best_model.pt",
         model_type: str = "disruption_aware",
         hidden_channels: int = 64,
+        num_sage_layers: int = 3,
         device: str | None = None,
+        **kwargs: Any,
     ):
         self.device = torch.device(
             device if device else ("cuda" if torch.cuda.is_available() else "cpu")
@@ -45,6 +47,8 @@ class GNNInferenceEngine:
         self.model = create_model(
             model_type=model_type,
             hidden_channels=hidden_channels,
+            num_sage_layers=num_sage_layers,
+            **kwargs,
         ).to(self.device)
 
         # Load weights if checkpoint exists

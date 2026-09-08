@@ -228,8 +228,8 @@ class DisruptionAwareGNN(SupplyChainGNN):
         """Forward pass with disruption-aware propagation."""
 
         # Extract disruption signals from input features
-        # Feature layout: [..., disruption_flag (idx 2), disruption_severity (idx 3), ...]
-        disruption_features = x[:, 2:4]
+        # Feature layout in features.py: disruption_flag (idx 7), disruption_severity (idx 8)
+        disruption_features = x[:, 7:9]
 
         # Base GNN forward
         base_out = super().forward(x, edge_index, edge_attr, batch)
