@@ -41,6 +41,56 @@ class NLPExtractRequest(BaseModel):
 
 # In-memory disruption store for standalone/local mode
 _ACTIVE_DISRUPTIONS: dict[str, dict] = {}
+_DISRUPTION_HISTORY: list[dict] = [
+    {
+        "disruption_id": "DIS-HIST-001",
+        "node_id": "PORT-001",
+        "node_type": "Port",
+        "location": "Shanghai, China",
+        "disruption_type": "strike",
+        "severity": 0.85,
+        "estimated_duration_days": 14,
+        "source_headline": "Dock workers strike halts container operations at Shanghai Port terminals",
+        "detected_at": "2026-09-02T08:30:00Z",
+        "status": "active"
+    },
+    {
+        "disruption_id": "DIS-HIST-002",
+        "node_id": "PORT-003",
+        "node_type": "Port",
+        "location": "Rotterdam, Netherlands",
+        "disruption_type": "congestion",
+        "severity": 0.70,
+        "estimated_duration_days": 7,
+        "source_headline": "Severe customs clearance backlog congests Port of Rotterdam berths",
+        "detected_at": "2026-08-28T14:15:00Z",
+        "status": "resolved"
+    },
+    {
+        "disruption_id": "DIS-HIST-003",
+        "node_id": "SUP-001",
+        "node_type": "Supplier",
+        "location": "Hsinchu, Taiwan",
+        "disruption_type": "earthquake",
+        "severity": 0.90,
+        "estimated_duration_days": 21,
+        "source_headline": "Magnitude 6.2 seismic event triggers automated fab shutdown in Hsinchu",
+        "detected_at": "2026-08-15T03:45:00Z",
+        "status": "resolved"
+    },
+    {
+        "disruption_id": "DIS-HIST-004",
+        "node_id": "PORT-002",
+        "node_type": "Port",
+        "location": "Singapore",
+        "disruption_type": "natural_disaster",
+        "severity": 0.75,
+        "estimated_duration_days": 10,
+        "source_headline": "Tropical storm system causes maritime anchorage delays off Singapore straits",
+        "detected_at": "2026-08-10T11:20:00Z",
+        "status": "resolved"
+    }
+]
 
 
 @router.post("/nlp-extract", summary="Extract disruption event from raw news text")
@@ -166,8 +216,9 @@ async def ingest_disruption(request: Request, event: DisruptionEvent):
     event_dict = event.model_dump()
     event_dict["disruption_id"] = dis_id
 
-    # Store in memory for active listing
+    # Store in memory for active listing and history
     _ACTIVE_DISRUPTIONS[dis_id] = event_dict
+    _DISRUPTION_HISTORY.insert(0, dict(event_dict))
 
     # 1. Update Neo4j node attributes
     if driver:
@@ -261,6 +312,13 @@ async def get_active_disruptions(request: Request):
             pass
 
     return {"active_disruptions": disruptions, "count": len(disruptions)}
+
+
+@router.get("/history", summary="Get disruption history")
+@router.get("/", summary="List all historical and active disruptions")
+async def get_disruption_history(request: Request):
+    """Returns chronological history of all simulated and detected disruptions."""
+    return {"history": _DISRUPTION_HISTORY, "count": len(_DISRUPTION_HISTORY)}
 
 
 @router.delete("/{disruption_id}", summary="Clear a resolved disruption")

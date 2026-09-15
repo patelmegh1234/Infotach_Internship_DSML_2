@@ -193,3 +193,29 @@ export interface NodeTypeRisk {
   risk: number;
   nodes: number;
 }
+
+export interface GnnNodePrediction {
+  node_id: string;
+  node_type?: string;
+  name?: string;
+  delay_days: number;
+  predicted_delay_days?: number;
+  confidence: number;
+  risk_score: number;
+  risk_level: 'critical' | 'high' | 'medium' | 'low' | 'moderate';
+  hop_distance?: number;
+}
+
+export interface HistoricalDisruption {
+  disruption_id: string;
+  node_id: string;
+  node_type?: string;
+  location?: string;
+  disruption_type: string;
+  severity: number;
+  estimated_duration_days?: number;
+  source_headline?: string;
+  detected_at?: string;
+  status?: string;
+}
+

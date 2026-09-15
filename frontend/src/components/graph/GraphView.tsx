@@ -38,6 +38,7 @@ export interface GraphViewProps {
   height?: string;
   filterTypes?: NodeType[];
   searchQuery?: string;
+  predictionsMap?: Record<string, any>;
 }
 
 export function GraphView({
@@ -55,6 +56,7 @@ export function GraphView({
   height = 'h-[720px]',
   filterTypes,
   searchQuery = '',
+  predictionsMap,
 }: GraphViewProps) {
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState([]);
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState([]);
@@ -89,6 +91,9 @@ export function GraphView({
         const defaultX = n.x ?? 150;
         const defaultY = n.y ?? 150;
 
+        const pred = predictionsMap ? (predictionsMap[n.id] || predictionsMap[n.id.toLowerCase()]) : undefined;
+        const isPredAffected = pred && (pred.hop_distance !== undefined ? pred.hop_distance >= 0 : true);
+
         return {
           id: n.id,
           type: 'custom',
@@ -103,9 +108,16 @@ export function GraphView({
             country: n.country,
             node: n,
             selected: n.id === selectedId,
-            affected: affectedSet.has(n.id),
+            affected: affectedSet.has(n.id) || Boolean(isPredAffected),
             origin: n.id === originId,
-            riskScore: n.riskScore,
+            riskScore: pred?.risk_score !== undefined
+              ? (pred.risk_score > 1 ? pred.risk_score : pred.risk_score * 100)
+              : n.riskScore,
+            prediction: pred,
+            delay_days: pred?.delay_days ?? pred?.predicted_delay_days,
+            confidence: pred?.confidence,
+            risk_level: pred?.risk_level,
+            hop_distance: pred?.hop_distance,
           },
         };
       });
@@ -146,7 +158,7 @@ export function GraphView({
     }
     prevNodeCount.current = nodes.length;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected]);
+  }, [nodes, edges, selectedId, affectedSet, originId, hideUnaffected, showLabels, filterTypes, searchQuery, hasAffected, predictionsMap]);
 
   // Save node positions on drag so they remain permanently where the user dropped them
   const handleNodeDrag: NodeDragHandler = useCallback((_event, node) => {

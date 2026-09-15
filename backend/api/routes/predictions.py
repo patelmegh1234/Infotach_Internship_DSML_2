@@ -56,12 +56,23 @@ class DisruptionInput(BaseModel):
     description: Optional[str] = Field(None, description="Human-readable description")
 
 
+from pydantic import BaseModel, Field, model_validator
+
+
 class TimelinePredictionInput(BaseModel):
-    disruption: DisruptionInput
+    disruption: Optional[DisruptionInput] = None
+    node_id: Optional[str] = Field(None, description="Optional ID of disrupted node (alternative to full disruption object)")
+    severity: Optional[float] = Field(0.8, ge=0.0, le=1.0, description="Optional severity score")
     horizons: list[int] = Field(
         default=[30, 60, 90],
         description="Day horizons to predict (e.g. [30, 60, 90])"
     )
+
+    @model_validator(mode="after")
+    def check_disruption_or_node_id(self) -> "TimelinePredictionInput":
+        if self.disruption is None and not self.node_id:
+            raise ValueError("Either 'disruption' or 'node_id' must be provided.")
+        return self
 
 
 def _analytical_propagation(nodes: list[dict], edges: list[dict], disruption: dict[str, Any]) -> list[dict[str, Any]]:
@@ -197,6 +208,36 @@ async def predict_timeline(request: Request, payload: TimelinePredictionInput):
     gnn_engine = getattr(request.app.state, "gnn_engine", None)
 
     nodes, edges = _pull_live_graph(driver)
+
+    # Determine disruption event to evaluate
+    disruption_dict: dict[str, Any] = {}
+    if payload.disruption:
+        disruption_dict = payload.disruption.model_dump()
+    elif payload.node_id:
+        disruption_dict = {
+            "node_id": payload.node_id,
+            "risk_score": payload.severity or 0.85,
+            "disruption_flag": True,
+            "severity": payload.severity or 0.8,
+            "disruption_type": "strike",
+            "description": "Timeline simulation",
+        }
+    else:
+        # Pick top risk node or first supplier/port in network
+        top_node = "PORT-001"
+        if nodes:
+            sorted_nodes = sorted(nodes, key=lambda n: float(n.get("risk_score", 0.0)), reverse=True)
+            top_node = str(sorted_nodes[0].get("id") or sorted_nodes[0].get("node_id") or "PORT-001")
+        disruption_dict = {
+            "node_id": top_node,
+            "risk_score": 0.85,
+            "disruption_flag": True,
+            "severity": 0.8,
+            "disruption_type": "strike",
+            "description": "Default timeline simulation",
+        }
+
+    origin_id = disruption_dict.get("node_id", "PORT-001")
     timeline_data: dict[str, list[dict[str, Any]]] = {}
 
     if gnn_engine:
@@ -204,35 +245,45 @@ async def predict_timeline(request: Request, payload: TimelinePredictionInput):
             timeline_res = gnn_engine.predict_timeline(
                 nodes=nodes,
                 edges=edges,
-                disruption_event=payload.disruption.model_dump(),
+                disruption_event=disruption_dict,
                 horizons=payload.horizons,
             )
             for h, preds in timeline_res.items():
                 key = f"{h}_days" if isinstance(h, int) else str(h)
+                # Ensure risk_level is present
+                for p in preds:
+                    r = float(p.get("risk_score", 0.0))
+                    p["risk_level"] = "critical" if r >= 0.75 else "high" if r >= 0.55 else "medium" if r >= 0.35 else "low"
+                    p.setdefault("delay_days", p.get("predicted_delay_days", 0.0))
                 timeline_data[key] = preds
         except Exception as exc:
             logger.warning(f"GNN engine predict_timeline failed: {exc}. Using analytical propagation.")
 
     if not timeline_data:
-        base_preds = _analytical_propagation(nodes, edges, payload.disruption.model_dump())
+        base_preds = _analytical_propagation(nodes, edges, disruption_dict)
         for horizon in payload.horizons:
             factor = 1.0 + (horizon - 30) * 0.015
-            timeline_data[f"{horizon}_days"] = [
-                {
+            h_preds = []
+            for p in base_preds:
+                adj_delay = round(p["predicted_delay_days"] * factor, 1)
+                adj_risk = min(1.0, round(p["risk_score"] * factor, 2))
+                level = "critical" if adj_risk >= 0.75 else "high" if adj_risk >= 0.55 else "medium" if adj_risk >= 0.35 else "low"
+                h_preds.append({
                     "node_id": p["node_id"],
                     "node_type": p["node_type"],
                     "name": p["name"],
-                    "predicted_delay_days": round(p["predicted_delay_days"] * factor, 1),
-                    "delay_days": round(p.get("delay_days", p["predicted_delay_days"]) * factor, 1),
-                    "risk_score": min(1.0, round(p["risk_score"] * factor, 2)),
+                    "predicted_delay_days": adj_delay,
+                    "delay_days": adj_delay,
+                    "risk_score": adj_risk,
+                    "risk_level": level,
                     "confidence": p["confidence"],
-                }
-                for p in base_preds[:50]
-            ]
+                    "hop_distance": p.get("hop_distance", -1),
+                })
+            timeline_data[f"{horizon}_days"] = h_preds
 
     return {
         "status": "success",
-        "disruption_node": payload.disruption.node_id,
+        "disruption_node": origin_id,
         "horizons": payload.horizons,
         "timeline": timeline_data,
     }

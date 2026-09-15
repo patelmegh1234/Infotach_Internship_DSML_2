@@ -673,6 +673,110 @@ export const api = {
     return await res.json();
   },
 
+  async predictDisruption(payload: {
+    node_id: string;
+    risk_score?: number;
+    disruption_flag?: boolean;
+    severity?: number;
+    disruption_type?: string;
+    description?: string;
+  }): Promise<any> {
+    const res = await fetch(`${API_BASE}/api/predict/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        node_id: payload.node_id,
+        risk_score: payload.risk_score ?? 0.85,
+        disruption_flag: payload.disruption_flag ?? true,
+        severity: payload.severity ?? 0.8,
+        disruption_type: payload.disruption_type ?? 'strike',
+        description: payload.description,
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async predictTimeline(
+    horizonDays: number = 30,
+    nodeId?: string,
+    severity: number = 0.8,
+  ): Promise<{
+    status: string;
+    disruption_node: string;
+    horizons: number[];
+    timeline: Record<string, any[]>;
+  }> {
+    const horizons = [30, 60, 90];
+    const payload: any = {
+      horizons,
+      severity,
+    };
+    if (nodeId) {
+      payload.node_id = nodeId;
+    } else {
+      payload.node_id = 'PORT-001';
+    }
+
+    const res = await fetch(`${API_BASE}/api/predict/timeline`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  },
+
+  async getDisruptionHistory(): Promise<{ history: any[]; count: number }> {
+    try {
+      const res = await fetch(`${API_BASE}/api/disrupt/history`);
+      if (res.ok) return await res.json();
+    } catch {
+      // ignore
+    }
+    return {
+      history: [
+        {
+          disruption_id: 'DIS-HIST-001',
+          node_id: 'PORT-001',
+          node_type: 'Port',
+          location: 'Shanghai, China',
+          disruption_type: 'strike',
+          severity: 0.85,
+          estimated_duration_days: 14,
+          source_headline: 'Dock workers strike halts container operations at Shanghai Port terminals',
+          detected_at: '2026-09-02T08:30:00Z',
+          status: 'active',
+        },
+        {
+          disruption_id: 'DIS-HIST-002',
+          node_id: 'PORT-003',
+          node_type: 'Port',
+          location: 'Rotterdam, Netherlands',
+          disruption_type: 'congestion',
+          severity: 0.7,
+          estimated_duration_days: 7,
+          source_headline: 'Severe customs clearance backlog congests Port of Rotterdam berths',
+          detected_at: '2026-08-28T14:15:00Z',
+          status: 'resolved',
+        },
+        {
+          disruption_id: 'DIS-HIST-003',
+          node_id: 'SUP-001',
+          node_type: 'Supplier',
+          location: 'Hsinchu, Taiwan',
+          disruption_type: 'earthquake',
+          severity: 0.9,
+          estimated_duration_days: 21,
+          source_headline: 'Magnitude 6.2 seismic event triggers automated fab shutdown in Hsinchu',
+          detected_at: '2026-08-15T03:45:00Z',
+          status: 'resolved',
+        },
+      ],
+      count: 3,
+    };
+  },
+
   async generateReport(): Promise<{ ok: boolean; message: string }> {
     return { ok: true, message: 'Report generated successfully.' };
   },
