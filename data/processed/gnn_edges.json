@@ -1,0 +1,4152 @@
+[
+  {
+    "source": "SUP-001",
+    "target": "MAN-001",
+    "relationship": "SUPPLIES",
+    "quantity": 500,
+    "lead_time_days": 7
+  },
+  {
+    "source": "SUP-001",
+    "target": "MAN-011",
+    "relationship": "SUPPLIES",
+    "quantity": 1000,
+    "lead_time_days": 15
+  },
+  {
+    "source": "SUP-002",
+    "target": "MAN-002",
+    "relationship": "SUPPLIES",
+    "quantity": 510,
+    "lead_time_days": 8
+  },
+  {
+    "source": "SUP-002",
+    "target": "MAN-012",
+    "relationship": "SUPPLIES",
+    "quantity": 1010,
+    "lead_time_days": 16
+  },
+  {
+    "source": "SUP-003",
+    "target": "MAN-003",
+    "relationship": "SUPPLIES",
+    "quantity": 520,
+    "lead_time_days": 9
+  },
+  {
+    "source": "SUP-003",
+    "target": "MAN-013",
+    "relationship": "SUPPLIES",
+    "quantity": 1020,
+    "lead_time_days": 17
+  },
+  {
+    "source": "SUP-004",
+    "target": "MAN-004",
+    "relationship": "SUPPLIES",
+    "quantity": 530,
+    "lead_time_days": 10
+  },
+  {
+    "source": "SUP-004",
+    "target": "MAN-014",
+    "relationship": "SUPPLIES",
+    "quantity": 1030,
+    "lead_time_days": 18
+  },
+  {
+    "source": "SUP-005",
+    "target": "MAN-005",
+    "relationship": "SUPPLIES",
+    "quantity": 540,
+    "lead_time_days": 11
+  },
+  {
+    "source": "SUP-005",
+    "target": "MAN-015",
+    "relationship": "SUPPLIES",
+    "quantity": 1040,
+    "lead_time_days": 19
+  },
+  {
+    "source": "SUP-006",
+    "target": "MAN-006",
+    "relationship": "SUPPLIES",
+    "quantity": 550,
+    "lead_time_days": 12
+  },
+  {
+    "source": "SUP-006",
+    "target": "MAN-016",
+    "relationship": "SUPPLIES",
+    "quantity": 1050,
+    "lead_time_days": 20
+  },
+  {
+    "source": "SUP-007",
+    "target": "MAN-007",
+    "relationship": "SUPPLIES",
+    "quantity": 560,
+    "lead_time_days": 13
+  },
+  {
+    "source": "SUP-007",
+    "target": "MAN-017",
+    "relationship": "SUPPLIES",
+    "quantity": 1060,
+    "lead_time_days": 21
+  },
+  {
+    "source": "SUP-008",
+    "target": "MAN-008",
+    "relationship": "SUPPLIES",
+    "quantity": 570,
+    "lead_time_days": 14
+  },
+  {
+    "source": "SUP-008",
+    "target": "MAN-018",
+    "relationship": "SUPPLIES",
+    "quantity": 1070,
+    "lead_time_days": 22
+  },
+  {
+    "source": "SUP-009",
+    "target": "MAN-009",
+    "relationship": "SUPPLIES",
+    "quantity": 580,
+    "lead_time_days": 15
+  },
+  {
+    "source": "SUP-009",
+    "target": "MAN-019",
+    "relationship": "SUPPLIES",
+    "quantity": 1080,
+    "lead_time_days": 23
+  },
+  {
+    "source": "SUP-010",
+    "target": "MAN-010",
+    "relationship": "SUPPLIES",
+    "quantity": 590,
+    "lead_time_days": 16
+  },
+  {
+    "source": "SUP-010",
+    "target": "MAN-020",
+    "relationship": "SUPPLIES",
+    "quantity": 1090,
+    "lead_time_days": 24
+  },
+  {
+    "source": "SUP-011",
+    "target": "MAN-011",
+    "relationship": "SUPPLIES",
+    "quantity": 600,
+    "lead_time_days": 17
+  },
+  {
+    "source": "SUP-011",
+    "target": "MAN-021",
+    "relationship": "SUPPLIES",
+    "quantity": 1100,
+    "lead_time_days": 25
+  },
+  {
+    "source": "SUP-012",
+    "target": "MAN-012",
+    "relationship": "SUPPLIES",
+    "quantity": 610,
+    "lead_time_days": 18
+  },
+  {
+    "source": "SUP-012",
+    "target": "MAN-022",
+    "relationship": "SUPPLIES",
+    "quantity": 1110,
+    "lead_time_days": 26
+  },
+  {
+    "source": "SUP-013",
+    "target": "MAN-013",
+    "relationship": "SUPPLIES",
+    "quantity": 620,
+    "lead_time_days": 19
+  },
+  {
+    "source": "SUP-013",
+    "target": "MAN-023",
+    "relationship": "SUPPLIES",
+    "quantity": 1120,
+    "lead_time_days": 27
+  },
+  {
+    "source": "SUP-014",
+    "target": "MAN-014",
+    "relationship": "SUPPLIES",
+    "quantity": 630,
+    "lead_time_days": 20
+  },
+  {
+    "source": "SUP-014",
+    "target": "MAN-024",
+    "relationship": "SUPPLIES",
+    "quantity": 1130,
+    "lead_time_days": 7
+  },
+  {
+    "source": "SUP-015",
+    "target": "MAN-015",
+    "relationship": "SUPPLIES",
+    "quantity": 640,
+    "lead_time_days": 21
+  },
+  {
+    "source": "SUP-015",
+    "target": "MAN-025",
+    "relationship": "SUPPLIES",
+    "quantity": 1140,
+    "lead_time_days": 8
+  },
+  {
+    "source": "SUP-016",
+    "target": "MAN-016",
+    "relationship": "SUPPLIES",
+    "quantity": 650,
+    "lead_time_days": 22
+  },
+  {
+    "source": "SUP-016",
+    "target": "MAN-026",
+    "relationship": "SUPPLIES",
+    "quantity": 1150,
+    "lead_time_days": 9
+  },
+  {
+    "source": "SUP-017",
+    "target": "MAN-017",
+    "relationship": "SUPPLIES",
+    "quantity": 660,
+    "lead_time_days": 23
+  },
+  {
+    "source": "SUP-017",
+    "target": "MAN-027",
+    "relationship": "SUPPLIES",
+    "quantity": 1160,
+    "lead_time_days": 10
+  },
+  {
+    "source": "SUP-018",
+    "target": "MAN-018",
+    "relationship": "SUPPLIES",
+    "quantity": 670,
+    "lead_time_days": 24
+  },
+  {
+    "source": "SUP-018",
+    "target": "MAN-028",
+    "relationship": "SUPPLIES",
+    "quantity": 1170,
+    "lead_time_days": 11
+  },
+  {
+    "source": "SUP-019",
+    "target": "MAN-019",
+    "relationship": "SUPPLIES",
+    "quantity": 680,
+    "lead_time_days": 25
+  },
+  {
+    "source": "SUP-019",
+    "target": "MAN-029",
+    "relationship": "SUPPLIES",
+    "quantity": 1180,
+    "lead_time_days": 12
+  },
+  {
+    "source": "SUP-020",
+    "target": "MAN-020",
+    "relationship": "SUPPLIES",
+    "quantity": 690,
+    "lead_time_days": 26
+  },
+  {
+    "source": "SUP-020",
+    "target": "MAN-030",
+    "relationship": "SUPPLIES",
+    "quantity": 1190,
+    "lead_time_days": 13
+  },
+  {
+    "source": "SUP-021",
+    "target": "MAN-021",
+    "relationship": "SUPPLIES",
+    "quantity": 700,
+    "lead_time_days": 27
+  },
+  {
+    "source": "SUP-021",
+    "target": "MAN-031",
+    "relationship": "SUPPLIES",
+    "quantity": 1200,
+    "lead_time_days": 14
+  },
+  {
+    "source": "SUP-022",
+    "target": "MAN-022",
+    "relationship": "SUPPLIES",
+    "quantity": 710,
+    "lead_time_days": 7
+  },
+  {
+    "source": "SUP-022",
+    "target": "MAN-032",
+    "relationship": "SUPPLIES",
+    "quantity": 1210,
+    "lead_time_days": 15
+  },
+  {
+    "source": "SUP-023",
+    "target": "MAN-023",
+    "relationship": "SUPPLIES",
+    "quantity": 720,
+    "lead_time_days": 8
+  },
+  {
+    "source": "SUP-023",
+    "target": "MAN-033",
+    "relationship": "SUPPLIES",
+    "quantity": 1220,
+    "lead_time_days": 16
+  },
+  {
+    "source": "SUP-024",
+    "target": "MAN-024",
+    "relationship": "SUPPLIES",
+    "quantity": 730,
+    "lead_time_days": 9
+  },
+  {
+    "source": "SUP-024",
+    "target": "MAN-034",
+    "relationship": "SUPPLIES",
+    "quantity": 1230,
+    "lead_time_days": 17
+  },
+  {
+    "source": "SUP-025",
+    "target": "MAN-025",
+    "relationship": "SUPPLIES",
+    "quantity": 740,
+    "lead_time_days": 10
+  },
+  {
+    "source": "SUP-025",
+    "target": "MAN-035",
+    "relationship": "SUPPLIES",
+    "quantity": 1240,
+    "lead_time_days": 18
+  },
+  {
+    "source": "SUP-026",
+    "target": "MAN-026",
+    "relationship": "SUPPLIES",
+    "quantity": 750,
+    "lead_time_days": 11
+  },
+  {
+    "source": "SUP-026",
+    "target": "MAN-036",
+    "relationship": "SUPPLIES",
+    "quantity": 1250,
+    "lead_time_days": 19
+  },
+  {
+    "source": "SUP-027",
+    "target": "MAN-027",
+    "relationship": "SUPPLIES",
+    "quantity": 760,
+    "lead_time_days": 12
+  },
+  {
+    "source": "SUP-027",
+    "target": "MAN-037",
+    "relationship": "SUPPLIES",
+    "quantity": 1260,
+    "lead_time_days": 20
+  },
+  {
+    "source": "SUP-028",
+    "target": "MAN-028",
+    "relationship": "SUPPLIES",
+    "quantity": 770,
+    "lead_time_days": 13
+  },
+  {
+    "source": "SUP-028",
+    "target": "MAN-038",
+    "relationship": "SUPPLIES",
+    "quantity": 1270,
+    "lead_time_days": 21
+  },
+  {
+    "source": "SUP-029",
+    "target": "MAN-029",
+    "relationship": "SUPPLIES",
+    "quantity": 780,
+    "lead_time_days": 14
+  },
+  {
+    "source": "SUP-029",
+    "target": "MAN-039",
+    "relationship": "SUPPLIES",
+    "quantity": 1280,
+    "lead_time_days": 22
+  },
+  {
+    "source": "SUP-030",
+    "target": "MAN-030",
+    "relationship": "SUPPLIES",
+    "quantity": 790,
+    "lead_time_days": 15
+  },
+  {
+    "source": "SUP-030",
+    "target": "MAN-040",
+    "relationship": "SUPPLIES",
+    "quantity": 1290,
+    "lead_time_days": 23
+  },
+  {
+    "source": "SUP-031",
+    "target": "MAN-001",
+    "relationship": "SUPPLIES",
+    "quantity": 1300,
+    "lead_time_days": 24
+  },
+  {
+    "source": "SUP-031",
+    "target": "MAN-031",
+    "relationship": "SUPPLIES",
+    "quantity": 800,
+    "lead_time_days": 16
+  },
+  {
+    "source": "SUP-032",
+    "target": "MAN-002",
+    "relationship": "SUPPLIES",
+    "quantity": 1310,
+    "lead_time_days": 25
+  },
+  {
+    "source": "SUP-032",
+    "target": "MAN-032",
+    "relationship": "SUPPLIES",
+    "quantity": 810,
+    "lead_time_days": 17
+  },
+  {
+    "source": "SUP-033",
+    "target": "MAN-003",
+    "relationship": "SUPPLIES",
+    "quantity": 1320,
+    "lead_time_days": 26
+  },
+  {
+    "source": "SUP-033",
+    "target": "MAN-033",
+    "relationship": "SUPPLIES",
+    "quantity": 820,
+    "lead_time_days": 18
+  },
+  {
+    "source": "SUP-034",
+    "target": "MAN-004",
+    "relationship": "SUPPLIES",
+    "quantity": 1330,
+    "lead_time_days": 27
+  },
+  {
+    "source": "SUP-034",
+    "target": "MAN-034",
+    "relationship": "SUPPLIES",
+    "quantity": 830,
+    "lead_time_days": 19
+  },
+  {
+    "source": "SUP-035",
+    "target": "MAN-005",
+    "relationship": "SUPPLIES",
+    "quantity": 1340,
+    "lead_time_days": 7
+  },
+  {
+    "source": "SUP-035",
+    "target": "MAN-035",
+    "relationship": "SUPPLIES",
+    "quantity": 840,
+    "lead_time_days": 20
+  },
+  {
+    "source": "SUP-036",
+    "target": "MAN-006",
+    "relationship": "SUPPLIES",
+    "quantity": 1350,
+    "lead_time_days": 8
+  },
+  {
+    "source": "SUP-036",
+    "target": "MAN-036",
+    "relationship": "SUPPLIES",
+    "quantity": 850,
+    "lead_time_days": 21
+  },
+  {
+    "source": "SUP-037",
+    "target": "MAN-007",
+    "relationship": "SUPPLIES",
+    "quantity": 1360,
+    "lead_time_days": 9
+  },
+  {
+    "source": "SUP-037",
+    "target": "MAN-037",
+    "relationship": "SUPPLIES",
+    "quantity": 860,
+    "lead_time_days": 22
+  },
+  {
+    "source": "SUP-038",
+    "target": "MAN-008",
+    "relationship": "SUPPLIES",
+    "quantity": 1370,
+    "lead_time_days": 10
+  },
+  {
+    "source": "SUP-038",
+    "target": "MAN-038",
+    "relationship": "SUPPLIES",
+    "quantity": 870,
+    "lead_time_days": 23
+  },
+  {
+    "source": "SUP-039",
+    "target": "MAN-009",
+    "relationship": "SUPPLIES",
+    "quantity": 1380,
+    "lead_time_days": 11
+  },
+  {
+    "source": "SUP-039",
+    "target": "MAN-039",
+    "relationship": "SUPPLIES",
+    "quantity": 880,
+    "lead_time_days": 24
+  },
+  {
+    "source": "SUP-040",
+    "target": "MAN-010",
+    "relationship": "SUPPLIES",
+    "quantity": 1390,
+    "lead_time_days": 12
+  },
+  {
+    "source": "SUP-040",
+    "target": "MAN-040",
+    "relationship": "SUPPLIES",
+    "quantity": 890,
+    "lead_time_days": 25
+  },
+  {
+    "source": "SUP-041",
+    "target": "MAN-001",
+    "relationship": "SUPPLIES",
+    "quantity": 900,
+    "lead_time_days": 26
+  },
+  {
+    "source": "SUP-041",
+    "target": "MAN-011",
+    "relationship": "SUPPLIES",
+    "quantity": 1400,
+    "lead_time_days": 13
+  },
+  {
+    "source": "SUP-042",
+    "target": "MAN-002",
+    "relationship": "SUPPLIES",
+    "quantity": 910,
+    "lead_time_days": 27
+  },
+  {
+    "source": "SUP-042",
+    "target": "MAN-012",
+    "relationship": "SUPPLIES",
+    "quantity": 1410,
+    "lead_time_days": 14
+  },
+  {
+    "source": "SUP-043",
+    "target": "MAN-003",
+    "relationship": "SUPPLIES",
+    "quantity": 920,
+    "lead_time_days": 7
+  },
+  {
+    "source": "SUP-043",
+    "target": "MAN-013",
+    "relationship": "SUPPLIES",
+    "quantity": 1420,
+    "lead_time_days": 15
+  },
+  {
+    "source": "SUP-044",
+    "target": "MAN-004",
+    "relationship": "SUPPLIES",
+    "quantity": 930,
+    "lead_time_days": 8
+  },
+  {
+    "source": "SUP-044",
+    "target": "MAN-014",
+    "relationship": "SUPPLIES",
+    "quantity": 1430,
+    "lead_time_days": 16
+  },
+  {
+    "source": "SUP-045",
+    "target": "MAN-005",
+    "relationship": "SUPPLIES",
+    "quantity": 940,
+    "lead_time_days": 9
+  },
+  {
+    "source": "SUP-045",
+    "target": "MAN-015",
+    "relationship": "SUPPLIES",
+    "quantity": 1440,
+    "lead_time_days": 17
+  },
+  {
+    "source": "SUP-046",
+    "target": "MAN-006",
+    "relationship": "SUPPLIES",
+    "quantity": 950,
+    "lead_time_days": 10
+  },
+  {
+    "source": "SUP-046",
+    "target": "MAN-016",
+    "relationship": "SUPPLIES",
+    "quantity": 1450,
+    "lead_time_days": 18
+  },
+  {
+    "source": "SUP-047",
+    "target": "MAN-007",
+    "relationship": "SUPPLIES",
+    "quantity": 960,
+    "lead_time_days": 11
+  },
+  {
+    "source": "SUP-047",
+    "target": "MAN-017",
+    "relationship": "SUPPLIES",
+    "quantity": 1460,
+    "lead_time_days": 19
+  },
+  {
+    "source": "SUP-048",
+    "target": "MAN-008",
+    "relationship": "SUPPLIES",
+    "quantity": 970,
+    "lead_time_days": 12
+  },
+  {
+    "source": "SUP-048",
+    "target": "MAN-018",
+    "relationship": "SUPPLIES",
+    "quantity": 1470,
+    "lead_time_days": 20
+  },
+  {
+    "source": "SUP-049",
+    "target": "MAN-009",
+    "relationship": "SUPPLIES",
+    "quantity": 980,
+    "lead_time_days": 13
+  },
+  {
+    "source": "SUP-049",
+    "target": "MAN-019",
+    "relationship": "SUPPLIES",
+    "quantity": 1480,
+    "lead_time_days": 21
+  },
+  {
+    "source": "SUP-050",
+    "target": "MAN-010",
+    "relationship": "SUPPLIES",
+    "quantity": 990,
+    "lead_time_days": 14
+  },
+  {
+    "source": "SUP-050",
+    "target": "MAN-020",
+    "relationship": "SUPPLIES",
+    "quantity": 1490,
+    "lead_time_days": 22
+  },
+  {
+    "source": "PORT-001",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 300,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-001",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 900,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-001",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 1500,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-001",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 2100,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-002",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 320,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-002",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 920,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-002",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 1520,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-002",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 2120,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-003",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 340,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-003",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 940,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-003",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 1540,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-003",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 2140,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-004",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 360,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-004",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 960,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-004",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 1560,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-004",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 2160,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-005",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 380,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-005",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 980,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-005",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 1580,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-005",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 2180,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-006",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 400,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-006",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 1000,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-006",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 1600,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-006",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 2200,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-007",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 420,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-007",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 1020,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-007",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 1620,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-007",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 2220,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-008",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 440,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-008",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 1040,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-008",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 1640,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-008",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 2240,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-009",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 460,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-009",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 1060,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-009",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 1660,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-009",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 2260,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-010",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 480,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-010",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 1080,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-010",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 1680,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-010",
+    "target": "DC-4",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 2280,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-011",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 500,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-011",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 1100,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-011",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 1700,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-012",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 520,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-012",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 1120,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-012",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 1720,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-013",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 540,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-013",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 1140,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-013",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 1740,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-014",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 560,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-014",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 1160,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-014",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 1760,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-015",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 580,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-015",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 1180,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-015",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 1780,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-016",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 600,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-016",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 1200,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-016",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 1800,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-017",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 620,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-017",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 1220,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-017",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 1820,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-018",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 640,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-018",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 1240,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-018",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 1840,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-019",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 660,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-019",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 1260,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-019",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 1860,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-020",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 680,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-020",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 1280,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-020",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 1880,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-021",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 700,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-021",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 1300,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-021",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 1900,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-022",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 720,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-022",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 1320,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-022",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 1920,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-023",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 740,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-023",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 1340,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-023",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 1940,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-024",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 760,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-024",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 1360,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-024",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 1960,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-025",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 780,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-025",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 7,
+    "distance_km": 1380,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-025",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 1,
+    "distance_km": 1980,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-026",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 800,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-026",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 8,
+    "distance_km": 1400,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-026",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 2,
+    "distance_km": 2000,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-027",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 820,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-027",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 9,
+    "distance_km": 1420,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-027",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 3,
+    "distance_km": 2020,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-028",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 840,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-028",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 10,
+    "distance_km": 1440,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-028",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 4,
+    "distance_km": 2040,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-029",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 860,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-029",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 11,
+    "distance_km": 1460,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-029",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 5,
+    "distance_km": 2060,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-030",
+    "target": "DC-1",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 880,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-030",
+    "target": "DC-2",
+    "relationship": "ROUTES_TO",
+    "transit_days": 12,
+    "distance_km": 1480,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "PORT-030",
+    "target": "DC-3",
+    "relationship": "ROUTES_TO",
+    "transit_days": 6,
+    "distance_km": 2080,
+    "transport_mode": "Road"
+  },
+  {
+    "source": "MAN-001",
+    "target": "PROD-001",
+    "relationship": "MANUFACTURES",
+    "batch_size": 100,
+    "production_days": 5
+  },
+  {
+    "source": "MAN-001",
+    "target": "PROD-016",
+    "relationship": "MANUFACTURES",
+    "batch_size": 300,
+    "production_days": 15
+  },
+  {
+    "source": "MAN-001",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 500,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-001",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 1900,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-001",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 3300,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-001",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 4700,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-001",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 6100,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-002",
+    "target": "PROD-002",
+    "relationship": "MANUFACTURES",
+    "batch_size": 105,
+    "production_days": 6
+  },
+  {
+    "source": "MAN-002",
+    "target": "PROD-017",
+    "relationship": "MANUFACTURES",
+    "batch_size": 305,
+    "production_days": 16
+  },
+  {
+    "source": "MAN-002",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 535,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-002",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 1935,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-002",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 3335,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-002",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 4735,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-002",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 6135,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-003",
+    "target": "PROD-003",
+    "relationship": "MANUFACTURES",
+    "batch_size": 110,
+    "production_days": 7
+  },
+  {
+    "source": "MAN-003",
+    "target": "PROD-018",
+    "relationship": "MANUFACTURES",
+    "batch_size": 310,
+    "production_days": 17
+  },
+  {
+    "source": "MAN-003",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 570,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-003",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 1970,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-003",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 3370,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-003",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 4770,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-003",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 6170,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-004",
+    "target": "PROD-004",
+    "relationship": "MANUFACTURES",
+    "batch_size": 115,
+    "production_days": 8
+  },
+  {
+    "source": "MAN-004",
+    "target": "PROD-019",
+    "relationship": "MANUFACTURES",
+    "batch_size": 315,
+    "production_days": 18
+  },
+  {
+    "source": "MAN-004",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 605,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-004",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 2005,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-004",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 3405,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-004",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 4805,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-004",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 6205,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-005",
+    "target": "PROD-005",
+    "relationship": "MANUFACTURES",
+    "batch_size": 120,
+    "production_days": 9
+  },
+  {
+    "source": "MAN-005",
+    "target": "PROD-020",
+    "relationship": "MANUFACTURES",
+    "batch_size": 320,
+    "production_days": 19
+  },
+  {
+    "source": "MAN-005",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 640,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-005",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 2040,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-005",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 3440,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-005",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 4840,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-005",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 6240,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-006",
+    "target": "PROD-006",
+    "relationship": "MANUFACTURES",
+    "batch_size": 125,
+    "production_days": 10
+  },
+  {
+    "source": "MAN-006",
+    "target": "PROD-021",
+    "relationship": "MANUFACTURES",
+    "batch_size": 325,
+    "production_days": 5
+  },
+  {
+    "source": "MAN-006",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 675,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-006",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 2075,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-006",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 3475,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-006",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 4875,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-006",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 6275,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-007",
+    "target": "PROD-007",
+    "relationship": "MANUFACTURES",
+    "batch_size": 130,
+    "production_days": 11
+  },
+  {
+    "source": "MAN-007",
+    "target": "PROD-022",
+    "relationship": "MANUFACTURES",
+    "batch_size": 330,
+    "production_days": 6
+  },
+  {
+    "source": "MAN-007",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 710,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-007",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 2110,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-007",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 3510,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-007",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 4910,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-007",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 6310,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-008",
+    "target": "PROD-008",
+    "relationship": "MANUFACTURES",
+    "batch_size": 135,
+    "production_days": 12
+  },
+  {
+    "source": "MAN-008",
+    "target": "PROD-023",
+    "relationship": "MANUFACTURES",
+    "batch_size": 335,
+    "production_days": 7
+  },
+  {
+    "source": "MAN-008",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 745,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-008",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 2145,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-008",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 3545,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-008",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 4945,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-008",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 6345,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-009",
+    "target": "PROD-009",
+    "relationship": "MANUFACTURES",
+    "batch_size": 140,
+    "production_days": 13
+  },
+  {
+    "source": "MAN-009",
+    "target": "PROD-024",
+    "relationship": "MANUFACTURES",
+    "batch_size": 340,
+    "production_days": 8
+  },
+  {
+    "source": "MAN-009",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 780,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-009",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 2180,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-009",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 3580,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-009",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 4980,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-009",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 6380,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-010",
+    "target": "PROD-010",
+    "relationship": "MANUFACTURES",
+    "batch_size": 145,
+    "production_days": 14
+  },
+  {
+    "source": "MAN-010",
+    "target": "PROD-025",
+    "relationship": "MANUFACTURES",
+    "batch_size": 345,
+    "production_days": 9
+  },
+  {
+    "source": "MAN-010",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 815,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-010",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 2215,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-010",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 3615,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-010",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 5015,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-010",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 6415,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-011",
+    "target": "PROD-011",
+    "relationship": "MANUFACTURES",
+    "batch_size": 150,
+    "production_days": 15
+  },
+  {
+    "source": "MAN-011",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 850,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-011",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 2250,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-011",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 3650,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-011",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 5050,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-011",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 6450,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-012",
+    "target": "PROD-012",
+    "relationship": "MANUFACTURES",
+    "batch_size": 155,
+    "production_days": 16
+  },
+  {
+    "source": "MAN-012",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 885,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-012",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 2285,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-012",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 3685,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-012",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 5085,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-012",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 6485,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-013",
+    "target": "PROD-013",
+    "relationship": "MANUFACTURES",
+    "batch_size": 160,
+    "production_days": 17
+  },
+  {
+    "source": "MAN-013",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 920,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-013",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 2320,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-013",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 3720,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-013",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 5120,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-013",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 6520,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-014",
+    "target": "PROD-014",
+    "relationship": "MANUFACTURES",
+    "batch_size": 165,
+    "production_days": 18
+  },
+  {
+    "source": "MAN-014",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 955,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-014",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 2355,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-014",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 3755,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-014",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 5155,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-014",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 6555,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-015",
+    "target": "PROD-015",
+    "relationship": "MANUFACTURES",
+    "batch_size": 170,
+    "production_days": 19
+  },
+  {
+    "source": "MAN-015",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 990,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-015",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 2390,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-015",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 3790,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-015",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 5190,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-015",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 6590,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-016",
+    "target": "PROD-016",
+    "relationship": "MANUFACTURES",
+    "batch_size": 175,
+    "production_days": 5
+  },
+  {
+    "source": "MAN-016",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 1025,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-016",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 2425,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-016",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 3825,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-016",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 5225,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-016",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 6625,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-017",
+    "target": "PROD-017",
+    "relationship": "MANUFACTURES",
+    "batch_size": 180,
+    "production_days": 6
+  },
+  {
+    "source": "MAN-017",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 1060,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-017",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 2460,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-017",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 3860,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-017",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 5260,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-017",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 6660,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-018",
+    "target": "PROD-018",
+    "relationship": "MANUFACTURES",
+    "batch_size": 185,
+    "production_days": 7
+  },
+  {
+    "source": "MAN-018",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 1095,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-018",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 2495,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-018",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 3895,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-018",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 5295,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-018",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 6695,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-019",
+    "target": "PROD-019",
+    "relationship": "MANUFACTURES",
+    "batch_size": 190,
+    "production_days": 8
+  },
+  {
+    "source": "MAN-019",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 1130,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-019",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 2530,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-019",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 3930,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-019",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 5330,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-019",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 6730,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-020",
+    "target": "PROD-020",
+    "relationship": "MANUFACTURES",
+    "batch_size": 195,
+    "production_days": 9
+  },
+  {
+    "source": "MAN-020",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 1165,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-020",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 2565,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-020",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 3965,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-020",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 5365,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-020",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 6765,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-021",
+    "target": "PROD-021",
+    "relationship": "MANUFACTURES",
+    "batch_size": 200,
+    "production_days": 10
+  },
+  {
+    "source": "MAN-021",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 1200,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-021",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 2600,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-021",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 4000,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-021",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 5400,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-021",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 6800,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-022",
+    "target": "PROD-022",
+    "relationship": "MANUFACTURES",
+    "batch_size": 205,
+    "production_days": 11
+  },
+  {
+    "source": "MAN-022",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 1235,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-022",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 2635,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-022",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 4035,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-022",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 5435,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-022",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 6835,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-023",
+    "target": "PROD-023",
+    "relationship": "MANUFACTURES",
+    "batch_size": 210,
+    "production_days": 12
+  },
+  {
+    "source": "MAN-023",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 1270,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-023",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 2670,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-023",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 4070,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-023",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 5470,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-023",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 6870,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-024",
+    "target": "PROD-024",
+    "relationship": "MANUFACTURES",
+    "batch_size": 215,
+    "production_days": 13
+  },
+  {
+    "source": "MAN-024",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 1305,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-024",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 2705,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-024",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 4105,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-024",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 5505,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-024",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 6905,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-025",
+    "target": "PROD-025",
+    "relationship": "MANUFACTURES",
+    "batch_size": 220,
+    "production_days": 14
+  },
+  {
+    "source": "MAN-025",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 1340,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-025",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 2740,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-025",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 4140,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-025",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 5540,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-025",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 6940,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-026",
+    "target": "PROD-001",
+    "relationship": "MANUFACTURES",
+    "batch_size": 225,
+    "production_days": 15
+  },
+  {
+    "source": "MAN-026",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 1375,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-026",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 2775,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-026",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 4175,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-026",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 5575,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-026",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 6975,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-027",
+    "target": "PROD-002",
+    "relationship": "MANUFACTURES",
+    "batch_size": 230,
+    "production_days": 16
+  },
+  {
+    "source": "MAN-027",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 1410,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-027",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 2810,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-027",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 4210,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-027",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 5610,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-027",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 7010,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-028",
+    "target": "PROD-003",
+    "relationship": "MANUFACTURES",
+    "batch_size": 235,
+    "production_days": 17
+  },
+  {
+    "source": "MAN-028",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 1445,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-028",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 2845,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-028",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 4245,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-028",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 5645,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-028",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 7045,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-029",
+    "target": "PROD-004",
+    "relationship": "MANUFACTURES",
+    "batch_size": 240,
+    "production_days": 18
+  },
+  {
+    "source": "MAN-029",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 1480,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-029",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 2880,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-029",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 4280,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-029",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 5680,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-029",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 7080,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-030",
+    "target": "PROD-005",
+    "relationship": "MANUFACTURES",
+    "batch_size": 245,
+    "production_days": 19
+  },
+  {
+    "source": "MAN-030",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 1515,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-030",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 2915,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-030",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 4315,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-030",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 5715,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-030",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 7115,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-031",
+    "target": "PROD-006",
+    "relationship": "MANUFACTURES",
+    "batch_size": 250,
+    "production_days": 5
+  },
+  {
+    "source": "MAN-031",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 1550,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-031",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 2950,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-031",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 4350,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-031",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 5750,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-031",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 7150,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-032",
+    "target": "PROD-007",
+    "relationship": "MANUFACTURES",
+    "batch_size": 255,
+    "production_days": 6
+  },
+  {
+    "source": "MAN-032",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 1585,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-032",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 2985,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-032",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 4385,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-032",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 5785,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-032",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 7185,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-033",
+    "target": "PROD-008",
+    "relationship": "MANUFACTURES",
+    "batch_size": 260,
+    "production_days": 7
+  },
+  {
+    "source": "MAN-033",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 1620,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-033",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 3020,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-033",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 4420,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-033",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 5820,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-033",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 7220,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-034",
+    "target": "PROD-009",
+    "relationship": "MANUFACTURES",
+    "batch_size": 265,
+    "production_days": 8
+  },
+  {
+    "source": "MAN-034",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 1655,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-034",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 3055,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-034",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 4455,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-034",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 5855,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-034",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 7255,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-035",
+    "target": "PROD-010",
+    "relationship": "MANUFACTURES",
+    "batch_size": 270,
+    "production_days": 9
+  },
+  {
+    "source": "MAN-035",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 1690,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-035",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 3090,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-035",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 4490,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-035",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 5890,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-035",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 7290,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-036",
+    "target": "PROD-011",
+    "relationship": "MANUFACTURES",
+    "batch_size": 275,
+    "production_days": 10
+  },
+  {
+    "source": "MAN-036",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 12,
+    "distance_km": 1725,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-036",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 2,
+    "distance_km": 3125,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-036",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 17,
+    "distance_km": 4525,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-036",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 7,
+    "distance_km": 5925,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-036",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 22,
+    "distance_km": 7325,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-037",
+    "target": "PROD-012",
+    "relationship": "MANUFACTURES",
+    "batch_size": 280,
+    "production_days": 11
+  },
+  {
+    "source": "MAN-037",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 13,
+    "distance_km": 1760,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-037",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 3,
+    "distance_km": 3160,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-037",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 18,
+    "distance_km": 4560,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-037",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 8,
+    "distance_km": 5960,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-037",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 23,
+    "distance_km": 7360,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-038",
+    "target": "PROD-013",
+    "relationship": "MANUFACTURES",
+    "batch_size": 285,
+    "production_days": 12
+  },
+  {
+    "source": "MAN-038",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 14,
+    "distance_km": 1795,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-038",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 4,
+    "distance_km": 3195,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-038",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 19,
+    "distance_km": 4595,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-038",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 9,
+    "distance_km": 5995,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-038",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 24,
+    "distance_km": 7395,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-039",
+    "target": "PROD-014",
+    "relationship": "MANUFACTURES",
+    "batch_size": 290,
+    "production_days": 13
+  },
+  {
+    "source": "MAN-039",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 15,
+    "distance_km": 1830,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-039",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 5,
+    "distance_km": 3230,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-039",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 20,
+    "distance_km": 4630,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-039",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 10,
+    "distance_km": 6030,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-039",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 25,
+    "distance_km": 7430,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-040",
+    "target": "PROD-015",
+    "relationship": "MANUFACTURES",
+    "batch_size": 295,
+    "production_days": 14
+  },
+  {
+    "source": "MAN-040",
+    "target": "PORT-001",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 16,
+    "distance_km": 1865,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-040",
+    "target": "PORT-002",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 6,
+    "distance_km": 3265,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-040",
+    "target": "PORT-003",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 21,
+    "distance_km": 4665,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-040",
+    "target": "PORT-004",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 11,
+    "distance_km": 6065,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "MAN-040",
+    "target": "PORT-005",
+    "relationship": "SHIPS_THROUGH",
+    "transit_days": 26,
+    "distance_km": 7465,
+    "transport_mode": "Sea"
+  },
+  {
+    "source": "DC-1",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 200
+  },
+  {
+    "source": "DC-1",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 725
+  },
+  {
+    "source": "DC-2",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 215
+  },
+  {
+    "source": "DC-2",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 740
+  },
+  {
+    "source": "DC-3",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 230
+  },
+  {
+    "source": "DC-3",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 755
+  },
+  {
+    "source": "DC-4",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 245
+  },
+  {
+    "source": "DC-4",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 770
+  },
+  {
+    "source": "DC-5",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 260
+  },
+  {
+    "source": "DC-5",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 785
+  },
+  {
+    "source": "DC-6",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 275
+  },
+  {
+    "source": "DC-6",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 800
+  },
+  {
+    "source": "DC-7",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 290
+  },
+  {
+    "source": "DC-7",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 815
+  },
+  {
+    "source": "DC-8",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 305
+  },
+  {
+    "source": "DC-8",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 830
+  },
+  {
+    "source": "DC-9",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 320
+  },
+  {
+    "source": "DC-9",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 845
+  },
+  {
+    "source": "DC-10",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 335
+  },
+  {
+    "source": "DC-10",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 860
+  },
+  {
+    "source": "DC-11",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 350
+  },
+  {
+    "source": "DC-11",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 875
+  },
+  {
+    "source": "DC-12",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 365
+  },
+  {
+    "source": "DC-12",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 890
+  },
+  {
+    "source": "DC-13",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 380
+  },
+  {
+    "source": "DC-13",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 905
+  },
+  {
+    "source": "DC-14",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 395
+  },
+  {
+    "source": "DC-14",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 920
+  },
+  {
+    "source": "DC-15",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 410
+  },
+  {
+    "source": "DC-15",
+    "target": "RET-2",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 935
+  },
+  {
+    "source": "DC-16",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 425
+  },
+  {
+    "source": "DC-17",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 440
+  },
+  {
+    "source": "DC-18",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 455
+  },
+  {
+    "source": "DC-19",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 470
+  },
+  {
+    "source": "DC-20",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 485
+  },
+  {
+    "source": "DC-21",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 500
+  },
+  {
+    "source": "DC-22",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 515
+  },
+  {
+    "source": "DC-23",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 530
+  },
+  {
+    "source": "DC-24",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 545
+  },
+  {
+    "source": "DC-25",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 560
+  },
+  {
+    "source": "DC-26",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 575
+  },
+  {
+    "source": "DC-27",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 590
+  },
+  {
+    "source": "DC-28",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 605
+  },
+  {
+    "source": "DC-29",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 1,
+    "volume_units": 620
+  },
+  {
+    "source": "DC-30",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 2,
+    "volume_units": 635
+  },
+  {
+    "source": "DC-31",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 3,
+    "volume_units": 650
+  },
+  {
+    "source": "DC-32",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 4,
+    "volume_units": 665
+  },
+  {
+    "source": "DC-33",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 5,
+    "volume_units": 680
+  },
+  {
+    "source": "DC-34",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 6,
+    "volume_units": 695
+  },
+  {
+    "source": "DC-35",
+    "target": "RET-1",
+    "relationship": "DISTRIBUTES",
+    "delivery_days": 7,
+    "volume_units": 710
+  },
+  {
+    "source": "RET-1",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 25,
+    "monthly_sales": 1000
+  },
+  {
+    "source": "RET-1",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 200,
+    "monthly_sales": 4500
+  },
+  {
+    "source": "RET-2",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 30,
+    "monthly_sales": 1100
+  },
+  {
+    "source": "RET-2",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 205,
+    "monthly_sales": 4600
+  },
+  {
+    "source": "RET-3",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 35,
+    "monthly_sales": 1200
+  },
+  {
+    "source": "RET-3",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 210,
+    "monthly_sales": 4700
+  },
+  {
+    "source": "RET-4",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 40,
+    "monthly_sales": 1300
+  },
+  {
+    "source": "RET-4",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 215,
+    "monthly_sales": 4800
+  },
+  {
+    "source": "RET-5",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 45,
+    "monthly_sales": 1400
+  },
+  {
+    "source": "RET-5",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 220,
+    "monthly_sales": 4900
+  },
+  {
+    "source": "RET-6",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 50,
+    "monthly_sales": 1500
+  },
+  {
+    "source": "RET-6",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 225,
+    "monthly_sales": 5000
+  },
+  {
+    "source": "RET-7",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 55,
+    "monthly_sales": 1600
+  },
+  {
+    "source": "RET-7",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 230,
+    "monthly_sales": 5100
+  },
+  {
+    "source": "RET-8",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 60,
+    "monthly_sales": 1700
+  },
+  {
+    "source": "RET-8",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 235,
+    "monthly_sales": 5200
+  },
+  {
+    "source": "RET-9",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 65,
+    "monthly_sales": 1800
+  },
+  {
+    "source": "RET-9",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 240,
+    "monthly_sales": 5300
+  },
+  {
+    "source": "RET-10",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 70,
+    "monthly_sales": 1900
+  },
+  {
+    "source": "RET-10",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 245,
+    "monthly_sales": 5400
+  },
+  {
+    "source": "RET-11",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 75,
+    "monthly_sales": 2000
+  },
+  {
+    "source": "RET-11",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 250,
+    "monthly_sales": 5500
+  },
+  {
+    "source": "RET-12",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 80,
+    "monthly_sales": 2100
+  },
+  {
+    "source": "RET-12",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 255,
+    "monthly_sales": 5600
+  },
+  {
+    "source": "RET-13",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 85,
+    "monthly_sales": 2200
+  },
+  {
+    "source": "RET-13",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 260,
+    "monthly_sales": 5700
+  },
+  {
+    "source": "RET-14",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 90,
+    "monthly_sales": 2300
+  },
+  {
+    "source": "RET-14",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 265,
+    "monthly_sales": 5800
+  },
+  {
+    "source": "RET-15",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 95,
+    "monthly_sales": 2400
+  },
+  {
+    "source": "RET-15",
+    "target": "PROD-002",
+    "relationship": "SELLS",
+    "price_usd": 270,
+    "monthly_sales": 5900
+  },
+  {
+    "source": "RET-16",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 100,
+    "monthly_sales": 2500
+  },
+  {
+    "source": "RET-17",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 105,
+    "monthly_sales": 2600
+  },
+  {
+    "source": "RET-18",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 110,
+    "monthly_sales": 2700
+  },
+  {
+    "source": "RET-19",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 115,
+    "monthly_sales": 2800
+  },
+  {
+    "source": "RET-20",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 120,
+    "monthly_sales": 2900
+  },
+  {
+    "source": "RET-21",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 125,
+    "monthly_sales": 3000
+  },
+  {
+    "source": "RET-22",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 130,
+    "monthly_sales": 3100
+  },
+  {
+    "source": "RET-23",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 135,
+    "monthly_sales": 3200
+  },
+  {
+    "source": "RET-24",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 140,
+    "monthly_sales": 3300
+  },
+  {
+    "source": "RET-25",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 145,
+    "monthly_sales": 3400
+  },
+  {
+    "source": "RET-26",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 150,
+    "monthly_sales": 3500
+  },
+  {
+    "source": "RET-27",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 155,
+    "monthly_sales": 3600
+  },
+  {
+    "source": "RET-28",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 160,
+    "monthly_sales": 3700
+  },
+  {
+    "source": "RET-29",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 165,
+    "monthly_sales": 3800
+  },
+  {
+    "source": "RET-30",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 170,
+    "monthly_sales": 3900
+  },
+  {
+    "source": "RET-31",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 175,
+    "monthly_sales": 4000
+  },
+  {
+    "source": "RET-32",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 180,
+    "monthly_sales": 4100
+  },
+  {
+    "source": "RET-33",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 185,
+    "monthly_sales": 4200
+  },
+  {
+    "source": "RET-34",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 190,
+    "monthly_sales": 4300
+  },
+  {
+    "source": "RET-35",
+    "target": "PROD-001",
+    "relationship": "SELLS",
+    "price_usd": 195,
+    "monthly_sales": 4400
+  }
+]

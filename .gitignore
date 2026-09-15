@@ -131,7 +131,10 @@ logs/
 
 # ── Data ─────────────────────────────────────────────────
 data/raw/
-data/processed/
+data/processed/*
+!data/processed/gnn_nodes.json
+!data/processed/gnn_edges.json
+!data/processed/dataset_summary.json
 *.csv
 !data/mock/*.csv
 *.parquet
