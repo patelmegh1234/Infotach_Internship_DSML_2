@@ -1,13 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Network, AlertTriangle, ShieldAlert, Gauge, DollarSign, Filter, Search, X } from 'lucide-react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import { Network, AlertTriangle, ShieldAlert, Gauge, DollarSign, Filter, X } from 'lucide-react';
 import { KpiCard } from '@/components/KpiCard';
 import { GraphView } from '@/components/graph/GraphView';
 import { RiskLegend } from '@/components/graph/RiskLegend';
 import { AIInsightPanel } from '@/components/AIInsightPanel';
 import { LoadingState } from '@/components/LoadingState';
+import { DisruptionBanner } from '@/components/DisruptionBanner';
+import { TimelineSlider } from '@/components/TimelineSlider';
+import { RiskTrendChart } from '@/components/RiskTrendChart';
+import { DisruptionHistoryPanel } from '@/components/DisruptionHistoryPanel';
 import { api } from '@/services/api';
+import { websocketService } from '@/services/websocket';
 import { formatCurrency, formatNumber, classNames, riskLevelFromScore } from '@/utils/helpers';
-import type { SupplyChainNode, SupplyChainEdge, KpiSnapshot, AIInsight, NodeType } from '@/types';
+import type { SupplyChainNode, SupplyChainEdge, KpiSnapshot, AIInsight, NodeType, HistoricalDisruption } from '@/types';
 import { nodeTypes } from '@/data/mockData';
 
 export function DashboardPage({ search }: { search: string }) {
@@ -19,6 +24,15 @@ export function DashboardPage({ search }: { search: string }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeTypes, setActiveTypes] = useState<NodeType[]>([]);
 
+  // Real-time & Predictive State (Issues #14 & #15)
+  const [predictionsMap, setPredictionsMap] = useState<Record<string, any>>({});
+  const [realtimePredictions, setRealtimePredictions] = useState<Record<string, any>>({});
+  const [activeDisruption, setActiveDisruption] = useState<HistoricalDisruption | null>(null);
+  const [selectedHorizon, setSelectedHorizon] = useState<number>(0); // 0 = real-time, 30, 60, 90
+  const [timelineData, setTimelineData] = useState<Record<string, any[]> | null>(null);
+  const [isTimelineLoading, setIsTimelineLoading] = useState<boolean>(false);
+
+  // Initial load
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -33,6 +47,87 @@ export function DashboardPage({ search }: { search: string }) {
     return () => { alive = false; };
   }, []);
 
+  // WebSocket real-time subscription for Disruption & GNN Prediction frames (Issue #14)
+  useEffect(() => {
+    const unsubscribe = websocketService.subscribe((msg) => {
+      // 1. Live Disruption Alert
+      if (msg.type === 'disruption_detected' && msg.disruption) {
+        setActiveDisruption(msg.disruption);
+      }
+
+      // 2. GNN Predictions Updated -> Re-color nodes dynamically
+      if (msg.type === 'predictions_updated' && Array.isArray(msg.predictions)) {
+        const pMap: Record<string, any> = {};
+        msg.predictions.forEach((p: any) => {
+          pMap[p.node_id] = p;
+        });
+        setRealtimePredictions(pMap);
+        if (selectedHorizon === 0) {
+          setPredictionsMap(pMap);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [selectedHorizon]);
+
+  // Handle Timeline Horizon change (Issue #15)
+  const handleHorizonChange = useCallback(async (horizon: number) => {
+    setSelectedHorizon(horizon);
+
+    if (horizon === 0) {
+      // Return to real-time nominal / active predictions
+      setPredictionsMap(realtimePredictions);
+      return;
+    }
+
+    setIsTimelineLoading(true);
+    try {
+      const originNode = selectedId || activeDisruption?.node_id || 'PORT-001';
+      const res = await api.predictTimeline(horizon, originNode);
+      if (res && res.timeline) {
+        setTimelineData(res.timeline);
+        const key = `${horizon}_days`;
+        const horizonPreds = res.timeline[key] || [];
+        const pMap: Record<string, any> = {};
+        horizonPreds.forEach((p: any) => {
+          pMap[p.node_id] = p;
+        });
+        setPredictionsMap(pMap);
+      }
+    } catch (err) {
+      console.warn('Timeline prediction failed:', err);
+    } finally {
+      setIsTimelineLoading(false);
+    }
+  }, [selectedId, activeDisruption, realtimePredictions]);
+
+  // Replay historical disruption simulation from panel (Issue #15)
+  const handleSimulateHistorical = useCallback(async (event: HistoricalDisruption) => {
+    setActiveDisruption(event);
+    setSelectedId(event.node_id);
+
+    try {
+      const res = await api.predictDisruption({
+        node_id: event.node_id,
+        severity: event.severity,
+        disruption_type: event.disruption_type,
+      });
+
+      if (res && Array.isArray(res.predictions)) {
+        const pMap: Record<string, any> = {};
+        res.predictions.forEach((p: any) => {
+          pMap[p.node_id] = p;
+        });
+        setRealtimePredictions(pMap);
+        setPredictionsMap(pMap);
+        setSelectedHorizon(0);
+      }
+    } catch (err) {
+      console.warn('Simulate historical disruption failed:', err);
+    }
+  }, []);
+
   const toggleType = (t: NodeType) => {
     setActiveTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
   };
@@ -43,9 +138,20 @@ export function DashboardPage({ search }: { search: string }) {
     let list = nodes;
     if (activeTypes.length > 0) list = list.filter((n) => activeTypes.includes(n.type));
     const q = search.trim().toLowerCase();
-    if (q) list = list.filter((n) => n.name.toLowerCase().includes(q) || n.id.toLowerCase().includes(q) || n.location.toLowerCase().includes(q));
+    if (q) {
+      list = list.filter(
+        (n) =>
+          n.name.toLowerCase().includes(q) ||
+          n.id.toLowerCase().includes(q) ||
+          n.location.toLowerCase().includes(q),
+      );
+    }
     return list;
   }, [nodes, activeTypes, search]);
+
+  const selectedNode = useMemo(() => {
+    return nodes.find((n) => n.id === selectedId);
+  }, [nodes, selectedId]);
 
   if (loading) return <LoadingState label="Loading network intelligence…" />;
 
@@ -53,22 +159,83 @@ export function DashboardPage({ search }: { search: string }) {
     <div className="space-y-6 animate-fadeIn">
       <header>
         <h1 className="text-2xl font-semibold text-white tracking-tight">Supply Chain Intelligence Dashboard</h1>
-        <p className="mt-1 text-sm text-slate-400">Monitor, simulate, and predict global supply-chain disruptions.</p>
+        <p className="mt-1 text-sm text-slate-400">
+          Real-time disruption monitoring, multi-hop GNN ripple propagation, and 30/60/90-day predictive forecasts.
+        </p>
       </header>
 
+      {/* ── Disruption Alert Banner (Issue #14) ── */}
+      {activeDisruption && (
+        <DisruptionBanner
+          disruption={activeDisruption}
+          onDismiss={() => setActiveDisruption(null)}
+          onFocusNode={(nodeId) => setSelectedId(nodeId)}
+        />
+      )}
+
+      {/* ── KPI Grid ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <KpiCard label="Network Nodes" value={formatNumber(kpi?.networkNodes ?? 0)} sub="Suppliers, facilities, warehouses and markets" icon={<Network className="h-5 w-5" />} accent="cyan" />
-        <KpiCard label="Active Disruptions" value={kpi?.activeDisruptions ?? 0} sub="Currently simulated or detected events" icon={<AlertTriangle className="h-5 w-5" />} accent="rose" trend={{ value: '12%', up: true }} />
-        <KpiCard label="At-Risk Nodes" value={formatNumber(kpi?.atRiskNodes ?? 0)} sub="Nodes with elevated disruption probability" icon={<ShieldAlert className="h-5 w-5" />} accent="amber" trend={{ value: '8%', up: true }} />
-        <KpiCard label="Network Risk Score" value={<span className={classNames(riskLevel === 'Critical' ? 'text-red-400' : riskLevel === 'High' ? 'text-rose-400' : 'text-amber-400')}>{kpi?.networkRiskScore.toFixed(1)}<span className="text-base text-slate-500"> / 100</span></span>} sub={`Risk level: ${riskLevel}`} icon={<Gauge className="h-5 w-5" />} accent="amber" />
-        <KpiCard label="Estimated Exposure" value={formatCurrency(kpi?.estimatedExposure ?? 0)} sub="Estimated potential economic impact" icon={<DollarSign className="h-5 w-5" />} accent="rose" trend={{ value: '5%', up: true }} />
+        <KpiCard
+          label="Network Nodes"
+          value={formatNumber(kpi?.networkNodes ?? 0)}
+          sub="Suppliers, facilities, warehouses and markets"
+          icon={<Network className="h-5 w-5" />}
+          accent="cyan"
+        />
+        <KpiCard
+          label="Active Disruptions"
+          value={activeDisruption ? (kpi?.activeDisruptions ?? 0) + 1 : kpi?.activeDisruptions ?? 0}
+          sub="Currently simulated or detected events"
+          icon={<AlertTriangle className="h-5 w-5" />}
+          accent="rose"
+          trend={{ value: '12%', up: true }}
+        />
+        <KpiCard
+          label="At-Risk Nodes"
+          value={formatNumber(kpi?.atRiskNodes ?? 0)}
+          sub="Nodes with elevated disruption probability"
+          icon={<ShieldAlert className="h-5 w-5" />}
+          accent="amber"
+          trend={{ value: '8%', up: true }}
+        />
+        <KpiCard
+          label="Network Risk Score"
+          value={
+            <span
+              className={classNames(
+                riskLevel === 'Critical'
+                  ? 'text-red-400'
+                  : riskLevel === 'High'
+                  ? 'text-rose-400'
+                  : 'text-amber-400',
+              )}
+            >
+              {kpi?.networkRiskScore.toFixed(1)}
+              <span className="text-base text-slate-500"> / 100</span>
+            </span>
+          }
+          sub={`Risk level: ${riskLevel}`}
+          icon={<Gauge className="h-5 w-5" />}
+          accent="amber"
+        />
+        <KpiCard
+          label="Estimated Exposure"
+          value={formatCurrency(kpi?.estimatedExposure ?? 0)}
+          sub="Estimated potential economic impact"
+          icon={<DollarSign className="h-5 w-5" />}
+          accent="rose"
+          trend={{ value: '5%', up: true }}
+        />
       </div>
 
+      {/* ── Main Graph Canvas with GNN Risk Overlay & Legend ── */}
       <div className="card p-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
           <div>
             <h2 className="text-base font-semibold text-white">Global Supply Chain Network</h2>
-            <p className="text-xs text-slate-500 mt-0.5">Interactive graph of suppliers, factories, warehouses, ports, distributors and markets</p>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Interactive GNN risk graph with real-time WebSocket node recoloring and multi-hop delay wavefronts
+            </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <Filter className="h-3.5 w-3.5 text-slate-500" />
@@ -94,7 +261,8 @@ export function DashboardPage({ search }: { search: string }) {
           </div>
         </div>
 
-        <RiskLegend className="mb-3" />
+        {/* Risk Color Legend (Issue #14) */}
+        <RiskLegend className="mb-4" />
 
         <GraphView
           nodes={filteredNodes}
@@ -103,12 +271,35 @@ export function DashboardPage({ search }: { search: string }) {
           onSelectNode={setSelectedId}
           height="h-[560px]"
           searchQuery={search}
+          predictionsMap={predictionsMap}
+          originId={activeDisruption?.node_id}
         />
       </div>
 
-      {insight && (
-        <AIInsightPanel insight={insight} />
-      )}
+      {/* ── 30/60/90-Day Timeline Slider & Risk Trend Charts (Issue #15) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <TimelineSlider
+          selectedHorizon={selectedHorizon}
+          onHorizonChange={handleHorizonChange}
+          isLoading={isTimelineLoading}
+        />
+        <RiskTrendChart
+          selectedNodeId={selectedNode?.id}
+          selectedNodeName={selectedNode?.name}
+          timelineData={timelineData}
+          activeHorizon={selectedHorizon}
+        />
+      </div>
+
+      {/* ── Disruption History Panel & AI Insights (Issue #15) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DisruptionHistoryPanel
+          onSimulateDisruption={handleSimulateHistorical}
+        />
+        {insight && (
+          <AIInsightPanel insight={insight} />
+        )}
+      </div>
     </div>
   );
 }

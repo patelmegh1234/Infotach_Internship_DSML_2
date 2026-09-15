@@ -25,11 +25,13 @@ import {
 } from 'lucide-react';
 import { GraphView } from '@/components/graph/GraphView';
 import { RiskLegend } from '@/components/graph/RiskLegend';
+import { DisruptionBanner } from '@/components/DisruptionBanner';
 import { LoadingState } from '@/components/LoadingState';
 import { api, type DemoTemplate, type SampleFileItem } from '@/services/api';
+import { websocketService } from '@/services/websocket';
 import { classNames } from '@/utils/helpers';
 import { useToast } from '@/hooks/useToast';
-import type { SupplyChainNode, SupplyChainEdge, NodeType } from '@/types';
+import type { SupplyChainNode, SupplyChainEdge, NodeType, HistoricalDisruption } from '@/types';
 import { nodeTypes } from '@/data/mockData';
 
 export function GraphPage({ search }: { search: string }) {
@@ -41,6 +43,25 @@ export function GraphPage({ search }: { search: string }) {
   const [activeTypes, setActiveTypes] = useState<NodeType[]>([]);
   const [localSearch, setLocalSearch] = useState('');
   const [showLabels, setShowLabels] = useState(true);
+  const [predictionsMap, setPredictionsMap] = useState<Record<string, any>>({});
+  const [activeDisruption, setActiveDisruption] = useState<HistoricalDisruption | null>(null);
+
+  // WebSocket real-time subscription for live graph updates (Issue #14)
+  useEffect(() => {
+    const unsub = websocketService.subscribe((msg) => {
+      if (msg.type === 'disruption_detected' && msg.disruption) {
+        setActiveDisruption(msg.disruption);
+      }
+      if (msg.type === 'predictions_updated' && Array.isArray(msg.predictions)) {
+        const pMap: Record<string, any> = {};
+        msg.predictions.forEach((p: any) => {
+          pMap[p.node_id] = p;
+        });
+        setPredictionsMap(pMap);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   // Modals
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
@@ -553,6 +574,15 @@ export function GraphPage({ search }: { search: string }) {
         <RiskLegend />
       </div>
 
+      {/* Disruption Alert Banner (Issue #14) */}
+      {activeDisruption && (
+        <DisruptionBanner
+          disruption={activeDisruption}
+          onDismiss={() => setActiveDisruption(null)}
+          onFocusNode={(id) => setSelectedId(id)}
+        />
+      )}
+
       {/* Main Graph Canvas */}
       {nodes.length === 0 ? (
         <div className="card p-10 text-center space-y-4 border-dashed border-white/10">
@@ -589,6 +619,8 @@ export function GraphPage({ search }: { search: string }) {
           showLabels={showLabels}
           height="h-[720px]"
           searchQuery={q}
+          predictionsMap={predictionsMap}
+          originId={activeDisruption?.node_id}
         />
       )}
 
