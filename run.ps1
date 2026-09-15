@@ -1,5 +1,6 @@
 # AtmoGraph - Master Startup Script (PowerShell)
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ScriptDir = if ($PSScriptRoot) { $PSScriptRoot } elseif ($MyInvocation.MyCommand.Path) { Split-Path -Parent $MyInvocation.MyCommand.Path } else { (Get-Location).Path }
+if (Test-Path "$ScriptDir\atmograph") { $ScriptDir = Join-Path $ScriptDir "atmograph" }
 Set-Location $ScriptDir
 
 Write-Host "=======================================================" -ForegroundColor Cyan
