@@ -336,7 +336,7 @@ export function GraphPage({ search }: { search: string }) {
     toast.push({ kind: 'success', title: 'File Downloaded', message: `Downloaded ${item.filename}` });
   };
 
-  // Upload Custom File handler
+  // Upload Custom File handler (flexible multi-format parser)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -344,20 +344,53 @@ export function GraphPage({ search }: { search: string }) {
     const reader = new FileReader();
     reader.onload = async (evt) => {
       try {
-        const parsed = JSON.parse(evt.target?.result as string);
-        if (!parsed.nodes || !Array.isArray(parsed.nodes)) {
-          throw new Error('Invalid graph format: missing "nodes" array.');
+        const rawText = evt.target?.result as string;
+        const parsed = JSON.parse(rawText);
+
+        let nodesPayload: any = [];
+        let edgesPayload: any = [];
+
+        if (Array.isArray(parsed)) {
+          // Format 1: Top-level array of nodes [ {...}, {...} ]
+          nodesPayload = parsed;
+        } else if (parsed && typeof parsed === 'object') {
+          if (parsed.nodes) {
+            // Format 2: Object with 'nodes' (array or categories dict)
+            nodesPayload = parsed.nodes;
+            edgesPayload = parsed.edges || parsed.relationships || [];
+          } else if (parsed.data && (parsed.data.nodes || Array.isArray(parsed.data))) {
+            // Format 3: Nested inside data
+            nodesPayload = parsed.data.nodes || parsed.data;
+            edgesPayload = parsed.data.edges || parsed.data.relationships || [];
+          } else {
+            // Format 4: Direct dictionary of categories (e.g. { suppliers: [...], ports: [...] })
+            nodesPayload = parsed;
+            edgesPayload = parsed.edges || parsed.relationships || [];
+          }
+        } else {
+          throw new Error('Unrecognized JSON structure. Expected a graph object or list of nodes.');
         }
+
         const res = await api.importGraph({
-          title: parsed.title || file.name,
-          nodes: parsed.nodes,
-          edges: parsed.edges || [],
+          title: parsed.title || parsed.description || file.name,
+          nodes: nodesPayload,
+          edges: edgesPayload,
         });
-        toast.push({ kind: 'success', title: 'File Imported', message: res.message });
+
+        toast.push({
+          kind: 'success',
+          title: 'Graph Imported',
+          message: res.message || `Successfully loaded "${file.name}" onto canvas.`,
+        });
         setShowImportModal(false);
         await fetchGraph(true);
       } catch (err: any) {
-        toast.push({ kind: 'error', title: 'Invalid File', message: err.message || 'Could not parse JSON file.' });
+        console.error('Import error:', err);
+        toast.push({
+          kind: 'error',
+          title: 'Import Failed',
+          message: err.message || 'Could not parse JSON file into supply chain graph.',
+        });
       }
     };
     reader.readAsText(file);
@@ -396,6 +429,27 @@ export function GraphPage({ search }: { search: string }) {
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Quick Graph Switcher Dropdown */}
+          <select
+            onChange={(e) => {
+              if (e.target.value === 'benchmark') {
+                api.resetDataset().then(() => fetchGraph(true));
+              } else if (e.target.value) {
+                handleLoadTemplate(e.target.value);
+              }
+            }}
+            className="bg-ink-900 border border-cyan-500/30 text-xs text-cyan-300 rounded-lg px-2.5 py-2 focus:border-cyan-400 shadow-sm cursor-pointer"
+            title="Quick switch between benchmark & industry demo graphs"
+          >
+            <option value="">⚡ Switch Graph Network…</option>
+            <option value="benchmark">Benchmark Supply Chain (215 Nodes)</option>
+            {templates.map((tpl) => (
+              <option key={tpl.id} value={tpl.id}>
+                {tpl.name} ({tpl.node_count}n)
+              </option>
+            ))}
+          </select>
+
           {/* 5 Built-in Demo Templates Dropdown Button */}
           <button
             onClick={() => setShowDemoModal(true)}
@@ -428,7 +482,14 @@ export function GraphPage({ search }: { search: string }) {
 
           {/* Add Node Button */}
           <button
-            onClick={() => setShowAddNodeModal(true)}
+            onClick={() => {
+              const prefix = nodeForm.node_type === 'Supplier' ? 'SUP' : nodeForm.node_type === 'Port' ? 'PORT' : nodeForm.node_type === 'Manufacturer' ? 'MFG' : 'NODE';
+              setNodeForm((prev) => ({
+                ...prev,
+                node_id: prev.node_id || `${prefix}-${Math.floor(100 + Math.random() * 900)}`,
+              }));
+              setShowAddNodeModal(true);
+            }}
             className="btn-primary text-xs flex items-center gap-1.5 px-3 py-2 shadow-glow"
           >
             <Plus className="h-4 w-4" /> Add Node
@@ -787,7 +848,15 @@ export function GraphPage({ search }: { search: string }) {
                   <label className="text-slate-400 block mb-1">Node Type *</label>
                   <select
                     value={nodeForm.node_type}
-                    onChange={(e) => setNodeForm({ ...nodeForm, node_type: e.target.value as NodeType })}
+                    onChange={(e) => {
+                      const t = e.target.value as NodeType;
+                      const prefix = t === 'Supplier' ? 'SUP' : t === 'Port' ? 'PORT' : t === 'Manufacturer' ? 'MFG' : 'NODE';
+                      setNodeForm({
+                        ...nodeForm,
+                        node_type: t,
+                        node_id: `${prefix}-${Math.floor(100 + Math.random() * 900)}`,
+                      });
+                    }}
                     className="input-field w-full py-1.5 bg-ink-900"
                   >
                     {nodeTypes.map((t) => (

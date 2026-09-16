@@ -13,7 +13,7 @@ import { AlertsPage } from '@/pages/AlertsPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 
 function App() {
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(true);
   const [page, setPage] = useState<PageKey>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -29,7 +29,7 @@ function App() {
   const renderPage = () => {
     switch (page) {
       case 'dashboard':
-        return <DashboardPage search={search} />;
+        return <DashboardPage search={search} onNavigate={setPage} />;
       case 'graph':
         return <GraphPage search={search} />;
       case 'simulator':

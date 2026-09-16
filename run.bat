@@ -23,7 +23,23 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
-:: 3. Free ports 8000 and 5173 if already in use by old processes
+:: 3. Check if both Backend & Frontend are already running
+netstat -aon | findstr ":8000 " | findstr "LISTENING" >nul 2>nul
+set B_RUNNING=%ERRORLEVEL%
+netstat -aon | findstr ":5173 " | findstr "LISTENING" >nul 2>nul
+set F_RUNNING=%ERRORLEVEL%
+
+if %B_RUNNING% equ 0 if %F_RUNNING% equ 0 (
+    echo [OK] Backend (port 8000) and Frontend (port 5173) are ALREADY running!
+    echo Backend URL:  http://127.0.0.1:8000 (Swagger: /docs)
+    echo Frontend URL: http://127.0.0.1:5173
+    echo.
+    echo [*] Opening AtmoGraph in your default browser...
+    start http://127.0.0.1:5173
+    exit /b 0
+)
+
+:: 4. Free ports 8000 and 5173 if partially stuck
 echo [*] Checking and freeing ports 8000 and 5173...
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":8000 " ^| findstr "LISTENING"') do (
     taskkill /f /pid %%a >nul 2>nul
@@ -32,17 +48,17 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5173 " ^| findstr "LISTENIN
     taskkill /f /pid %%a >nul 2>nul
 )
 
-:: 4. Auto-install required Python packages if missing
-echo [*] Checking Python dependencies (neo4j, torch-geometric)...
-python -c "import neo4j, torch_geometric" >nul 2>nul
+:: 5. Auto-install required Python packages if missing
+echo [*] Checking Python dependencies (fastapi, uvicorn)...
+python -c "import fastapi, uvicorn" >nul 2>nul
 if %ERRORLEVEL% neq 0 (
-    echo [*] Installing missing Python packages (neo4j, torch-geometric)...
-    python -m pip install neo4j torch-geometric
+    echo [*] Installing missing Python packages...
+    python -m pip install fastapi uvicorn pydantic loguru
 ) else (
     echo [OK] Python dependencies verified.
 )
 
-:: 5. Auto-install Frontend packages if missing
+:: 6. Auto-install Frontend packages if missing
 echo [*] Checking Frontend dependencies...
 if not exist "frontend\node_modules\" (
     echo [*] Installing frontend npm packages...
@@ -60,15 +76,15 @@ echo Backend URL:  http://127.0.0.1:8000 (Swagger Docs: /docs)
 echo Frontend URL: http://127.0.0.1:5173
 echo.
 
-:: 6. Launch Backend in a separate window using working directory switch
+:: 7. Launch Backend in a separate window using working directory switch
 start "AtmoGraph Backend (FastAPI)" /D "%~dp0backend" cmd /k "python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload"
 
-:: 7. Wait 4 seconds for backend to spin up
-timeout /t 4 /nobreak >nul
+:: 8. Wait 3 seconds for backend to spin up
+timeout /t 3 /nobreak >nul
 
-:: 8. Open Dashboard in default browser
+:: 9. Open Dashboard in default browser
 start http://127.0.0.1:5173
 
-:: 9. Launch Frontend in current window
+:: 10. Launch Frontend in current window
 cd /d "%~dp0frontend"
 npm run dev

@@ -51,8 +51,8 @@ class CreateEdgeRequest(BaseModel):
 
 class ImportGraphRequest(BaseModel):
     title: Optional[str] = Field(None, description="Graph title")
-    nodes: list[dict] = Field(..., description="List of node objects")
-    edges: list[dict] = Field(..., description="List of edge objects")
+    nodes: Any = Field(..., description="List of node objects or dictionary grouped by category")
+    edges: Optional[list[dict]] = Field(default_factory=list, description="List of edge objects")
 
 
 # In-memory graph storage for dynamic local CRUD
@@ -216,16 +216,9 @@ async def create_node(request: Request, node: CreateNodeRequest):
     # which would NOT include this new node (it only reads from the JSON file).
     _init_in_memory_dataset()
 
-    # Check for duplicate node ID
-    if node_id in _DYNAMIC_NODES:
-        return {
-            "status": "exists",
-            "node_id": node_id,
-            "node": _DYNAMIC_NODES[node_id],
-            "message": f"Node '{node_id}' already exists. Use a different ID.",
-        }
+    is_update = node_id in _DYNAMIC_NODES
 
-    # Add to in-memory store
+    # Add or update in in-memory store
     _DYNAMIC_NODES[node_id] = {
         "id": node_id,
         "node_id": node_id,
@@ -251,11 +244,12 @@ async def create_node(request: Request, node: CreateNodeRequest):
         except Exception as exc:
             logger.warning(f"Neo4j node insert error: {exc}")
 
+    action = "updated" if is_update else "added"
     return {
-        "status": "created",
+        "status": "updated" if is_update else "created",
         "node_id": node_id,
         "node": _DYNAMIC_NODES[node_id],
-        "message": f"Node '{node.name}' ({node.node_type}) successfully added",
+        "message": f"Node '{node.name}' ({node.node_type}) successfully {action}",
     }
 
 
@@ -497,7 +491,44 @@ async def import_graph_json(request: Request, payload: ImportGraphRequest):
     _DYNAMIC_EDGES.clear()
     _GRAPH_INITIALIZED = True
 
-    for n in payload.nodes:
+    # Flatten nodes if grouped by category (e.g., {"suppliers": [...], "ports": [...]})
+    type_mapping = {
+        "suppliers": "Supplier",
+        "supplier": "Supplier",
+        "manufacturers": "Manufacturer",
+        "manufacturer": "Manufacturer",
+        "factories": "Manufacturer",
+        "factory": "Manufacturer",
+        "ports": "Port",
+        "port": "Port",
+        "distribution_centers": "DistributionCenter",
+        "distributioncenters": "DistributionCenter",
+        "distribution_center": "DistributionCenter",
+        "warehouses": "DistributionCenter",
+        "warehouse": "DistributionCenter",
+        "retailers": "Retailer",
+        "retailer": "Retailer",
+        "markets": "Retailer",
+        "market": "Retailer",
+        "products": "Product",
+        "product": "Product",
+    }
+
+    raw_nodes_list: list[dict] = []
+    if isinstance(payload.nodes, dict):
+        for group_key, group_items in payload.nodes.items():
+            canonical_type = type_mapping.get(str(group_key).lower(), str(group_key).capitalize())
+            if isinstance(group_items, list):
+                for item in group_items:
+                    if isinstance(item, dict):
+                        item_copy = dict(item)
+                        if "node_type" not in item_copy and "type" not in item_copy:
+                            item_copy["node_type"] = canonical_type
+                        raw_nodes_list.append(item_copy)
+    elif isinstance(payload.nodes, list):
+        raw_nodes_list = [dict(item) for item in payload.nodes if isinstance(item, dict)]
+
+    for n in raw_nodes_list:
         nid = n.get("node_id") or n.get("id")
         if nid:
             _DYNAMIC_NODES[nid] = {
@@ -507,7 +538,52 @@ async def import_graph_json(request: Request, payload: ImportGraphRequest):
                 **n,
             }
 
-    for idx, e in enumerate(payload.edges):
+    raw_edges = payload.edges or []
+    # If no edges provided but multiple nodes exist, auto-synthesize tiered supply-chain routes
+    if not raw_edges and len(_DYNAMIC_NODES) > 1:
+        tier_map = {
+            "Supplier": 0,
+            "Manufacturer": 1,
+            "Port": 2,
+            "DistributionCenter": 3,
+            "Retailer": 4,
+            "Product": 1,
+        }
+        tier_nodes: dict[int, list[str]] = {}
+        for nid, n in _DYNAMIC_NODES.items():
+            t_name = n.get("node_type", "Supplier")
+            t_idx = tier_map.get(t_name, 0)
+            tier_nodes.setdefault(t_idx, []).append(nid)
+
+        sorted_tiers = sorted(tier_nodes.keys())
+        for i in range(len(sorted_tiers) - 1):
+            curr_tier = sorted_tiers[i]
+            next_tier = sorted_tiers[i + 1]
+            curr_ids = tier_nodes[curr_tier]
+            next_ids = tier_nodes[next_tier]
+            for idx, c_id in enumerate(curr_ids):
+                tgt1 = next_ids[idx % len(next_ids)]
+                raw_edges.append({
+                    "source": c_id,
+                    "target": tgt1,
+                    "relationship": "SUPPLIES" if curr_tier == 0 else "SHIPS_THROUGH" if curr_tier == 1 else "STORES_AT" if curr_tier == 2 else "DELIVERS_TO",
+                    "transport_mode": "sea" if curr_tier == 1 else "road",
+                    "quantity": 1000,
+                    "transit_days": 3,
+                })
+                if len(next_ids) > 1 and idx % 2 == 0:
+                    tgt2 = next_ids[(idx + 1) % len(next_ids)]
+                    if tgt2 != tgt1:
+                        raw_edges.append({
+                            "source": c_id,
+                            "target": tgt2,
+                            "relationship": "SUPPLIES" if curr_tier == 0 else "SHIPS_THROUGH",
+                            "transport_mode": "road",
+                            "quantity": 500,
+                            "transit_days": 2,
+                        })
+
+    for idx, e in enumerate(raw_edges):
         src = e.get("source") or e.get("source_node_id")
         tgt = e.get("target") or e.get("target_node_id")
         if src and tgt:

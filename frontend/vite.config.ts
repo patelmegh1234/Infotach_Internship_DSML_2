@@ -14,6 +14,7 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   server: {
+    host: true,
     port: 5173,
     // Proxy all /api/, /health/, /ws/ requests to the FastAPI backend.
     // This eliminates CORS entirely for local development.
