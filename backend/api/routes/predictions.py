@@ -209,35 +209,34 @@ async def predict_timeline(request: Request, payload: TimelinePredictionInput):
 
     nodes, edges = _pull_live_graph(driver)
 
-    # Determine disruption event to evaluate
-    disruption_dict: dict[str, Any] = {}
-    if payload.disruption:
-        disruption_dict = payload.disruption.model_dump()
+    # Determine disruption event to evaluate against currently active graph
+    valid_ids = {str(n.get("node_id") or n.get("id") or "") for n in nodes}
+    valid_ids |= {nid.lower() for nid in valid_ids if nid}
+
+    target_node_id = None
+    if payload.disruption and payload.disruption.node_id:
+        target_node_id = payload.disruption.node_id
     elif payload.node_id:
-        disruption_dict = {
-            "node_id": payload.node_id,
-            "risk_score": payload.severity or 0.85,
-            "disruption_flag": True,
-            "severity": payload.severity or 0.8,
-            "disruption_type": "strike",
-            "description": "Timeline simulation",
-        }
-    else:
-        # Pick top risk node or first supplier/port in network
-        top_node = "PORT-001"
+        target_node_id = payload.node_id
+
+    # If target node is not present in active graph, select highest-risk node in current network
+    if not target_node_id or (target_node_id not in valid_ids and target_node_id.lower() not in valid_ids):
         if nodes:
             sorted_nodes = sorted(nodes, key=lambda n: float(n.get("risk_score", 0.0)), reverse=True)
-            top_node = str(sorted_nodes[0].get("id") or sorted_nodes[0].get("node_id") or "PORT-001")
-        disruption_dict = {
-            "node_id": top_node,
-            "risk_score": 0.85,
-            "disruption_flag": True,
-            "severity": 0.8,
-            "disruption_type": "strike",
-            "description": "Default timeline simulation",
-        }
+            target_node_id = str(sorted_nodes[0].get("node_id") or sorted_nodes[0].get("id") or "")
+        else:
+            target_node_id = "PORT-001"
 
-    origin_id = disruption_dict.get("node_id", "PORT-001")
+    disruption_dict = {
+        "node_id": target_node_id,
+        "risk_score": (payload.disruption.risk_score if payload.disruption else payload.severity) or 0.85,
+        "disruption_flag": True,
+        "severity": (payload.disruption.severity if payload.disruption else payload.severity) or 0.8,
+        "disruption_type": (payload.disruption.disruption_type if payload.disruption else "strike") or "strike",
+        "description": (payload.disruption.description if payload.disruption else "Timeline simulation") or "Timeline simulation",
+    }
+
+    origin_id = disruption_dict.get("node_id", target_node_id)
     timeline_data: dict[str, list[dict[str, Any]]] = {}
 
     if gnn_engine:

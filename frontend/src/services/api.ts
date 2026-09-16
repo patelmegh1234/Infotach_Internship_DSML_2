@@ -446,27 +446,33 @@ export const api = {
     if (_cachedPredictions.length > 0) return _cachedPredictions;
 
     const net = await this.getNetwork();
-    const highRiskNodes = net.nodes.filter((n) => n.riskScore >= 65).slice(0, 5);
+    if (net.nodes.length === 0) return [];
 
-    if (highRiskNodes.length === 0) return [];
+    let candidateNodes = net.nodes.filter((n) => n.riskScore >= 65).slice(0, 5);
+    if (candidateNodes.length === 0) {
+      candidateNodes = [...net.nodes].sort((a, b) => b.riskScore - a.riskScore).slice(0, 5);
+    }
 
-    return highRiskNodes.map((n, idx) => ({
-      id: `PRED-${idx + 1}`,
-      title: `${n.name} Cascade Risk`,
-      description: `High disruption risk detected at ${n.name} (${n.type}) with potential delay impact across ${n.dependents.length} downstream nodes.`,
-      probability: Math.round(n.probability * 100),
-      confidence: Math.round(85 + (n.riskScore % 10)),
-      impact: n.riskScore >= 80 ? 'Critical' : 'High',
-      nodeId: n.id,
-      horizon: '7 days',
-      category: 'cascading',
-      timeline: [
-        { t: '0h', affected: 1 },
-        { t: '24h', affected: Math.max(1, Math.round(n.dependents.length * 0.4)) },
-        { t: '48h', affected: Math.max(2, Math.round(n.dependents.length * 0.7)) },
-        { t: '7d', affected: Math.max(3, n.dependents.length) },
-      ],
-    }));
+    return candidateNodes.map((n, idx) => {
+      const depCount = n.dependents?.length || 2;
+      return {
+        id: `PRED-${idx + 1}`,
+        title: `${n.name} Cascade Risk`,
+        description: `Disruption risk analysis for ${n.name} (${n.type}) with potential delay impact across ${depCount} downstream routes.`,
+        probability: Math.round(n.probability * 100),
+        confidence: Math.round(85 + (n.riskScore % 10)),
+        impact: n.riskScore >= 70 ? 'Critical' : n.riskScore >= 40 ? 'High' : 'Moderate',
+        nodeId: n.id,
+        horizon: '7 days',
+        category: 'cascading',
+        timeline: [
+          { t: '0h', affected: 1 },
+          { t: '24h', affected: Math.max(1, Math.round(depCount * 0.4)) },
+          { t: '48h', affected: Math.max(2, Math.round(depCount * 0.7)) },
+          { t: '7d', affected: Math.max(3, depCount) },
+        ],
+      };
+    });
   },
 
   async getScenarios(): Promise<Scenario[]> {
@@ -714,8 +720,6 @@ export const api = {
     };
     if (nodeId) {
       payload.node_id = nodeId;
-    } else {
-      payload.node_id = 'PORT-001';
     }
 
     const res = await fetch(`${API_BASE}/api/predict/timeline`, {
